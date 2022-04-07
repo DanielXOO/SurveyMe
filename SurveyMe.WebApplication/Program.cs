@@ -8,13 +8,13 @@ var version = builder.Configuration
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {
-    var ApplicationVersion = builder.Configuration
+    var applicationVersion = builder.Configuration
         .GetSection("ApplicationInfo:Version").Value;
 
-    options.SwaggerDoc($"api-v{ApplicationVersion}", new OpenApiInfo
+    options.SwaggerDoc($"api-v{applicationVersion}", new OpenApiInfo
     {
         Title = "SurveyMe Api",
-        Version = ApplicationVersion
+        Version = applicationVersion
     });
 });
 builder.Services.AddEndpointsApiExplorer();
