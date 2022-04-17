@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SurveyMe.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace SurveyMe.Repositories.EFCore
+namespace SurveyMe.Common.Repositories.EFCore
 {
     public class Repository<T> : IRepository<T> where T : class
     {

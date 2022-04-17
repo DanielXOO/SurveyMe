@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SurveyMe.Common\SurveyMe.Common.csproj" />
-        <ProjectReference Include="..\SurveyMe.Repositories\SurveyMe.Repositories.csproj" />
+        <ProjectReference Include="..\SurveyMe.Common.Repositories\SurveyMe.Common.Repositories.csproj" />
     </ItemGroup>
 
 </Project>

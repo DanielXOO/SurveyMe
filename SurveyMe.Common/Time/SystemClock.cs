@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace iTechArt.Common.Time
+namespace SurveyMe.Common
 {
     public class SystemClock : ISystemClock
     {
