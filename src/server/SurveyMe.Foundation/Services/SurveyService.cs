@@ -4,8 +4,9 @@ using SurveyMe.Common.Pagination;
 using SurveyMe.Common.Time;
 using SurveyMe.Data;
 using SurveyMe.DomainModels;
+using SurveyMe.Foundation.Services.Abstracts;
 
-namespace SurveyMe.Surveys.Foundation.Services.Surveys
+namespace SurveyMe.Foundation.Services.Surveys
 {
     public class SurveyService : ISurveyService
     {
@@ -20,7 +21,7 @@ namespace SurveyMe.Surveys.Foundation.Services.Surveys
         }
 
 
-        public async Task<PagedResult<Survey>> GetSurveysAsync(int currentPage, int pageSize, 
+        public async Task<PagedResult<Survey>> GetSurveysAsync(int currentPage, int pageSize,
             SortOrder order, string searchRequest)
         {
             var data = await _unitOfWork.Surveys

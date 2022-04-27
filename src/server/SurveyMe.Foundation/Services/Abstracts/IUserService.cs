@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using SurveyMe.Common.Pagination;
 using SurveyMe.DomainModels;
-using SurveyMe.Surveys.Foundation.Models;
+using SurveyMe.Foundation.Models;
 
-namespace SurveyMe.Surveys.Foundation.Services.Users
+namespace SurveyMe.Foundation.Services.Abstracts
 {
     public interface IUserService
     {

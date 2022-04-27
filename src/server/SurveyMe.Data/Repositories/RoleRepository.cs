@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Core;
+using SurveyMe.Data.Repositories.Abstracts;
 using SurveyMe.DomainModels;
 
 namespace SurveyMe.Data.Repositories
 {
     public sealed class RoleRepository : Repository<Role>, IRoleRepository
     {
-        public RoleRepository(DbContext context) 
+        public RoleRepository(DbContext context)
             : base(context)
         {
         }

@@ -21,9 +21,9 @@ namespace SurveyMe.Data.Stores
         public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             await _unitOfWork.Roles.CreateAsync(role);
-            
+
             return IdentityResult.Success;
         }
 
@@ -49,7 +49,7 @@ namespace SurveyMe.Data.Stores
         public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             if (role == null)
             {
                 throw new ArgumentNullException(nameof(role));
@@ -61,7 +61,7 @@ namespace SurveyMe.Data.Stores
         public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             if (role == null)
             {
                 throw new ArgumentNullException(nameof(role));
@@ -79,7 +79,7 @@ namespace SurveyMe.Data.Stores
                 throw new ArgumentNullException(nameof(role));
             }
 
-            role.Name= roleName;
+            role.Name = roleName;
 
             return Task.CompletedTask;
         }

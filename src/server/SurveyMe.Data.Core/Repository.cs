@@ -18,14 +18,14 @@ namespace SurveyMe.Data.Core
             _db = context;
             Data = context.Set<T>();
         }
-        
-        
+
+
         public async Task CreateAsync(T item)
         {
             Data.Add(item);
             await _db.SaveChangesAsync();
         }
-        
+
         public async Task DeleteAsync(T item)
         {
             Data.Remove(item);

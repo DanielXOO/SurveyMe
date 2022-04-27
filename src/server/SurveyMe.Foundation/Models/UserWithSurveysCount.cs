@@ -1,6 +1,6 @@
 ﻿using SurveyMe.DomainModels;
 
-namespace SurveyMe.Surveys.Foundation.Models
+namespace SurveyMe.Foundation.Models
 {
     public sealed class UserWithSurveysCount
     {

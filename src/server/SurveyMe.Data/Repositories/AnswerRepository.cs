@@ -1,15 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Core;
+using SurveyMe.Data.Repositories.Abstracts;
 using SurveyMe.DomainModels;
 
 namespace SurveyMe.Data.Repositories
 {
-    public class AnswerRepository : Repository<SurveyAnswer>, IAnswerRepository
+    public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerRepository
     {
         public AnswerRepository(DbContext context) : base(context)
         {
         }
-        
+
 
         public async Task<SurveyAnswer> GetByIdAsync(Guid id)
         {

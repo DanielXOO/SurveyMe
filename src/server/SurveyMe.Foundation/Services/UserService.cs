@@ -6,9 +6,10 @@ using SurveyMe.Common.Extensions;
 using SurveyMe.Common.Pagination;
 using SurveyMe.Data;
 using SurveyMe.DomainModels;
-using SurveyMe.Surveys.Foundation.Models;
+using SurveyMe.Foundation.Services.Abstracts;
+using SurveyMe.Foundation.Models;
 
-namespace SurveyMe.Surveys.Foundation.Services.Users
+namespace SurveyMe.Foundation.Services.Users
 {
     public sealed class UserService : IUserService
     {
@@ -58,7 +59,7 @@ namespace SurveyMe.Surveys.Foundation.Services.Users
 
             return ConvertToServiceResult(result);
         }
-        
+
 
         private static ServiceResult ConvertToServiceResult(IdentityResult result)
         {

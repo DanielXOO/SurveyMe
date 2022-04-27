@@ -21,7 +21,7 @@ namespace SurveyMe.Data.Stores
         public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -81,7 +81,7 @@ namespace SurveyMe.Data.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            
+
             await _unitOfWork.Users.CreateAsync(user);
 
             return IdentityResult.Success;
@@ -97,7 +97,7 @@ namespace SurveyMe.Data.Stores
             }
 
             await _unitOfWork.Users.UpdateAsync(user);
-             
+
             return IdentityResult.Success;
         }
 
@@ -111,7 +111,7 @@ namespace SurveyMe.Data.Stores
             }
 
             await _unitOfWork.Users.DeleteAsync(user);
-            
+
             return IdentityResult.Success;
         }
 
@@ -148,7 +148,7 @@ namespace SurveyMe.Data.Stores
         public Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -160,7 +160,7 @@ namespace SurveyMe.Data.Stores
         public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -212,8 +212,8 @@ namespace SurveyMe.Data.Stores
             }
 
             var roles = user.Roles.Select(role => role.Name).ToList();
-            
-            return Task.FromResult((IList<string>)roles);
+
+            return Task.FromResult((IList<string>) roles);
         }
 
         public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
@@ -226,7 +226,7 @@ namespace SurveyMe.Data.Stores
             }
 
             var isInRole = user.Roles.Any(role => role.Name == roleName);
-            
+
             return Task.FromResult(isInRole);
         }
 

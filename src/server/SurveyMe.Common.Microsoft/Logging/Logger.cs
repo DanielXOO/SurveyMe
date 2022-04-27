@@ -1,11 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-
-using ICommonLogger = SurveyMe.Common.Logging.ILogger;
+using ICommonLogger = SurveyMe.Common.Logging.Abstracts.ILogger;
 
 namespace SurveyMe.Common.Microsoft.Logging
 {
-    internal sealed class Logger : SurveyMe.Common.Logging.ILogger
+    internal sealed class Logger : Common.Logging.Abstracts.ILogger
     {
         private readonly ILogger _logger;
 

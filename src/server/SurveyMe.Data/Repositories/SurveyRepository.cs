@@ -1,18 +1,20 @@
 ﻿using SurveyMe.Common.Pagination;
 using SurveyMe.Data.Core;
 using Microsoft.EntityFrameworkCore;
+using SurveyMe.Data.Repositories.Abstracts;
 using SurveyMe.DomainModels;
 
 namespace SurveyMe.Data.Repositories
 {
-    public class SurveyRepository : Repository<Survey>, ISurveyRepository
+    public sealed class SurveyRepository : Repository<Survey>, ISurveyRepository
     {
         public SurveyRepository(DbContext context) : base(context)
         {
         }
 
 
-        public async Task<PagedResult<Survey>> GetSurveysAsync(int pageSize, int currentPage, string searchRequest, SortOrder sortOrder)
+        public async Task<PagedResult<Survey>> GetSurveysAsync(int pageSize, int currentPage, string searchRequest,
+            SortOrder sortOrder)
         {
             var surveys = GetSurveysQuery();
 
@@ -46,7 +48,7 @@ namespace SurveyMe.Data.Repositories
             return survey;
         }
 
-        
+
         private IQueryable<Survey> GetSurveysQuery()
         {
             return Data.Include(survey => survey.Questions)

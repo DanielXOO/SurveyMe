@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SurveyMe.Surveys.Foundation.Services
+namespace SurveyMe.Foundation.Services
 {
     public sealed class ServiceResult
     {
@@ -19,7 +19,7 @@ namespace SurveyMe.Surveys.Foundation.Services
                 {
                     return _errorMessages;
                 }
-                
+
                 throw new InvalidOperationException("No error messages. Result is successful");
             }
         }

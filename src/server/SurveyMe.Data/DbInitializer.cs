@@ -19,14 +19,14 @@ namespace SurveyMe.Data
                 {
                     DisplayName = "Admin",
                     Password = "Admin123",
-                    RoleNames = new[]{ RoleNames.Admin },
+                    RoleNames = new[] {RoleNames.Admin},
                     UserName = "Admin"
                 },
                 new InitUser()
                 {
                     DisplayName = "User",
                     Password = "User1234",
-                    RoleNames = new[]{ RoleNames.User },
+                    RoleNames = new[] {RoleNames.User},
                     UserName = "User"
                 }
             };
@@ -83,7 +83,7 @@ namespace SurveyMe.Data
                 var existedRole = await roleManager.FindByNameAsync(roleName);
                 if (existedRole == null)
                 {
-                    await roleManager.CreateAsync(new Role() { Name = roleName });
+                    await roleManager.CreateAsync(new Role() {Name = roleName});
                 }
                 else
                 {
@@ -91,7 +91,6 @@ namespace SurveyMe.Data
                 }
             }
         }
-
 
 
         private class InitUser

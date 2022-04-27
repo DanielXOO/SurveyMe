@@ -1,5 +1,6 @@
 using SurveyMe.Common.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using SurveyMe.Common.Logging.Abstracts;
 using ILoggingBuilder = Microsoft.Extensions.Logging.ILoggingBuilder;
 
 namespace SurveyMe.Common.Microsoft.Logging

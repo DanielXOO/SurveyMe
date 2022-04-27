@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SurveyMe.Common.Pagination;
 using SurveyMe.DomainModels;
 
-namespace SurveyMe.Surveys.Foundation.Services.Surveys
+namespace SurveyMe.Foundation.Services.Abstracts
 {
     public interface ISurveyService
     {

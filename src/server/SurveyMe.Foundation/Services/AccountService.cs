@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SurveyMe.Common.Time;
 using SurveyMe.DomainModels;
+using SurveyMe.Foundation.Services.Abstracts;
 
-namespace SurveyMe.Surveys.Foundation.Services.Account
+namespace SurveyMe.Foundation.Services.Account
 {
     public sealed class AccountService : IAccountService
     {
@@ -29,7 +30,7 @@ namespace SurveyMe.Surveys.Foundation.Services.Account
 
             return ConvertToServiceResult(result);
         }
-        
+
         public async Task<ServiceResult> RegisterAsync(User user, string password)
         {
             user.Roles ??= new List<Role>();
@@ -51,7 +52,7 @@ namespace SurveyMe.Surveys.Foundation.Services.Account
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(error => error.Description).ToArray();
-                
+
                 return ServiceResult.CreateFailed(errors);
             }
 

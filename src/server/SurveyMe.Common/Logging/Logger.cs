@@ -1,4 +1,5 @@
 ﻿using System;
+using SurveyMe.Common.Logging.Abstracts;
 
 namespace SurveyMe.Common.Logging
 {

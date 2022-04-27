@@ -13,7 +13,7 @@
         public User Author { get; set; }
 
         public Guid AuthorId { get; set; }
-        
+
         public ICollection<Question> Questions { get; set; }
 
         public ICollection<SurveyAnswer> Answers { get; set; }

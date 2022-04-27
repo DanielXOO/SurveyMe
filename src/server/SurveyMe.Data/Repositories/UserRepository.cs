@@ -2,6 +2,7 @@
 using SurveyMe.Data.Core;
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Models;
+using SurveyMe.Data.Repositories.Abstracts;
 using SurveyMe.DomainModels;
 
 namespace SurveyMe.Data.Repositories
@@ -12,7 +13,7 @@ namespace SurveyMe.Data.Repositories
         {
         }
 
-        
+
         public async Task<PagedResult<UserWithSurveysCount>> GetUsersAsync(int pageSize, int currentPage,
             string searchRequest, SortOrder sortOrder)
         {
@@ -23,17 +24,13 @@ namespace SurveyMe.Data.Repositories
                 users = users.Where(user => user.DisplayName.Contains(searchRequest));
             }
 
-            switch (sortOrder)
+            users = sortOrder switch
             {
-                case SortOrder.Descending:
-                    users = users.OrderByDescending(user => user.DisplayName);
-                    break;
-                case SortOrder.Ascending:
-                    users = users.OrderBy(user => user.DisplayName);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(sortOrder), sortOrder, "Unknown sort order value");
-            }
+                SortOrder.Descending => users.OrderByDescending(user => user.DisplayName),
+                SortOrder.Ascending => users.OrderBy(user => user.DisplayName),
+                _ => throw new ArgumentOutOfRangeException(nameof(sortOrder), 
+                    sortOrder, "Unknown sort order value")
+            };
 
             var userWithSurveysCount = users.Select(user =>
                 new UserWithSurveysCount()

@@ -2,7 +2,7 @@
 using SurveyMe.Common.Time;
 using SurveyMe.Data;
 using SurveyMe.DomainModels;
-using ILogger = SurveyMe.Common.Logging.ILogger;
+using ILogger = SurveyMe.Common.Logging.Abstracts.ILogger;
 
 namespace SurveyMe.WebApplication;
 
@@ -20,7 +20,7 @@ public static class CreateDbIfNotExistsExtension
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var roleManager = services.GetRequiredService<RoleManager<Role>>();
                 var systemClock = services.GetService<ISystemClock>();
-                
+
                 await DbInitializer.Initialize(context, userManager, roleManager, systemClock);
             }
             catch (Exception ex)

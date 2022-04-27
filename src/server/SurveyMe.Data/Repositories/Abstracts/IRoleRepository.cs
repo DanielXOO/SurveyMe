@@ -1,7 +1,7 @@
 ﻿using SurveyMe.DomainModels;
 using SurveyMe.Repositories;
 
-namespace SurveyMe.Data.Repositories
+namespace SurveyMe.Data.Repositories.Abstracts
 {
     public interface IRoleRepository : IRepository<Role>
     {

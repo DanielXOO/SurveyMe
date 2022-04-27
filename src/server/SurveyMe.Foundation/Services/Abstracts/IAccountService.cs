@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SurveyMe.DomainModels;
 
-namespace SurveyMe.Surveys.Foundation.Services.Account
+namespace SurveyMe.Foundation.Services.Abstracts
 {
     public interface IAccountService
     {

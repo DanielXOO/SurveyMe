@@ -6,7 +6,7 @@ namespace SurveyMe.Common.Extensions
 {
     public static class PagedResultExtensions
     {
-        public static  PagedResult<TResult> MapPagedResult<TSource, TResult>(
+        public static PagedResult<TResult> MapPagedResult<TSource, TResult>(
             this PagedResult<TSource> source,
             Func<TSource, TResult> selector)
 

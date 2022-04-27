@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using SurveyMe.Surveys.Foundation.Models;
+using SurveyMe.Foundation.Models;
 
-namespace SurveyMe.Surveys.Foundation.Services.Files
+namespace SurveyMe.Foundation.Services.Abstracts
 {
     public interface IFileService
     {

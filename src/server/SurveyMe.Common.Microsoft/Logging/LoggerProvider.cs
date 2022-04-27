@@ -1,4 +1,5 @@
 ﻿using SurveyMe.Common.Logging;
+using SurveyMe.Common.Logging.Abstracts;
 using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
 namespace SurveyMe.Common.Microsoft.Logging

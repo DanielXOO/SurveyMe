@@ -7,13 +7,14 @@ using SurveyMe.Data;
 using SurveyMe.Data.Stores;
 using SurveyMe.DomainModels;
 using SurveyMe.WebApplication;
-using SurveyMe.Surveys.Foundation.Models;
-using SurveyMe.Surveys.Foundation.Services.Account;
-using SurveyMe.Surveys.Foundation.Services.Answers;
-using SurveyMe.Surveys.Foundation.Services.Files;
-using SurveyMe.Surveys.Foundation.Services.Surveys;
-using SurveyMe.Surveys.Foundation.Services.Users;
+using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Services.Account;
+using SurveyMe.Foundation.Services.Answers;
+using SurveyMe.Foundation.Services.Files;
+using SurveyMe.Foundation.Services.Surveys;
+using SurveyMe.Foundation.Services.Users;
 using SurveyMe.Common.Time;
+using SurveyMe.Foundation.Services.Abstracts;
 
 var builder = WebApplication.CreateBuilder(args);
 

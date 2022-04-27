@@ -1,7 +1,7 @@
 using System.IO;
 using FileInfo = SurveyMe.DomainModels.FileInfo;
 
-namespace SurveyMe.Surveys.Foundation.Models
+namespace SurveyMe.Foundation.Models
 {
     public class File
     {

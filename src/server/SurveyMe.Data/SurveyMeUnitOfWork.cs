@@ -1,16 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SurveyMe.Data.Core;
+﻿using SurveyMe.Data.Core;
 using SurveyMe.Data.Repositories;
+using SurveyMe.Data.Repositories.Abstracts;
 using SurveyMe.DomainModels;
-
 using FileInfo = SurveyMe.DomainModels.FileInfo;
 
 namespace SurveyMe.Data;
 
 public class SurveyMeUnitOfWork : UnitOfWork, ISurveyMeUnitOfWork
 {
-    
-    public IUserRepository Users 
+    public IUserRepository Users
         => (IUserRepository) GetRepository<User>();
 
     public IRoleRepository Roles
@@ -24,9 +22,9 @@ public class SurveyMeUnitOfWork : UnitOfWork, ISurveyMeUnitOfWork
 
     public IFileRepository Files
         => (IFileRepository) GetRepository<FileInfo>();
-    
-    
-    public SurveyMeUnitOfWork(SurveyMeDbContext dbContext) 
+
+
+    public SurveyMeUnitOfWork(SurveyMeDbContext dbContext)
         : base(dbContext)
     {
         AddSpecificRepository<User, UserRepository>();

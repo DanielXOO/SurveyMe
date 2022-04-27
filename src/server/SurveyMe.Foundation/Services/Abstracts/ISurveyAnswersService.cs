@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using SurveyMe.DomainModels;
 
-namespace SurveyMe.Surveys.Foundation.Services.Answers
+namespace SurveyMe.Foundation.Services.Abstracts
 {
     public interface ISurveyAnswersService
     {

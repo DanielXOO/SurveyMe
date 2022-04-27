@@ -1,8 +1,7 @@
 using SurveyMe.Repositories;
-
 using FileInfo = SurveyMe.DomainModels.FileInfo;
 
-namespace SurveyMe.Data.Repositories
+namespace SurveyMe.Data.Repositories.Abstracts
 {
     public interface IFileRepository : IRepository<FileInfo>
     {

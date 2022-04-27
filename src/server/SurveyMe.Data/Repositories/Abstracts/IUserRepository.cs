@@ -3,7 +3,7 @@ using SurveyMe.Data.Models;
 using SurveyMe.DomainModels;
 using SurveyMe.Repositories;
 
-namespace SurveyMe.Data.Repositories
+namespace SurveyMe.Data.Repositories.Abstracts
 {
     public interface IUserRepository : IRepository<User>
     {

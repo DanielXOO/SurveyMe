@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SurveyMe.Common.Logging
+namespace SurveyMe.Common.Logging.Abstracts
 {
     public interface ILogger
     {
