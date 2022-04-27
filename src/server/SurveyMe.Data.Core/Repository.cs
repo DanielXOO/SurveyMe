@@ -20,19 +20,22 @@ namespace SurveyMe.Data.Core
         }
         
         
-        public void Create(T item)
+        public async Task CreateAsync(T item)
         {
             Data.Add(item);
+            await _db.SaveChangesAsync();
         }
         
-        public void Delete(T item)
+        public async Task DeleteAsync(T item)
         {
             Data.Remove(item);
+            await _db.SaveChangesAsync();
         }
 
-        public void Update(T item)
+        public async Task UpdateAsync(T item)
         {
             _db.Update(item);
+            await _db.SaveChangesAsync();
         }
 
         public async Task<T> FindByIdAsync(params object[] keyValues)
