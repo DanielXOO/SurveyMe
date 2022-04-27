@@ -1,8 +1,19 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SurveyMe.Common.Microsoft.Logging;
-using SurveyMe.Repositories;
+using SurveyMe.Data;
+using SurveyMe.Data.Stores;
+using SurveyMe.DomainModels;
 using SurveyMe.WebApplication;
+using SurveyMe.Surveys.Foundation.Models;
+using SurveyMe.Surveys.Foundation.Services.Account;
+using SurveyMe.Surveys.Foundation.Services.Answers;
+using SurveyMe.Surveys.Foundation.Services.Files;
+using SurveyMe.Surveys.Foundation.Services.Surveys;
+using SurveyMe.Surveys.Foundation.Services.Users;
+using SurveyMe.Common.Time;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,20 +29,44 @@ var version = builder.Configuration
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {
-    var applicationVersion = builder.Configuration
-        .GetSection("ApplicationInfo:Version").Value;
-
-    options.SwaggerDoc($"api-v{applicationVersion}", new OpenApiInfo
+    options.SwaggerDoc($"api-v{version}", new OpenApiInfo
     {
         Title = "SurveyMe Api",
-        Version = applicationVersion
+        Version = version
     });
 });
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddDbContext<SurveyMeDbContext>(options 
+builder.Services.Configure<FileServiceConfiguration>(builder.Configuration.GetSection("FileService"));
+
+builder.Services.AddDbContext<SurveyMeDbContext>(options
     => options.UseSqlServer(builder.Configuration
         .GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
+
+builder.Services.AddIdentity<User, Role>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 8;
+    })
+    .AddRoleStore<RoleStore>()
+    .AddUserStore<UserStore>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddScoped<ISurveyAnswersService, SurveySurveyAnswersService>();
+builder.Services.AddScoped<IFileService, FileService>();
+
+builder.Services.AddSingleton<ISystemClock, SystemClock>();
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 var app = builder.Build();
 
@@ -44,7 +79,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.Services.CreateDbIfNotExists();
+await app.Services.CreateDbIfNotExists();
 
 app.UseHttpsRedirection();
 

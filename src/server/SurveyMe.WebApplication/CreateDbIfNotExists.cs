@@ -1,11 +1,14 @@
-﻿using SurveyMe.Repositories;
+﻿using Microsoft.AspNetCore.Identity;
+using SurveyMe.Common.Time;
+using SurveyMe.Data;
+using SurveyMe.DomainModels;
 using ILogger = SurveyMe.Common.Logging.ILogger;
 
 namespace SurveyMe.WebApplication;
 
 public static class CreateDbIfNotExistsExtension
 {
-    public static void CreateDbIfNotExists(this IServiceProvider serviceProvider)
+    public static async Task CreateDbIfNotExists(this IServiceProvider serviceProvider)
     {
         using (var scope = serviceProvider.CreateScope())
         {
@@ -14,8 +17,11 @@ public static class CreateDbIfNotExistsExtension
             try
             {
                 var context = services.GetRequiredService<SurveyMeDbContext>();
+                var userManager = services.GetRequiredService<UserManager<User>>();
+                var roleManager = services.GetRequiredService<RoleManager<Role>>();
+                var systemClock = services.GetService<ISystemClock>();
                 
-                DbInitializer.Initialize(context);
+                await DbInitializer.Initialize(context, userManager, roleManager, systemClock);
             }
             catch (Exception ex)
             {

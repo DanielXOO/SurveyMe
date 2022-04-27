@@ -9,13 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMe.Common", "SurveyMe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMe.Common.Microsoft", "SurveyMe.Common.Microsoft\SurveyMe.Common.Microsoft.csproj", "{C9BEDD5E-61C3-4AF3-9767-07158FB2F1F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMe.Common.Repositories", "SurveyMe.Common.Repositories\SurveyMe.Common.Repositories.csproj", "{218B2672-90F9-4DA6-AD7F-8186830D5D6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMe.Data.Contracts", "SurveyMe.Data.Contracts\SurveyMe.Data.Contracts.csproj", "{218B2672-90F9-4DA6-AD7F-8186830D5D6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMe.Common.Repositories.EFCore", "SurveyMe.Common.Repositories.EFCore\SurveyMe.Common.Repositories.EFCore.csproj", "{F3AF5A46-1126-471C-A13C-725736E61DD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMe.Data.Core", "SurveyMe.Data.Core\SurveyMe.Data.Core.csproj", "{F3AF5A46-1126-471C-A13C-725736E61DD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyMe.DomainModels", "SurveyMe.DomainModels\SurveyMe.DomainModels.csproj", "{B9322690-06EF-467D-9792-1795B9A1ACD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyMe.Repositories", "SurveyMe.Repositories\SurveyMe.Repositories.csproj", "{A9360978-A1A6-49E2-84C1-F85A757D0B26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyMe.Data", "SurveyMe.Data\SurveyMe.Data.csproj", "{A9360978-A1A6-49E2-84C1-F85A757D0B26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyMe.Foundation", "SurveyMe.Foundation\SurveyMe.Foundation.csproj", "{C5547601-9B7F-4EF0-897B-3D25F9804668}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{A9360978-A1A6-49E2-84C1-F85A757D0B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9360978-A1A6-49E2-84C1-F85A757D0B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9360978-A1A6-49E2-84C1-F85A757D0B26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5547601-9B7F-4EF0-897B-3D25F9804668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5547601-9B7F-4EF0-897B-3D25F9804668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5547601-9B7F-4EF0-897B-3D25F9804668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5547601-9B7F-4EF0-897B-3D25F9804668}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,7 @@ using ICommonLogger = SurveyMe.Common.Logging.ILogger;
 
 namespace SurveyMe.Common.Microsoft.Logging
 {
-    internal sealed class Logger : ICommonLogger
+    internal sealed class Logger : SurveyMe.Common.Logging.ILogger
     {
         private readonly ILogger _logger;
 

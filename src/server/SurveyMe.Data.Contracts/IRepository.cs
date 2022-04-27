@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SurveyMe.Common.Repositories
+namespace SurveyMe.Repositories
 {
     public interface IRepository<T>
     {

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SurveyMe.Common\SurveyMe.Common.csproj" />
-        <ProjectReference Include="..\SurveyMe.Common.Repositories\SurveyMe.Common.Repositories.csproj" />
+        <ProjectReference Include="..\SurveyMe.Data.Contracts\SurveyMe.Data.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

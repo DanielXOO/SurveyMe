@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SurveyMe.Common
+namespace SurveyMe.Common.Time
 {
     public interface ISystemClock
     {

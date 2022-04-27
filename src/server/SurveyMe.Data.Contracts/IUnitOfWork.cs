@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SurveyMe.Common.Repositories
+namespace SurveyMe.Repositories
 {
     public interface IUnitOfWork
     {

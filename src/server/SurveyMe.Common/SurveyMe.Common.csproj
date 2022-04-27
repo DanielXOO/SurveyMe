@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>iTechArt.Common</RootNamespace>
+        <RootNamespace>SurveyMe.Common</RootNamespace>
     </PropertyGroup>
 
 </Project>
