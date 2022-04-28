@@ -6,7 +6,7 @@ using ILogger = SurveyMe.Common.Logging.Abstracts.ILogger;
 
 namespace SurveyMe.WebApplication;
 
-public static class CreateDbIfNotExistsExtension
+public static class ServiceProviderExtension
 {
     public static async Task CreateDbIfNotExists(this IServiceProvider serviceProvider)
     {
