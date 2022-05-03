@@ -5,14 +5,14 @@ namespace SurveyMe.Repositories
 {
     public interface IRepository<T>
     {
-        Task CreateAsync(T item);
+        void Create(T item);
 
         Task<T> FindByIdAsync(params object[] keyValues);
 
         Task<IReadOnlyCollection<T>> GetAllAsync();
 
-        Task UpdateAsync(T item);
+        void Update(T item);
 
-        Task DeleteAsync(T item);
+        void Delete(T item);
     }
 }

@@ -32,7 +32,8 @@ namespace SurveyMe.Foundation.Services.Surveys
 
         public async Task DeleteSurveyAsync(Survey survey)
         {
-            await _unitOfWork.Surveys.DeleteAsync(survey);
+            _unitOfWork.Surveys.Delete(survey);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Survey> GetSurveyByIdAsync(Guid id)
@@ -46,15 +47,16 @@ namespace SurveyMe.Foundation.Services.Surveys
         {
             survey.Author = author;
             survey.AuthorId = author.Id;
-            survey.CreationDate = _systemClock.UtcNow;
-
-            await _unitOfWork.Surveys.CreateAsync(survey);
+            survey.LastChangeDate = _systemClock.UtcNow;
+            _unitOfWork.Surveys.Create(survey);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateSurveyAsync(Survey survey)
         {
-            survey.UpdateDate = _systemClock.UtcNow;
-            await _unitOfWork.Surveys.UpdateAsync(survey);
+            survey.LastChangeDate = _systemClock.UtcNow;
+            _unitOfWork.Surveys.Update(survey);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

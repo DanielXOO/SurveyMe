@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.RequestModels;
@@ -6,22 +8,24 @@ using SurveyMe.WebApplication.Models.RequestModels;
 namespace SurveyMe.WebApplication.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public sealed class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;
     private readonly IAccountService _accountService;
-    
-    
-    public AccountController(ILogger<AccountController> logger, IAccountService accountService)
+    private readonly IMapper _mapper;
+
+
+    public AccountController(ILogger<AccountController> logger, IAccountService accountService, IMapper mapper)
     {
         _accountService = accountService;
         _logger = logger;
+        _mapper = mapper;
     }
     
     
-    [HttpPost(nameof(Login))]
-    public async Task<IActionResult> Login(UserLoginRequest user)
+    [HttpPost]
+    public async Task<IActionResult> Login(UserLoginRequestModel user)
     {
         if (!ModelState.IsValid)
         {
@@ -43,15 +47,15 @@ public sealed class AccountController : Controller
         return Ok();
     }
     
-    [HttpPost(nameof(Registration))]
-    public async Task<IActionResult> Registration(UserRegistrationRequest userModel)
+    [HttpPost]
+    public async Task<IActionResult> Registration(UserRegistrationRequestModel userModel)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var user = new User(){UserName = userModel.Login, DisplayName = userModel.Name};
+        var user = _mapper.Map<User>(userModel);
 
         var result = await _accountService.RegisterAsync(user, userModel.Password);
 
@@ -68,7 +72,8 @@ public sealed class AccountController : Controller
         return Ok();
     }
     
-    [HttpPost(nameof(LogOut))]
+    [HttpPost]
+    [Authorize]
     public async Task<IActionResult> LogOut()
     {
         await _accountService.SignOutAsync();

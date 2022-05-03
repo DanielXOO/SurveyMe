@@ -29,7 +29,8 @@ namespace SurveyMe.Foundation.Services.Answers
             answer.User = author;
             answer.UserId = author.Id;
 
-            await _unitOfWork.Answers.CreateAsync(answer);
+            _unitOfWork.Answers.Create(answer);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace SurveyMe.WebApplication.Models.RequestModels;
 
-public sealed class UserLoginRequest
+public sealed class UserLoginRequestModel
 {
     [Required(ErrorMessage = "Login cannot be empty")]
     public string Login { get; set; }

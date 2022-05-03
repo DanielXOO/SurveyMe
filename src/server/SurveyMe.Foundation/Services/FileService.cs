@@ -36,6 +36,9 @@ namespace SurveyMe.Foundation.Services.Files
             {
                 await file.Data.CopyToAsync(streamWrite);
             }
+            
+            _unitOfWork.Files.Create(file.Info);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<File> LoadAsync(Guid id)

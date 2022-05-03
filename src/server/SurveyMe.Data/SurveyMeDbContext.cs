@@ -47,7 +47,7 @@ public class SurveyMeDbContext : DbContext
                 .IsRequired()
                 .HasForeignKey(e => e.SurveyId);
 
-            b.Property(survey => survey.CreationDate).IsRequired();
+            b.Property(survey => survey.LastChangeDate).IsRequired();
             b.Property(survey => survey.Name).IsRequired();
         });
 

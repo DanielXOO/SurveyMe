@@ -2,7 +2,7 @@
 
 namespace SurveyMe.WebApplication.Models.RequestModels;
 
-public sealed class UserRegistrationRequest
+public sealed class UserRegistrationRequestModel
 {
     [Required(ErrorMessage = "Name cannot be empty")]
     public string Name { get; set; }

@@ -24,6 +24,8 @@ builder.Host.ConfigureLogging(logBuilder =>
     logBuilder.AddFile(builder.Configuration.GetSection("Serilog:FileLogging"));
 });
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 var version = builder.Configuration
     .GetSection("ApplicationInfo:Version").Value;
 
@@ -84,6 +86,7 @@ await app.Services.CreateDbIfNotExists();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

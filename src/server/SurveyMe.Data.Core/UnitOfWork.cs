@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Repositories;
 
@@ -35,7 +36,12 @@ namespace SurveyMe.Data.Core
             return (IRepository<T>) _instances[typeof(T)];
         }
 
-
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+        
+        
         protected void AddSpecificRepository<TEntity, TRepositoryType>() where TRepositoryType : IRepository<TEntity>
         {
             _specificRepositories.Add(typeof(TEntity), typeof(TRepositoryType));

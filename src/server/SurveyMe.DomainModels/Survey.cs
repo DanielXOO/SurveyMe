@@ -6,9 +6,7 @@
 
         public string Name { get; set; }
 
-        public DateTime CreationDate { get; set; }
-
-        public DateTime? UpdateDate { get; set; }
+        public DateTime? LastChangeDate { get; set; }
 
         public User Author { get; set; }
 
