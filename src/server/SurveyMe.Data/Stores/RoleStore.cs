@@ -22,8 +22,7 @@ namespace SurveyMe.Data.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            _unitOfWork.Roles.Create(role);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Roles.CreateAsync(role);
 
             return IdentityResult.Success;
         }
@@ -37,8 +36,7 @@ namespace SurveyMe.Data.Stores
                 throw new ArgumentNullException(nameof(role));
             }
 
-            _unitOfWork.Roles.Update(role);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Roles.UpdateAsync(role);
 
             return IdentityResult.Success;
         }

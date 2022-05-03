@@ -82,8 +82,7 @@ namespace SurveyMe.Data.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            _unitOfWork.Users.Create(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Users.CreateAsync(user);
 
             return IdentityResult.Success;
         }
@@ -96,9 +95,8 @@ namespace SurveyMe.Data.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveChangesAsync();
+            
+            await  _unitOfWork.Users.UpdateAsync(user);
 
             return IdentityResult.Success;
         }
@@ -112,8 +110,7 @@ namespace SurveyMe.Data.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            _unitOfWork.Users.Delete(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Users.DeleteAsync(user);
 
             return IdentityResult.Success;
         }
