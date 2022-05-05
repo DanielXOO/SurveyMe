@@ -40,6 +40,12 @@ public class SurveysController : Controller
             Page = _mapper.Map<PagedResultResponseModel<SurveyWithLinksResponseModel>>(surveys)
         };
   
+        foreach (var surveyWithLinksResponseModel in pageResponse.Page.Items)
+        {
+            surveyWithLinksResponseModel.SurveyLink = 
+                Url.Action("Answer", "SurveyAnswer", new { surveyId = surveyWithLinksResponseModel.Id });
+            surveyWithLinksResponseModel.ResultLink = "#";
+        }
 
         if (surveys.TotalPages < surveys.CurrentPage && surveys.TotalPages > 0)
         {
@@ -85,6 +91,30 @@ public class SurveysController : Controller
         var surveyResponseModel = _mapper.Map<SurveyResponseModel>(survey);
         
         return Ok(surveyResponseModel);
+    }
+    
+    [HttpDelete("{surveyId:guid}")]
+    public async Task<IActionResult> DeleteSurvey(Guid surveyId)
+    {
+        var survey = await _surveyService.GetSurveyByIdAsync(surveyId);
+        
+        if (survey == null)
+        {
+            return NotFound();
+        }
+        
+        var userId = User.GetUserId();
+        var user = await _userService.GetUserByIdAsync(userId);
+        var isAdmin = user.Roles.Select(role => role.Name).Contains(RoleNames.Admin);
+        
+        if (survey.Author.Id != userId || !isAdmin)
+        {
+            return Forbid();
+        }
+        
+        await _surveyService.DeleteSurveyAsync(survey);
+        
+        return Ok();
     }
 
     [HttpPatch]
