@@ -33,7 +33,6 @@ namespace SurveyMe.Foundation.Services.Account
 
         public async Task<ServiceResult> RegisterAsync(User user, string password)
         {
-            user.Roles ??= new List<Role>();
             user.CreationTime = _systemClock.UtcNow;
             var result = await _userManager.CreateAsync(user, password);
             await _userManager.AddToRoleAsync(user, RoleNames.User);
