@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SurveyMe.Common.Automapper\SurveyMe.Common.Automapper.csproj" />
       <ProjectReference Include="..\SurveyMe.Common.Microsoft\SurveyMe.Common.Microsoft.csproj" />
       <ProjectReference Include="..\SurveyMe.Data\SurveyMe.Data.csproj" />
       <ProjectReference Include="..\SurveyMe.Foundation\SurveyMe.Foundation.csproj" />
