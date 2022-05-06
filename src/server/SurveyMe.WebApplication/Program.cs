@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using SurveyMe.Common.Automapper.Mapping;
-using SurveyMe.Common.Mapping;
 using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data;
 using SurveyMe.Data.Stores;
@@ -29,6 +27,7 @@ builder.Host.ConfigureLogging(logBuilder =>
 var version = builder.Configuration
     .GetSection("ApplicationInfo:Version").Value;
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -49,7 +48,6 @@ builder.Services.AddDbContext<SurveyMeDbContext>(options
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddSingleton<IMapper, Mapper>();
 
 builder.Services.AddIdentity<User, Role>(options =>
     {

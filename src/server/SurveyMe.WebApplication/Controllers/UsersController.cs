@@ -10,7 +10,7 @@ using SurveyMe.WebApplication.Models.ResponseModels;
 namespace SurveyMe.WebApplication.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("[controller]")]
 [Authorize(Roles = RoleNames.Admin)]
 public sealed class UsersController : Controller
 {
@@ -25,10 +25,10 @@ public sealed class UsersController : Controller
     }
 
     
-    [HttpGet("{userId:guid}")]
-    public async Task<IActionResult> EditUser(Guid userId)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> EditUser(Guid id)
     {
-        var user = await _userService.GetUserByIdAsync(userId);
+        var user = await _userService.GetUserByIdAsync(id);
 
         if (user == null)
         {
@@ -40,11 +40,11 @@ public sealed class UsersController : Controller
         return Ok(userResponseModel);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetUsersPage([FromQuery] GetPageQuery query)
+    [HttpGet("pages/{page:int}")]
+    public async Task<IActionResult> GetUsersPage([FromQuery] GetPageQuery query, int page)
     {
         var users = await _userService
-            .GetUsersAsync(query.CurrentPage, query.PageSize, query.SortOrder, query.NameSearchTerm);
+            .GetUsersAsync(page, query.PageSize, query.SortOrder, query.NameSearchTerm);
 
         var pageResponse = new PageResponseModel<UserWithSurveysCountResponseModel>
         {
@@ -61,10 +61,10 @@ public sealed class UsersController : Controller
         return Ok(pageResponse);
     }
     
-    [HttpDelete("{userId:guid}")]
-    public async Task<IActionResult> DeleteUser(Guid userId)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var user = await _userService.GetUserByIdAsync(userId);
+        var user = await _userService.GetUserByIdAsync(id);
 
         if (user == null)
         {
@@ -96,10 +96,15 @@ public sealed class UsersController : Controller
     }
     
     
-    [HttpPatch]
-    public async Task<IActionResult> EditUser(UserEditRequestModel userEdit)
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> EditUser(UserEditRequestModel userEditRequestModel, Guid id)
     {
-        var user = await _userService.GetUserByIdAsync(userEdit.Id);
+        if (userEditRequestModel.Id == id)
+        {
+            return BadRequest();
+        }
+        
+        var user = await _userService.GetUserByIdAsync(userEditRequestModel.Id);
             
         if (user == null)
         {
@@ -108,7 +113,7 @@ public sealed class UsersController : Controller
             return BadRequest(ModelState);
         }
 
-        user.DisplayName = userEdit.DisplayName;
+        user.DisplayName = userEditRequestModel.DisplayName;
         var result = await _userService.UpdateAsync(user);
 
         if (!result.IsSuccessful)

@@ -8,7 +8,7 @@ using FileInfo = SurveyMe.DomainModels.FileInfo;
 namespace SurveyMe.WebApplication.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/{id:guid}")]
 [Authorize]
 public class FilesController : Controller
 {
@@ -22,7 +22,7 @@ public class FilesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Upload(IFormFile fileModel)
+    public async Task<IActionResult> Upload(IFormFile fileModel, Guid id)
     {
         var fileStream = fileModel.OpenReadStream();
 
@@ -31,7 +31,7 @@ public class FilesController : Controller
             Data = fileStream,
             Info = new FileInfo()
             {
-                Id = Guid.NewGuid(),
+                Id = id,
                 Name = fileModel.FileName
             }
         };
@@ -51,10 +51,10 @@ public class FilesController : Controller
         return Json(file.Info);
     }
         
-    [HttpGet("{fileId:guid}")]
-    public async Task<IActionResult> Load(Guid fileId)
+    [HttpGet]
+    public async Task<IActionResult> Load(Guid id)
     {
-        var file = await _fileService.LoadAsync(fileId);
+        var file = await _fileService.LoadAsync(id);
 
         if (file == null)
         {

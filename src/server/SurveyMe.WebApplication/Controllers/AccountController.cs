@@ -8,7 +8,7 @@ using SurveyMe.WebApplication.Models.RequestModels;
 namespace SurveyMe.WebApplication.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public sealed class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;
