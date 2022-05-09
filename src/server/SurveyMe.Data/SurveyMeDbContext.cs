@@ -80,6 +80,7 @@ public class SurveyMeDbContext : DbContext
             b.HasOne(e => e.FileAnswer)
                 .WithOne(e => e.QuestionAnswer)
                 .HasForeignKey<FileAnswer>(e => e.QuestionAnswerId);
+            b.Property(answer => answer.TextAnswer).IsRequired(false);
         });
 
         modelBuilder.Entity<QuestionAnswerOption>(b => { b.Property(option => option.QuestionOptionId).IsRequired(); });

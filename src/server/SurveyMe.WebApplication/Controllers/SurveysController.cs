@@ -190,6 +190,16 @@ public sealed class SurveysController : Controller
         return Ok();
     }
     
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SurveyResponseModel))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
+    [HttpGet("{surveyId:guid}/answers/statistic")]
+    public async Task<IActionResult> GetSurveyStatistic(Guid surveyId)
+    {
+        await _surveyAnswersService.GetStatisticByIdAsync(surveyId);
+
+        return Ok();
+    }
+    
     
     
     /// <summary>
@@ -209,11 +219,11 @@ public sealed class SurveysController : Controller
             {
                 var answer = new QuestionAnswer
                 {
-                    QuestionId = question.Id
+                    QuestionId = question.QuestionId
                 };
                 
                 var questionDb = survey.Questions
-                    .FirstOrDefault(questionDb => questionDb.Id == question.Id);
+                    .FirstOrDefault(questionDb => questionDb.Id == question.QuestionId);
 
                 switch (questionDb?.Type)
                 {
@@ -228,6 +238,12 @@ public sealed class SurveysController : Controller
                         break;
                     case QuestionType.File:
                         answer.FileAnswerId = question.FileId;
+                        break;
+                    case QuestionType.Rate:
+                        answer.RateAnswer = question.RateAnswer;
+                        break;
+                    case QuestionType.Scale:
+                        answer.ScaleAnswer = question.ScaleAnswer;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(questionDb.Type), "No such type");

@@ -4,7 +4,8 @@ using SurveyMe.Repositories;
 
 namespace SurveyMe.Data;
 
-public interface ISurveyMeUnitOfWork : IUnitOfWork
+public interface 
+    ISurveyMeUnitOfWork : IUnitOfWork
 {
     IUserRepository Users { get; }
 

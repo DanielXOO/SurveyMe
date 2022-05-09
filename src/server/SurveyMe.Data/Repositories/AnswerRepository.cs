@@ -19,12 +19,14 @@ namespace SurveyMe.Data.Repositories
 
             return answers;
         }
+        
 
 
         private IQueryable<SurveyAnswer> GetAnswersQuery()
         {
             return Data
-                .Include(answer => answer.QuestionAnswers);
+                .Include(answer => answer.QuestionAnswers)
+                .ThenInclude(answer => answer.Options);
         }
     }
 }

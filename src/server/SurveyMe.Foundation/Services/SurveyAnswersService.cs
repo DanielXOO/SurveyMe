@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using SurveyMe.Data;
 using SurveyMe.DomainModels;
+using SurveyMe.Foundation.Models;
 using SurveyMe.Foundation.Services.Abstracts;
 
 namespace SurveyMe.Foundation.Services.Answers
@@ -30,6 +31,12 @@ namespace SurveyMe.Foundation.Services.Answers
             answer.UserId = author.Id;
 
             await _unitOfWork.Answers.CreateAsync(answer);
+        }
+
+        public async Task<SurveyAnswersStatistic> GetStatisticByIdAsync(Guid surveyId)
+        {
+            await _unitOfWork.Surveys.GetSurveyStatisticById(surveyId);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SurveyMe.Common.Pagination;
+using SurveyMe.Data.Models;
 using SurveyMe.DomainModels;
 using SurveyMe.Repositories;
 
@@ -10,5 +11,7 @@ namespace SurveyMe.Data.Repositories.Abstracts
             string searchRequest, SortOrder sortOrder);
 
         Task<Survey> GetByIdAsync(Guid id);
+
+        Task<SurveyAnswersStatistic> GetSurveyStatisticById(Guid id);
     }
 }
