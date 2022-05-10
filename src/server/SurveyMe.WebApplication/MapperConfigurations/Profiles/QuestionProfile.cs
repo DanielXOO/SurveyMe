@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SurveyMe.Foundation.Models;
 using SurveyMe.DomainModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
 
@@ -13,5 +14,7 @@ public class QuestionProfile : Profile
 
         CreateMap<QuestionResponseModel, Question>()
             .ReverseMap();
+        
+        CreateMap<QuestionAnswersStatistic, QuestionAnswersStatisticResponseModel>();
     }
 }

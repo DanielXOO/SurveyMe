@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.DomainModels;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.Surveys.Foundation.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.Queries;
 using SurveyMe.WebApplication.Models.RequestModels;

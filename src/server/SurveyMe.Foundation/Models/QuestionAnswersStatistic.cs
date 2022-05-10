@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using SurveyMe.DomainModels;
 
 namespace SurveyMe.Foundation.Models;
 
 public sealed class QuestionAnswersStatistic
 {
-    public Guid QuestionId { get; set; }
+    public string QuestionTitle { get; set; }
+
+    public QuestionType QuestionType { get; set; }
     
-    public string Title { get; set; }
-
     public int AnswersCount { get; set; }
+    
+    public double AverageRate { get; set; }
 
-    public OptionsAnswersStatistic OptionsAnswersStatistic { get; set; }
+    public double AverageScale { get; set; }
+
+    public ICollection<OptionAnswersStatistic> OptionAnswersStatistic { get; set; }
 }

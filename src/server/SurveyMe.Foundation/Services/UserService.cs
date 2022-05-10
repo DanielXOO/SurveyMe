@@ -6,77 +6,76 @@ using SurveyMe.Common.Extensions;
 using SurveyMe.Common.Pagination;
 using SurveyMe.Data;
 using SurveyMe.DomainModels;
-using SurveyMe.Foundation.Services.Abstracts;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Models;
-using SurveyMe.Surveys.Foundation.Exceptions;
+using SurveyMe.Foundation.Services.Abstracts;
 
-namespace SurveyMe.Foundation.Services.Users
+namespace SurveyMe.Foundation.Services;
+
+public sealed class UserService : IUserService
 {
-    public sealed class UserService : IUserService
+    private readonly ISurveyMeUnitOfWork _unitOfWork;
+    private readonly UserManager<User> _userManager;
+
+
+    public UserService(ISurveyMeUnitOfWork unitOfWork, UserManager<User> userManager)
     {
-        private readonly ISurveyMeUnitOfWork _unitOfWork;
-        private readonly UserManager<User> _userManager;
+        _unitOfWork = unitOfWork;
+        _userManager = userManager;
+    }
 
 
-        public UserService(ISurveyMeUnitOfWork unitOfWork, UserManager<User> userManager)
+    public async Task<User> GetUserByIdAsync(Guid id)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(id);
+
+        if (user == null)
         {
-            _unitOfWork = unitOfWork;
-            _userManager = userManager;
+            throw new NotFoundException("User do not exist");
         }
-
-
-        public async Task<User> GetUserByIdAsync(Guid id)
-        {
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
-
-            if (user == null)
-            {
-                throw new NotFoundException("User do not exist");
-            }
             
-            return user;
-        }
+        return user;
+    }
 
-        public async Task<PagedResult<UserWithSurveysCount>> GetUsersAsync(int currentPage, int pageSize,
-            SortOrder order, string searchRequest)
+    public async Task<PagedResult<UserWithSurveysCount>> GetUsersAsync(int currentPage, int pageSize,
+        SortOrder order, string searchRequest)
+    {
+        var usersPaged = await _unitOfWork.Users
+            .GetUsersAsync(pageSize, currentPage, searchRequest, order);
+
+        var usersPagedWithSurveysCount = usersPaged.MapPagedResult(user => new UserWithSurveysCount()
         {
-            var usersPaged = await _unitOfWork.Users
-                .GetUsersAsync(pageSize, currentPage, searchRequest, order);
+            User = user.User,
+            SurveysCount = user.SurveysCount
+        });
 
-            var usersPagedWithSurveysCount = usersPaged.MapPagedResult(user => new UserWithSurveysCount()
-            {
-                User = user.User,
-                SurveysCount = user.SurveysCount
-            });
+        return usersPagedWithSurveysCount;
+    }
 
-            return usersPagedWithSurveysCount;
-        }
+    public async Task<ServiceResult> DeleteUsersAsync(User user)
+    {
+        var result = await _userManager.DeleteAsync(user);
 
-        public async Task<ServiceResult> DeleteUsersAsync(User user)
+        return ConvertToServiceResult(result);
+    }
+
+    public async Task<ServiceResult> UpdateAsync(User user)
+    {
+        var result = await _userManager.UpdateAsync(user);
+
+        return ConvertToServiceResult(result);
+    }
+
+
+    private static ServiceResult ConvertToServiceResult(IdentityResult result)
+    {
+        if (!result.Succeeded)
         {
-            var result = await _userManager.DeleteAsync(user);
+            var errors = result.Errors.Select(error => error.Description).ToArray();
 
-            return ConvertToServiceResult(result);
+            return ServiceResult.CreateFailed(errors);
         }
 
-        public async Task<ServiceResult> UpdateAsync(User user)
-        {
-            var result = await _userManager.UpdateAsync(user);
-
-            return ConvertToServiceResult(result);
-        }
-
-
-        private static ServiceResult ConvertToServiceResult(IdentityResult result)
-        {
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(error => error.Description).ToArray();
-
-                return ServiceResult.CreateFailed(errors);
-            }
-
-            return ServiceResult.CreateSuccessful();
-        }
+        return ServiceResult.CreateSuccessful();
     }
 }

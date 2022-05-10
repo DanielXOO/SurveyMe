@@ -2,9 +2,9 @@
 
 public sealed class SurveyAnswersStatistic
 {
-    public string Title { get; set; }
+    public string SurveyTitle { get; set; }
 
     public int AnswersCount { get; set; }
 
-    public IEnumerable<QuestionAnswersStatistic> QuestionsAnswersStatistic { get; set; }
+    public ICollection<QuestionAnswersStatistic> QuestionAnswersStatistic { get; set; }
 }

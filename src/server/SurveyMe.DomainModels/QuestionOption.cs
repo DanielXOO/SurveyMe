@@ -1,15 +1,14 @@
 using System;
 
-namespace SurveyMe.DomainModels
+namespace SurveyMe.DomainModels;
+
+public sealed class QuestionOption
 {
-    public sealed class QuestionOption
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public string Text { get; set; }
+    public string Text { get; set; }
 
-        public Question Question { get; set; }
+    public Question Question { get; set; }
 
-        public Guid QuestionId { get; set; }
-    }
+    public Guid QuestionId { get; set; }
 }

@@ -1,8 +1,8 @@
 ﻿using SurveyMe.DomainModels;
 
-namespace SurveyMe.Data.Models;
+namespace SurveyMe.WebApplication.Models.ResponseModels;
 
-public sealed class QuestionAnswersStatistic
+public sealed class QuestionAnswersStatisticResponseModel
 {
     public string QuestionTitle { get; set; }
 
@@ -14,5 +14,5 @@ public sealed class QuestionAnswersStatistic
 
     public double AverageScale { get; set; }
 
-    public ICollection<OptionAnswersStatistic> OptionAnswersStatistic { get; set; }
+    public ICollection<OptionAnswersStatisticResponseModel> OptionAnswersStatistic { get; set; }
 }

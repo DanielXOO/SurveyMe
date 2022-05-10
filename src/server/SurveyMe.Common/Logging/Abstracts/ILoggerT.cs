@@ -1,6 +1,5 @@
-﻿namespace SurveyMe.Common.Logging.Abstracts
+﻿namespace SurveyMe.Common.Logging.Abstracts;
+
+public interface ILogger<T> : ILogger
 {
-    public interface ILogger<T> : ILogger
-    {
-    }
 }
