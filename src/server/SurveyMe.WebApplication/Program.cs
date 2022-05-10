@@ -7,12 +7,9 @@ using SurveyMe.Data;
 using SurveyMe.Data.Stores;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Models;
-using SurveyMe.Foundation.Services.Account;
-using SurveyMe.Foundation.Services.Answers;
-using SurveyMe.Foundation.Services.Files;
-using SurveyMe.Foundation.Services.Surveys;
-using SurveyMe.Foundation.Services.Users;
 using SurveyMe.Common.Time;
+using SurveyMe.Foundation.MapperConfigurations.Profiles;
+using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication;
 using SurveyMe.WebApplication.Extensions;
@@ -51,7 +48,11 @@ builder.Services.AddDbContext<SurveyMeDbContext>(options
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(configuration =>
+{
+    configuration.AddMaps(typeof(Program).Assembly);
+    configuration.AddProfile<SurveyStatisticProfile>();
+});
 
 builder.Services.AddIdentity<User, Role>(options =>
     {

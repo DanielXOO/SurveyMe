@@ -1,10 +1,12 @@
+using SurveyMe.Data.Contracts;
+using SurveyMe.Data.Models;
 using SurveyMe.DomainModels;
-using SurveyMe.Repositories;
 
-namespace SurveyMe.Data.Repositories.Abstracts
+namespace SurveyMe.Data.Repositories.Abstracts;
+
+public interface IAnswerRepository : IRepository<SurveyAnswer>
 {
-    public interface IAnswerRepository : IRepository<SurveyAnswer>
-    {
-        Task<SurveyAnswer> GetByIdAsync(Guid id);
-    }
+    Task<SurveyAnswer> GetByIdAsync(Guid id);
+
+    Task<SurveyAnswersStatistic> GetSurveyStatistic(Survey survey);
 }

@@ -1,7 +1,6 @@
-﻿namespace SurveyMe.Common.Logging.Abstracts
+﻿namespace SurveyMe.Common.Logging.Abstracts;
+
+public interface ILoggerProvider
 {
-    public interface ILoggerProvider
-    {
-        ILogger CreateLogger(string name);
-    }
+    ILogger CreateLogger(string name);
 }

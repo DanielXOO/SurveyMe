@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Extensions;
 using SurveyMe.DomainModels;
+using SurveyMe.Foundation.Exceptions;
+using SurveyMe.Foundation.Models;
 using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.Surveys.Foundation.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.Queries;
 using SurveyMe.WebApplication.Models.RequestModels;
@@ -195,9 +196,10 @@ public sealed class SurveysController : Controller
     [HttpGet("{surveyId:guid}/answers/statistic")]
     public async Task<IActionResult> GetSurveyStatistic(Guid surveyId)
     {
-        await _surveyAnswersService.GetStatisticByIdAsync(surveyId);
-
-        return Ok();
+        var surveyStatistic = await _surveyAnswersService.GetStatisticByIdAsync(surveyId);
+        var surveyStatisticResponseModel = _mapper.Map<SurveyAnswersStatisticResponseModel>(surveyStatistic);
+        
+        return Ok(surveyStatisticResponseModel);
     }
     
     

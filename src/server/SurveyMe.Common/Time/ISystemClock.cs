@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace SurveyMe.Common.Time
+namespace SurveyMe.Common.Time;
+
+public interface ISystemClock
 {
-    public interface ISystemClock
-    {
-        DateTime UtcNow { get; }
-    }
+    DateTime UtcNow { get; }
 }

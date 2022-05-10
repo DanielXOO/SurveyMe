@@ -1,12 +1,11 @@
-﻿namespace SurveyMe.DomainModels
+﻿namespace SurveyMe.DomainModels;
+
+public enum QuestionType
 {
-    public enum QuestionType
-    {
-        Text,
-        Radio,
-        Checkbox,
-        File,
-        Rate,
-        Scale
-    }
+    Text,
+    Radio,
+    Checkbox,
+    File,
+    Rate,
+    Scale
 }

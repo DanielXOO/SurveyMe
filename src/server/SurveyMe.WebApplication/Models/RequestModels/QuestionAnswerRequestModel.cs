@@ -6,7 +6,7 @@ public sealed class QuestionAnswerRequestModel
 
     public Guid QuestionId { get; set; }
     
-    public string TextAnswer { get; set; }
+    public string? TextAnswer { get; set; }
 
     public double RateAnswer { get; set; }
 

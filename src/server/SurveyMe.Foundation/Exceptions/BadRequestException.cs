@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SurveyMe.Surveys.Foundation.Exceptions;
+namespace SurveyMe.Foundation.Exceptions;
 
 public sealed class BadRequestException : Exception
 {

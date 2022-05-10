@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
 using SurveyMe.DomainModels;
 
-namespace SurveyMe.Foundation.Services.Abstracts
+namespace SurveyMe.Foundation.Services.Abstracts;
+
+public interface IAccountService
 {
-    public interface IAccountService
-    {
-        Task<ServiceResult> SignInAsync(string username, string password);
+    Task<ServiceResult> SignInAsync(string username, string password);
 
-        Task<ServiceResult> RegisterAsync(User user, string password);
+    Task<ServiceResult> RegisterAsync(User user, string password);
 
-        Task SignOutAsync();
-    }
+    Task SignOutAsync();
 }

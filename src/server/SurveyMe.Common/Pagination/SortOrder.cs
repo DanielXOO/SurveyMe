@@ -1,8 +1,7 @@
-﻿namespace SurveyMe.Common.Pagination
+﻿namespace SurveyMe.Common.Pagination;
+
+public enum SortOrder
 {
-    public enum SortOrder
-    {
-        Ascending,
-        Descending
-    }
+    Ascending,
+    Descending
 }

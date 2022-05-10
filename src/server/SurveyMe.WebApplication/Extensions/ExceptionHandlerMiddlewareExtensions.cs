@@ -1,6 +1,6 @@
 ﻿using SurveyMe.WebApplication.Middleware;
 
-namespace SurveyMe.WebApplication;
+namespace SurveyMe.WebApplication.Extensions;
 
 public static class ExceptionHandlerMiddlewareExtensions
 {

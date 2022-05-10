@@ -1,42 +1,46 @@
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using SurveyMe.Data;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Models;
 using SurveyMe.Foundation.Services.Abstracts;
 
-namespace SurveyMe.Foundation.Services.Answers
+namespace SurveyMe.Foundation.Services;
+
+public class SurveySurveyAnswersService : ISurveyAnswersService
 {
-    public class SurveySurveyAnswersService : ISurveyAnswersService
+    private readonly ISurveyMeUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public SurveySurveyAnswersService(ISurveyMeUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly ISurveyMeUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
 
-        public SurveySurveyAnswersService(ISurveyMeUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+    public async Task<SurveyAnswer> GetAnswerByIdAsync(Guid id)
+    {
+        var answer = await _unitOfWork.Answers.GetByIdAsync(id);
 
+        return answer;
+    }
 
-        public async Task<SurveyAnswer> GetAnswerByIdAsync(Guid id)
-        {
-            var answer = await _unitOfWork.Answers.GetByIdAsync(id);
+    public async Task AddAnswerAsync(SurveyAnswer answer, User author)
+    {
+        answer.User = author;
+        answer.UserId = author.Id;
 
-            return answer;
-        }
+        await _unitOfWork.Answers.CreateAsync(answer);
+    }
 
-        public async Task AddAnswerAsync(SurveyAnswer answer, User author)
-        {
-            answer.User = author;
-            answer.UserId = author.Id;
+    public async Task<SurveyAnswersStatistic> GetStatisticByIdAsync(Guid surveyId)
+    {
+        var survey = await _unitOfWork.Surveys.GetByIdAsync(surveyId);
+        var surveyStatisticDb = await _unitOfWork.Answers.GetSurveyStatistic(survey);
+        var surveyStatistic = _mapper.Map<SurveyAnswersStatistic>(surveyStatisticDb);
 
-            await _unitOfWork.Answers.CreateAsync(answer);
-        }
-
-        public async Task<SurveyAnswersStatistic> GetStatisticByIdAsync(Guid surveyId)
-        {
-            await _unitOfWork.Surveys.GetSurveyStatisticById(surveyId);
-            throw new NotImplementedException();
-        }
+        return surveyStatistic;
     }
 }
