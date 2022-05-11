@@ -1,6 +1,6 @@
 ﻿namespace SurveyMe.DomainModels.Request;
 
-public sealed class UserEditRequestModel
+public sealed class UserDeleteOrEditRequestModel
 {
     public Guid Id { get; set; } 
     

@@ -15,4 +15,15 @@
       <ProjectReference Include="..\SurveyMe.Services\SurveyMe.Services.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\SurveyAnswer\Answer.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\SurveyAnswer\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Surveys\AddSurvey.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Surveys\DeleteSurvey.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Surveys\EditSurvey.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Surveys\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

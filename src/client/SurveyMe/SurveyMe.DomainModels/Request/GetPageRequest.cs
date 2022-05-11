@@ -1,4 +1,5 @@
-﻿using SurveyMe.DomainModels.Common;
+﻿using SurveyMe.Common.Pagination;
+using SurveyMe.DomainModels.Common;
 
 namespace SurveyMe.DomainModels.Queries;
 

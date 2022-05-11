@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using SurveyMe.Data.Abstracts;
+using SurveyMe.Data.Helpers;
 
 namespace SurveyMe.Data;
 
@@ -12,11 +13,11 @@ public class Client : IClient
     {
         _client = client;
     }
-    
-    
-    public async Task<TResponse> SendGetRequestAsync<TResponse>(string url)
+
+
+    public async Task<TResponse> SendGetRequestAsync<TResponse>(Uri url)
     {
-        var fullUrl = _client.BaseAddress + url;
+        var fullUrl = new Uri($"{_client.BaseAddress}{url}");
         
         var responseMessage = await _client.GetAsync(fullUrl);
         
@@ -30,10 +31,20 @@ public class Client : IClient
 
         return response;
     }
-    
-    public async Task SendPatchRequestAsync<TRequest>(string url, TRequest data)
+
+    public async Task<TResponse> SendGetRequestAsync<TResponse>(Uri url, object query)
     {
-        var fullUrl = _client.BaseAddress + url;
+        var queryString = query.ToQuery();
+        var fullUrl = new Uri($"{_client.BaseAddress}{url}?{queryString}");
+        
+        var response = await SendGetRequestAsync<TResponse>(fullUrl);
+
+        return response;
+    }
+    
+    public async Task SendPatchRequestAsync<TRequest>(Uri url, TRequest data)
+    {
+        var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
         var serializedData = JsonSerializer.Serialize(data);
         var content = new StringContent(serializedData);
@@ -46,9 +57,9 @@ public class Client : IClient
         }
     }
 
-    public async Task SendDeleteRequestAsync(string url)
+    public async Task SendDeleteRequestAsync(Uri url)
     {
-        var fullUrl = _client.BaseAddress + url;
+        var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
         var responseMessage = await _client.DeleteAsync(fullUrl);
         
@@ -58,9 +69,9 @@ public class Client : IClient
         }
     }
 
-    public async Task<TResponse> SendPostRequestAsync<TRequest, TResponse>(string url, TRequest data)
+    public async Task<TResponse> SendPostRequestAsync<TRequest, TResponse>(Uri url, TRequest data)
     {
-        var fullUrl = _client.BaseAddress + url;
+        var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
         var serializedData = JsonSerializer.Serialize(data);
         var content = new StringContent(serializedData);
@@ -78,15 +89,15 @@ public class Client : IClient
         return response;
     }
 
-    public async Task SendPostRequestAsync<TRequest>(string url, TRequest data)
+    public async Task SendPostRequestAsync<TRequest>(Uri url, TRequest data)
     {
-        var fullUrl = _client.BaseAddress + url;
+        var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
         var serializedData = JsonSerializer.Serialize(data);
         var content = new StringContent(serializedData);
         
         var responseMessage = await _client.PostAsync(fullUrl, content);
-        
+
         if (!responseMessage.IsSuccessStatusCode)
         {
             //TODO: throw exception
