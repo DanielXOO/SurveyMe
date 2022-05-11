@@ -13,7 +13,7 @@ public sealed class UserProfile : Profile
     {
         CreateMap<UserEditRequestModel, User>();
         
-        CreateMap<UserEditResponseModel, User>();
+        CreateMap<UserEditResponseModel, User>().ReverseMap();
         
         
         CreateMap<UserRegistrationRequestModel, User>()

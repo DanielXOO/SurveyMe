@@ -7,7 +7,6 @@ using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Models;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.Queries;
 using SurveyMe.WebApplication.Models.RequestModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
 
@@ -39,15 +38,15 @@ public sealed class SurveysController : Controller
 
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponseModel<SurveyWithLinksResponseModel>))]
     [HttpGet]
-    public async Task<IActionResult> GetSurveysPage([FromQuery] GetPageQuery query, int page = 1)
+    public async Task<IActionResult> GetSurveysPage([FromQuery] GetPageRequest request, int page = 1)
     {
         var surveys = await _surveyService
-            .GetSurveysAsync(page, query.PageSize, query.SortOrder, query.NameSearchTerm);
+            .GetSurveysAsync(page, request.PageSize, request.SortOrder, request.NameSearchTerm);
         
         var pageResponse = new PageResponseModel<SurveyWithLinksResponseModel>
         {
-            NameSearchTerm = query.NameSearchTerm,
-            SortOrder = query.SortOrder,
+            NameSearchTerm = request.NameSearchTerm,
+            SortOrder = request.SortOrder,
             Page = _mapper.Map<PagedResultResponseModel<SurveyWithLinksResponseModel>>(surveys)
         };
   
@@ -61,7 +60,7 @@ public sealed class SurveysController : Controller
 
         if (surveys.TotalPages < surveys.CurrentPage && surveys.TotalPages > 0)
         {
-            return RedirectToAction(nameof(GetSurveysPage), query);
+            return RedirectToAction(nameof(GetSurveysPage), request);
         }
 
         return Ok(pageResponse);
@@ -176,16 +175,17 @@ public sealed class SurveysController : Controller
             throw new BadRequestException("Route id and request id do not match");
         }
         
-        var authorId = User.GetUserId();
-        var author = await _userService.GetUserByIdAsync(authorId);
-
         if (!ModelState.IsValid)
         {
             throw new BadRequestException("Invalid data");
         }
         
+        var authorId = User.GetUserId();
+        var author = await _userService.GetUserByIdAsync(authorId);
+        
         var answer = await CreateFromAnswerRequestModel(surveyAnswerRequestModel);
 
+        //pass authorId
         await _surveyAnswersService.AddAnswerAsync(answer, author);
         
         return Ok();
@@ -212,40 +212,40 @@ public sealed class SurveysController : Controller
     /// <exception cref="ArgumentOutOfRangeException">Throws if no such question type</exception>
     private async Task<SurveyAnswer> CreateFromAnswerRequestModel(SurveyAnswerRequestModel answerRequestModel)
     {
-        var survey = await _surveyService.GetSurveyByIdAsync(answerRequestModel.SurveyId);
+        var existingSurvey = await _surveyService.GetSurveyByIdAsync(answerRequestModel.SurveyId);
         
         var answer = new SurveyAnswer
         {
             SurveyId = answerRequestModel.SurveyId,
-            QuestionAnswers = answerRequestModel.Questions.Select(question =>
+            QuestionAnswers = answerRequestModel.Questions.Select(questionFromRequest =>
             {
                 var answer = new QuestionAnswer
                 {
-                    QuestionId = question.QuestionId
+                    QuestionId = questionFromRequest.QuestionId
                 };
                 
-                var questionDb = survey.Questions
-                    .FirstOrDefault(questionDb => questionDb.Id == question.QuestionId);
+                var questionDb = existingSurvey.Questions
+                    .FirstOrDefault(q => q.Id == questionFromRequest.QuestionId);
 
                 switch (questionDb?.Type)
                 {
                     case QuestionType.Checkbox or QuestionType.Radio:
-                        answer.Options = question.OptionIds.Select(optionId => new QuestionAnswerOption()
+                        answer.Options = questionFromRequest.OptionIds.Select(optionId => new QuestionAnswerOption
                         {
                             QuestionOptionId = optionId
                         }).ToList();
                         break;
                     case QuestionType.Text:
-                        answer.TextAnswer = question.TextAnswer;
+                        answer.TextAnswer = questionFromRequest.TextAnswer;
                         break;
                     case QuestionType.File:
-                        answer.FileAnswerId = question.FileId;
+                        answer.FileAnswerId = questionFromRequest.FileId;
                         break;
                     case QuestionType.Rate:
-                        answer.RateAnswer = question.RateAnswer;
+                        answer.RateAnswer = questionFromRequest.RateAnswer;
                         break;
                     case QuestionType.Scale:
-                        answer.ScaleAnswer = question.ScaleAnswer;
+                        answer.ScaleAnswer = questionFromRequest.ScaleAnswer;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(questionDb.Type), "No such type");

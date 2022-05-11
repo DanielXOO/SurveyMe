@@ -1,7 +1,9 @@
-﻿namespace SurveyMe.WebApplication.Models.RequestModels;
+﻿namespace SurveyMe.DomainModels.Request;
 
 public sealed class QuestionAnswerRequestModel
 {
+    public Guid Id { get; set; }
+
     public Guid QuestionId { get; set; }
     
     public string? TextAnswer { get; set; }

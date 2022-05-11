@@ -6,5 +6,5 @@ public class BaseErrorResponse
     
     public string Message { get; set; }
 
-    public string[] Details { get; set; }
+    public List<string> Details { get; set; }
 }

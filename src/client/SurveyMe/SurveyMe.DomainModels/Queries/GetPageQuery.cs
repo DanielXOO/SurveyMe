@@ -1,6 +1,6 @@
-﻿using SurveyMe.Common.Pagination;
+﻿using SurveyMe.DomainModels.Common;
 
-namespace SurveyMe.WebApplication.Models.Queries;
+namespace SurveyMe.DomainModels.Queries;
 
 public sealed class GetPageQuery
 {

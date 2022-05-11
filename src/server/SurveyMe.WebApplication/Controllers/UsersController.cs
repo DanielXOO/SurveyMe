@@ -5,7 +5,6 @@ using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.Queries;
 using SurveyMe.WebApplication.Models.RequestModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
 
@@ -16,7 +15,6 @@ namespace SurveyMe.WebApplication.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RoleNames.Admin)]
 public sealed class UsersController : Controller
 {
     private readonly IUserService _userService;
@@ -36,6 +34,11 @@ public sealed class UsersController : Controller
     {
         var user = await _userService.GetUserByIdAsync(id);
 
+        if (user == null)
+        {
+            throw new NotFoundException("No such user");
+        }
+        
         var userResponseModel = _mapper.Map<UserEditResponseModel>(user);
         
         return Ok(userResponseModel);
@@ -44,21 +47,21 @@ public sealed class UsersController : Controller
     [ProducesResponseType(StatusCodes.Status200OK, 
         Type = typeof(PageResponseModel<UserWithSurveysCountResponseModel>))]
     [HttpGet]
-    public async Task<IActionResult> GetUsersPage([FromQuery] GetPageQuery query)
+    public async Task<IActionResult> GetUsersPage([FromQuery] GetPageRequest request)
     {
         var users = await _userService
-            .GetUsersAsync(query.Page, query.PageSize, query.SortOrder, query.NameSearchTerm);
+            .GetUsersAsync(request.Page, request.PageSize, request.SortOrder, request.NameSearchTerm);
 
         var pageResponse = new PageResponseModel<UserWithSurveysCountResponseModel>
         {
-            NameSearchTerm = query.NameSearchTerm,
-            SortOrder = query.SortOrder,
+            NameSearchTerm = request.NameSearchTerm,
+            SortOrder = request.SortOrder,
             Page = _mapper.Map<PagedResultResponseModel<UserWithSurveysCountResponseModel>>(users)
         };
 
         if (users.TotalPages < users.CurrentPage && users.TotalPages > 0)
         {
-            return RedirectToAction(nameof(GetUsersPage), query);
+            return RedirectToAction(nameof(GetUsersPage), request);
         }
 
         return Ok(pageResponse);
@@ -73,9 +76,7 @@ public sealed class UsersController : Controller
 
         if (user.UserName == HttpContext.User.Identity?.Name)
         {
-            ModelState.AddModelError(string.Empty, $"You can't delete yourself");
-
-            return BadRequest(ModelState);
+            throw new ForbidException("You can't delete yourself");
         }
 
         var result = await _userService.DeleteUsersAsync(user);

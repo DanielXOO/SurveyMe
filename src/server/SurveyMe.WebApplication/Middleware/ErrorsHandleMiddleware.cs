@@ -25,33 +25,52 @@ public sealed class ErrorsHandleMiddleware
         {
             await _next(context);
         }
+        catch (BadRequestException ex)
+        {
+            _logger.LogCritical(ex, "Bad request error");
+            await HandleErrorAsync(context, ex, StatusCodes.Status400BadRequest);
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogCritical(ex, "Not found error");
+            await HandleErrorAsync(context, ex, StatusCodes.Status404NotFound);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            _logger.LogCritical(ex, "Bad request error");
+        }
         catch (Exception ex)
         {
-            _logger.LogCritical(ex, "Something gone wrong");
-            await HandleErrorAsync(context, ex);
+            _logger.LogCritical(ex, "Server error");
+            await HandleErrorAsync(context, ex, StatusCodes.Status500InternalServerError);
         }
     }
 
 
-    
-    private static async Task HandleErrorAsync(HttpContext context, Exception ex)
+    /// <summary>
+    /// Handle exceptions and send response with error code
+    /// </summary>
+    /// <param name="context">http context</param>
+    /// <param name="ex">exception</param>
+    /// <param name="statusCode">http error status code</param>
+    private static async Task HandleErrorAsync(HttpContext context, Exception ex, int statusCode)
     {
         context.Response.ContentType = "application/json";
 
-        context.Response.StatusCode = ex switch
-        {
-            BadRequestException => StatusCodes.Status400BadRequest,
-            NotFoundException => StatusCodes.Status404NotFound,
-            ArgumentOutOfRangeException => StatusCodes.Status400BadRequest,
-            _ => StatusCodes.Status500InternalServerError
-        };
+        context.Response.StatusCode = statusCode;
 
         var response = new BaseErrorResponse
         {
             StatusCode = context.Response.StatusCode,
             Message = ReasonPhrases.GetReasonPhrase(context.Response.StatusCode),
-            Details = new []{ ex.Message }
+            Details = new List<string>()
         };
+        
+        while (ex != null)
+        {
+            response.Details.Add(ex.Message);
+            ex = ex.InnerException;
+        }
 
         var jsonResponse = JsonSerializer.Serialize(response);
         
