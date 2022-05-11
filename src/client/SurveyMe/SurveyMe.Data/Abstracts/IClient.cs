@@ -2,13 +2,15 @@
 
 public interface IClient
 {
-    Task<TResponse> SendGetRequestAsync<TResponse>(string url);
-
-    Task SendPatchRequestAsync<TRequest>(string url, TRequest data);
-
-    Task SendDeleteRequestAsync(string url);
-
-    Task<TResponse> SendPostRequestAsync<TRequest, TResponse>(string url, TRequest data);
+    Task<TResponse> SendGetRequestAsync<TResponse>(Uri url);
     
-    Task SendPostRequestAsync<TRequest>(string url, TRequest data);
+    Task<TResponse> SendGetRequestAsync<TResponse>(Uri url, object query);
+
+    Task SendPatchRequestAsync<TRequest>(Uri url, TRequest data);
+
+    Task SendDeleteRequestAsync(Uri url);
+
+    Task<TResponse> SendPostRequestAsync<TRequest, TResponse>(Uri url, TRequest data);
+    
+    Task SendPostRequestAsync<TRequest>(Uri url, TRequest data);
 }

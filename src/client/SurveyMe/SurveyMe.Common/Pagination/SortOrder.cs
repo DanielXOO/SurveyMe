@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.DomainModels.Common;
+﻿namespace SurveyMe.Common.Pagination;
 
 public enum SortOrder
 {

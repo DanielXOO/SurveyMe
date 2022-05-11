@@ -1,0 +1,13 @@
+﻿@model SurveyMe.WebApplication.ViewModels.UserDeleteOrEditViewModel
+
+<p class="title">Delete @Model.Name?</p>
+
+<form method="post" asp-controller="Users"
+      asp-action="DeleteUser" asp-route-Id="@Model.Id"
+      asp-route-ReturnUrl="@Model.ReturnUrl"
+      class="attention-form">
+    <input type="submit" class="submit-button" value="Delete" />
+    <input type="button" class="discard-button" onclick="location.href = '@Model.ReturnUrl'" value="Cancel" />
+</form>
+
+<div class="errors" asp-validation-summary="All"></div>

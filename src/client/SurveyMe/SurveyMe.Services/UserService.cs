@@ -9,7 +9,7 @@ namespace SurveyMe.Services;
 public sealed class UserService : IUserService
 {
     private readonly IClient _client;
-    
+    private const string ServiceBasePath = "users/";
     
     public UserService(IClient client)
     {
@@ -17,24 +17,36 @@ public sealed class UserService : IUserService
     }
     
     
-    public async Task<UserEditResponseModel> EditUserAsync(Guid id)
+    public async Task EditUserAsync(UserDeleteOrEditRequestModel userDeleteOrEditModel, Guid id)
     {
-        throw new NotImplementedException();
+        var url = new Uri($"{ServiceBasePath}{id}");
+
+        await _client.SendPatchRequestAsync(url, userDeleteOrEditModel);
+    }
+
+    public async Task<UserEditResponseModel> GetUserAsync(Guid id)
+    {
+        var url = new Uri($"{ServiceBasePath}{id}");
+
+        var user = await _client.SendGetRequestAsync<UserEditResponseModel>(url);
+
+        return user;
     }
 
     public async Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersPageAsync(GetPageQuery query)
     {
-        throw new NotImplementedException();
+        var url = new Uri($"{ServiceBasePath}");
+
+        var pagedResult = await _client
+            .SendGetRequestAsync<PageResponseModel<UserWithSurveysCountResponseModel>>(url, query);
+
+        return pagedResult;
     }
 
     public async Task DeleteUserAsync(Guid id)
     {
-        var url = $"users/{id}";
+        var url = new Uri($"{ServiceBasePath}{id}");
+        
         await _client.SendDeleteRequestAsync(url);
-    }
-
-    public async Task EditUserAsync(UserEditRequestModel userEditRequestModel, Guid id)
-    {
-        throw new NotImplementedException();
     }
 }
