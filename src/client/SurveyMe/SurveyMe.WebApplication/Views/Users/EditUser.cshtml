@@ -1,17 +1,17 @@
-﻿@model SurveyMe.WebApplication.ViewModels.UserDeleteOrEditViewModel
+﻿@model SurveyMe.WebApplication.Models.ViewModels.UserDeleteOrEditViewModel
 
 <div id="form">
     <form method="post" asp-controller="Users" asp-action="EditUser">
         <p class="title">Edit Name</p>
         <div class="form_field">
-            <input class="input_form" type="text" asp-for="Name" value="@Model.Name" />
+            <input class="input_form" type="text" asp-for="DisplayName" value="@Model.DisplayName" />
         </div>
         <div class="form_field">
             <input type="hidden" asp-for="Id" value="@Model.Id" />
         </div>
         <div class="form_field">
             <input type="submit" class="submit-button" value="Submit"/>
-            <input type="button" class="discard-button" onclick="location.href = '@Model.ReturnUrl'" value="Cancel"/>
+            <input type="button" class="discard-button" value="Cancel"/>
         </div>
     </form>
 </div>

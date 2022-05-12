@@ -1,6 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using SurveyMe.Data.Abstracts;
 using SurveyMe.Data.Helpers;
+using SurveyMe.Foundation.Exceptions;
 
 namespace SurveyMe.Data;
 
@@ -15,7 +17,7 @@ public class Client : IClient
     }
 
 
-    public async Task<TResponse> SendGetRequestAsync<TResponse>(Uri url)
+    public async Task<TResponse> SendGetRequestAsync<TResponse>(string url)
     {
         var fullUrl = new Uri($"{_client.BaseAddress}{url}");
         
@@ -23,41 +25,47 @@ public class Client : IClient
         
         if (!responseMessage.IsSuccessStatusCode)
         {
-            //TODO: throw exception
+            throw new BadRequestException();
         }
         
-        // Or use Microsoft.AspNet.WebApi.Client ReadAsAsync<T>
         var response = await DeserializeResponseAsync<TResponse>(responseMessage);
 
         return response;
     }
 
-    public async Task<TResponse> SendGetRequestAsync<TResponse>(Uri url, object query)
+    public async Task<TResponse> SendGetRequestAsync<TResponse, TQuery>(string url, TQuery query)
     {
-        var queryString = query.ToQuery();
+        var queryString = query?.ToQuery();
         var fullUrl = new Uri($"{_client.BaseAddress}{url}?{queryString}");
         
-        var response = await SendGetRequestAsync<TResponse>(fullUrl);
+        var responseMessage = await _client.GetAsync(fullUrl);
+        
+        if (!responseMessage.IsSuccessStatusCode)
+        {
+            throw new BadRequestException();
+        }
 
+        var response = await DeserializeResponseAsync<TResponse>(responseMessage);
+        
         return response;
     }
     
-    public async Task SendPatchRequestAsync<TRequest>(Uri url, TRequest data)
+    public async Task SendPatchRequestAsync<TRequest>(string url, TRequest data)
     {
         var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
-        var serializedData = JsonSerializer.Serialize(data);
-        var content = new StringContent(serializedData);
+        var serializedData = JsonConvert.SerializeObject(data);
+        var content = new StringContent(serializedData, Encoding.Default, "application/json");
         
         var responseMessage = await _client.PatchAsync(fullUrl, content);
         
         if (!responseMessage.IsSuccessStatusCode)
         {
-            //TODO: throw exception
+            throw new BadRequestException();
         }
     }
 
-    public async Task SendDeleteRequestAsync(Uri url)
+    public async Task SendDeleteRequestAsync(string url)
     {
         var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
@@ -65,55 +73,53 @@ public class Client : IClient
         
         if (!responseMessage.IsSuccessStatusCode)
         {
-            //TODO: throw exception
+            throw new BadRequestException();
         }
     }
 
-    public async Task<TResponse> SendPostRequestAsync<TRequest, TResponse>(Uri url, TRequest data)
+    public async Task<TResponse> SendPostRequestAsync<TRequest, TResponse>(string url, TRequest data)
     {
         var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
-        var serializedData = JsonSerializer.Serialize(data);
-        var content = new StringContent(serializedData);
+        var serializedData = JsonConvert.SerializeObject(data);
+        var content = new StringContent(serializedData, Encoding.Default, "application/json");
         
         var responseMessage = await _client.PostAsync(fullUrl, content);
         
         if (!responseMessage.IsSuccessStatusCode)
         {
-            //TODO: throw exception
+            throw new BadRequestException();
         }
         
-        // Or use Microsoft.AspNet.WebApi.Client ReadAsAsync<T>
         var response = await DeserializeResponseAsync<TResponse>(responseMessage);
 
         return response;
     }
 
-    public async Task SendPostRequestAsync<TRequest>(Uri url, TRequest data)
+    public async Task SendPostRequestAsync<TRequest>(string url, TRequest data)
     {
         var fullUrl = new Uri($"{_client.BaseAddress}{url}");
 
-        var serializedData = JsonSerializer.Serialize(data);
-        var content = new StringContent(serializedData);
+        var serializedData = JsonConvert.SerializeObject(data);
+        var content = new StringContent(serializedData, Encoding.Default, "application/json");
         
         var responseMessage = await _client.PostAsync(fullUrl, content);
 
         if (!responseMessage.IsSuccessStatusCode)
         {
-            //TODO: throw exception
+            throw new BadRequestException();
         }
     }
 
-
-    protected static async Task<TResponse> DeserializeResponseAsync<TResponse>(HttpResponseMessage response)
+    private static async Task<TResponse> DeserializeResponseAsync<TResponse>(HttpResponseMessage response)
     {
         var body = await response.Content.ReadAsStringAsync();
 
-        var data = JsonSerializer.Deserialize<TResponse>(body);
+        var data = JsonConvert.DeserializeObject<TResponse>(body);
 
         if (data == null)
         {
-            //TODO: Throw exception
+            throw new BadRequestException();
         }
         
         return data;

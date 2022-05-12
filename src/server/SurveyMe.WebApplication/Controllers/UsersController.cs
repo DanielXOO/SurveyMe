@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyMe.DomainModels;
-using SurveyMe.Foundation.Exceptions;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.RequestModels;
@@ -97,7 +95,7 @@ public sealed class UsersController : Controller
     [HttpPatch("{id:guid}")]
     public async Task<IActionResult> EditUser(UserEditRequestModel userEditRequestModel, Guid id)
     {
-        if (userEditRequestModel.Id == id)
+        if (userEditRequestModel.Id != id)
         {
             throw new BadRequestException("Id do not match");
         }

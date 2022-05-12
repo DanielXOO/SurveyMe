@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Time;
+using SurveyMe.Data;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Services.Abstracts;
 
@@ -12,14 +15,19 @@ public sealed class AccountService : IAccountService
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
     private readonly ISystemClock _systemClock;
+    private readonly ISurveyMeUnitOfWork _unitOfWork;
+    private readonly ITokenGenerator _tokenGenerator;
 
 
     public AccountService(SignInManager<User> signInManager,
-        UserManager<User> userManager, ISystemClock systemClock)
+        UserManager<User> userManager, ISystemClock systemClock, 
+        ISurveyMeUnitOfWork unitOfWork, ITokenGenerator tokenGenerator)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _systemClock = systemClock;
+        _unitOfWork = unitOfWork;
+        _tokenGenerator = tokenGenerator;
     }
 
 
@@ -37,6 +45,20 @@ public sealed class AccountService : IAccountService
         await _userManager.AddToRoleAsync(user, RoleNames.User);
 
         return ConvertToServiceResult(result);
+    }
+
+    public async Task<string> GenerateTokenAsync(string userName)
+    {
+        var user = await _unitOfWork.Users.GetByNameAsync(userName);
+
+        if (user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+        
+        var token = _tokenGenerator.GenerateToken(user);
+
+        return token;
     }
 
     public async Task SignOutAsync()

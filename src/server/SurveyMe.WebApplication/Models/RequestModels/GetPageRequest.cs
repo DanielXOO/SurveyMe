@@ -4,7 +4,7 @@ namespace SurveyMe.WebApplication.Models.RequestModels;
 
 public sealed class GetPageRequest
 {
-    public string NameSearchTerm { get; set; } = "";
+    public string? NameSearchTerm { get; set; } = "";
     
     public SortOrder SortOrder { get; set; } = SortOrder.Ascending;
     

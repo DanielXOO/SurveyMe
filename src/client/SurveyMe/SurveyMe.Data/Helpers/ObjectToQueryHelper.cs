@@ -11,24 +11,18 @@ public static class ObjectToQueryHelper
             throw new NullReferenceException();
         }
 
-        var dictionary = new Dictionary<string, string>();
+        var queries = new List<string>();
 
         foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
         {
-            AddProperty(property, source, dictionary);
+            var value = property.GetValue(source)?.ToString();
+            var key = property.Name;
+            
+            queries.Add($"{key}={value}");
         }
-        
-        var query = string.Join("&", dictionary.Select(p => $"{p.Key}={p.Value}"));
+
+        var query = string.Join("&", queries);
         
         return query;
-    }
-
-
-    private static void AddProperty(PropertyDescriptor property, object source, IDictionary<string, string> dictionary)
-    {
-        var value = property.GetValue(source)?.ToString();
-        var key = property.Name;
-
-        dictionary.Add(key, value);
     }
 }

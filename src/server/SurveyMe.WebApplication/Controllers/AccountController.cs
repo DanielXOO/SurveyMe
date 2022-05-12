@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels;
-using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.RequestModels;
@@ -43,7 +43,14 @@ public sealed class AccountController : Controller
             throw new BadRequestException("Error SignIn");
         }
 
-        return Ok();
+        var token = await _accountService.GenerateTokenAsync(user.Login);
+
+        var response = new
+        {
+            access_token = token
+        };
+        
+        return Ok(response);
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]

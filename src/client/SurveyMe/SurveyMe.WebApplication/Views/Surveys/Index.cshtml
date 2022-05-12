@@ -1,0 +1,89 @@
+﻿@using SurveyMe.Common.Pagination
+@using Microsoft.AspNetCore.Http.Extensions
+@model SurveyMe.WebApplication.Models.ViewModels.PageResponseViewModel<SurveyMe.WebApplication.Models.ViewModels.SurveyWithLinksViewModel>
+
+<div id="user-table">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="input-group">
+            <form class="d-flex" asp-action="Index" asp-route-sortOrder="@Model.SortOrder">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       value="@Model.NameSearchTerm" name="nameSearchTerm">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </form>
+        </div>
+    </nav>
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">
+                @if (Model.SortOrder == SortOrder.Descending)
+                {
+                    <a style="font-size:x-large;">&#8593;</a>
+                    <a asp-controller="Surveys" asp-action="Index" asp-route-page="@Model.Page.CurrentPage"
+                       asp-route-nameSearchTerm="@Model.NameSearchTerm"
+                       asp-route-sortOrder="@SortOrder.Ascending">
+                        Name
+                    </a>
+                }
+                else
+                {
+                    <a style="font-size:x-large;">&#8595;</a>
+                    <a asp-controller="Surveys" asp-action="Index" asp-route-page="@Model.Page.CurrentPage"
+                       asp-route-nameSearchTerm="@Model.NameSearchTerm"
+                       asp-route-sortOrder="@SortOrder.Descending">
+                        Name
+                    </a>
+                }
+            </th>
+            <th scope="col">Last change</th>
+            <th scope="col">Answers</th>
+            <th scope="col">Links</th>
+            <th scope="col">Results</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Page.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.UpdateDate.ToShortDateString()</td>
+                <td>0</td>
+                <td>
+                    <a href="@item.SurveyLink">Link</a>
+                </td>
+                <td>
+                    <a href="@item.ResultsLink">Result</a>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <nav class="navbar navbar-dark bg-dark">
+        
+        <div class="btn-group me-5" id="table-control">
+            @if (Model.Page.HasPrevious)
+            {
+                <button type="button" class="btn btn-outline-primary move-btn" 
+                        onclick="document.location='@Url.Action("Index", "Surveys", 
+                        new{NameSearchTerm = Model.NameSearchTerm, SortOrder = Model.SortOrder,
+                              Page = Model.Page.CurrentPage - 1})'">
+                    Prev
+                </button>
+            }
+            @if (Model.Page.HasNext)
+            {
+                <button type="button" class="btn btn-primary move-btn" 
+                        onclick="document.location='@Url.Action("Index", "Surveys", 
+                        new{NameSearchTerm = Model.NameSearchTerm, SortOrder = Model.SortOrder, Page = Model.Page.CurrentPage + 1})'">
+                    Next
+                </button>
+            }
+        </div>
+    </nav>
+</div>

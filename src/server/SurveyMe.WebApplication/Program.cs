@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -11,8 +11,8 @@ using SurveyMe.Common.Time;
 using SurveyMe.Foundation.MapperConfigurations.Profiles;
 using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.WebApplication;
 using SurveyMe.WebApplication.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +54,8 @@ builder.Services.AddAutoMapper(configuration =>
     configuration.AddProfile<SurveyStatisticProfile>();
 });
 
-builder.Services.AddIdentity<User, Role>(options =>
+
+builder.Services.AddIdentity<User,Role>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequireLowercase = true;
@@ -63,8 +64,19 @@ builder.Services.AddIdentity<User, Role>(options =>
         options.Password.RequiredLength = 8;
     })
     .AddRoleStore<RoleStore>()
-    .AddUserStore<UserStore>()
-    .AddDefaultTokenProviders();
+    .AddUserStore<UserStore>();
+
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = false
+        };
+    });*/
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
@@ -76,6 +88,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddSingleton<ISystemClock, SystemClock>();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
+builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
 var app = builder.Build();
 
@@ -92,6 +105,8 @@ if (app.Environment.IsDevelopment())
 await app.Services.CreateDbIfNotExists();
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

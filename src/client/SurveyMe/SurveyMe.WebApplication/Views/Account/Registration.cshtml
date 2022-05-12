@@ -1,0 +1,40 @@
+﻿@model SurveyMe.WebApplication.Models.ViewModels.UserRegistrationViewModel
+
+<section class="vh-100 d-flex align-items-center">
+    <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-xl-4 col-md-7 col-10">
+                <form method="post" asp-action="Login">
+                    <h1 class="display-3 m-5 text-center">Sign up</h1>
+                    <div class="invalid-feedback" asp-validation-summary="All" 
+                         style="display: block;">
+                    </div>
+                    <div class="form-outline mb-3">
+                        <input type="text" class="form-control form-control-lg" 
+                               placeholder="Login" asp-for="Login"/>
+                    </div>
+          
+                    <div class="form-outline mb-3">
+                        <input type="password" class="form-control form-control-lg"
+                               placeholder="Password" asp-for="Password"/>
+                    </div>
+    
+                    <div class="form-outline mb-1">
+                        <input type="password" class="form-control form-control-lg"
+                               placeholder="Repeat password" asp-for="ConfirmPassword"/>
+                    </div>
+                        
+                    <div class="d-flex justify-content-center text-center mb-5">
+                        <strong>
+                            <a asp-controller="Account" asp-action="Login">Sign in</a>
+                        </strong>
+                    </div>
+                        
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary w-50 btn-lg btn-block">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

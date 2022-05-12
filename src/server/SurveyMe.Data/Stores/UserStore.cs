@@ -225,8 +225,17 @@ public sealed class UserStore : IUserPasswordStore<User>, IUserRoleStore<User>
             throw new ArgumentNullException(nameof(user));
         }
 
-        var isInRole = user.Roles.Any(role => role.Name == roleName);
+        bool isInRole;
+        
+        if (user.Roles == null)
+        {
+            isInRole = false;
+            
+            return Task.FromResult(isInRole);
+        }
 
+        isInRole = user.Roles.Any(role => role.Name == roleName);
+        
         return Task.FromResult(isInRole);
     }
 

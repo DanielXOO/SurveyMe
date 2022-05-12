@@ -1,65 +1,65 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SurveyMe.DomainModels;
-using SurveyMe.DomainModels.Queries;
+using SurveyMe.DomainModels.Request;
 using SurveyMe.Services.Abstracts;
-using SurveyMe.WebApplication.ViewModels;
+using SurveyMe.WebApplication.Models.ViewModels;
 
 namespace SurveyMe.WebApplication.Controllers;
 
-[Authorize(Roles = RoleNames.Admin)]
 public class UsersController : Controller
 {
-    private readonly IUserService _userService;
+    private readonly IUserApi _userApi;
+    private readonly IMapper _mapper;
 
-
-    public UsersController(IUserService userService)
+    public UsersController(IUserApi userApi, IMapper mapper)
     {
-        _userService = userService;
+        _userApi = userApi;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(GetPageQuery query)
+    public async Task<IActionResult> Index(GetPageRequest request)
     {
-        var pageResponse = await _userService.GetUsersPageAsync(query);
-
-        //TODO: Map to PageResponseViewModel<UserWithSurveysCountViewModel>
+        var pageResponse = await _userApi.GetUsersAsync(request);
+        var pageResponseViewModel = _mapper
+            .Map<PageResponseViewModel<UserWithSurveysCountViewModel>>(pageResponse);
         
-        return View(pageResponse);
+        return View(pageResponseViewModel);
     }
 
     [HttpGet]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var user = await _userService.GetUserAsync(id);
+        var user = await _userApi.GetUserAsync(id);
+        var userDeleteOrEditViewModel = _mapper.Map<UserDeleteOrEditViewModel>(user);
         
-        //TODO: Map to UserDeleteOrEditViewModel
-        
-        return View(user);
+        return View(userDeleteOrEditViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteUser(UserDeleteOrEditViewModel user)
+    public async Task<IActionResult> DeleteUser(UserDeleteOrEditViewModel user, string returnUrl = "")
     {
-        await _userService.DeleteUserAsync(user.Id);
+        await _userApi.DeleteUserAsync(user.Id);
 
-        return Redirect(user.ReturnUrl);
+        return RedirectToAction("Index", "Users");
     }
 
     [HttpGet]
     public async Task<IActionResult> EditUser(Guid id)
     {
-        var user = await _userService.GetUserAsync(id);
+        var user = await _userApi.GetUserAsync(id);
+        var userDeleteOrEditViewModel = _mapper.Map<UserDeleteOrEditViewModel>(user);
         
-        return View(user);
+        return View(userDeleteOrEditViewModel);
     }
     
     [HttpPost]
-    public async Task<IActionResult> EditUser(UserDeleteOrEditViewModel user)
+    public async Task<IActionResult> EditUser(UserDeleteOrEditViewModel userDeleteOrEditViewModel)
     {
-        //await _userService.EditUserAsync(user);
-        //TODO: Add mapper to UserRequestModel
-        throw new NotImplementedException();
-    }
+        var user = _mapper.Map<UserDeleteOrEditRequestModel>(userDeleteOrEditViewModel);
+        
+        await _userApi.EditUserAsync(user, user.Id);
 
+        return RedirectToAction("Index", "Users");
+    }
 }

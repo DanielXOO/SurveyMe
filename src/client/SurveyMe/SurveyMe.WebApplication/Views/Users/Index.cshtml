@@ -1,6 +1,6 @@
 ﻿@using SurveyMe.Common.Pagination
 @using Microsoft.AspNetCore.Http.Extensions
-@model SurveyMe.WebApplication.ViewModels.PageResponseViewModel<SurveyMe.DomainModels.Response.UserWithSurveysCountViewModel>
+@model SurveyMe.WebApplication.Models.ViewModels.PageResponseViewModel<SurveyMe.WebApplication.Models.ViewModels.UserWithSurveysCountViewModel>
 
 <div id="user-table">
     <nav class="navbar navbar-dark bg-dark">
@@ -21,7 +21,7 @@
                 @if (Model.SortOrder == SortOrder.Descending)
                 {
                     <a style="font-size:x-large;">&#8593;</a>
-                    <a asp-controller="Users" asp-action="Index" asp-route-page="@Model.Items.CurrentPage"
+                    <a asp-controller="Users" asp-action="Index" asp-route-page="@Model.Page.CurrentPage"
                        asp-route-nameSearchTerm="@Model.NameSearchTerm"
                        asp-route-sortOrder="@SortOrder.Ascending">
                         Name
@@ -30,7 +30,7 @@
                 else
                 {
                     <a style="font-size:x-large;">&#8595;</a>
-                    <a asp-controller="Users" asp-action="Index" asp-route-page="@Model.Items.CurrentPage"
+                    <a asp-controller="Users" asp-action="Index" asp-route-page="@Model.Page.CurrentPage"
                        asp-route-nameSearchTerm="@Model.NameSearchTerm"
                        asp-route-sortOrder="@SortOrder.Descending">
                         Name
@@ -43,7 +43,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.Items.Items)
+        @foreach (var item in Model.Page.Items)
         {
             <tr>
                 <td>@item.DisplayName</td>
@@ -54,8 +54,8 @@
                         <button type="button" class="btn btn-primary btn-action m-1"
                                 onclick="document.location='@Url.Action("EditUser", "Users", 
                                 new {
-                                    Name = item.UserName, Id = item.Id, 
-                                    ReturnUrl = Context.Request.GetEncodedPathAndQuery()
+                                    Name = item.UserName, 
+                                    Id = item.Id
                                 })'">
                             Edit
                         </button>
@@ -63,8 +63,7 @@
                                 onclick="document.location = '@Url.Action("DeleteUser", 
                                 "Users", new {
                                     Id = item.Id, 
-                                    UserName = item.UserName,
-                                    ReturnUrl = Context.Request.GetEncodedPathAndQuery()
+                                    UserName = item.UserName
                                 })'">
                             Delete
                         </button>
@@ -76,26 +75,26 @@
     </table>
     <nav class="navbar navbar-dark bg-dark">
         <div class="btn-group me-5" id="table-control">
-            @if (Model.Items.HasPrevious)
+            @if (Model.Page.HasPrevious)
             {
                 <button type="button" class="btn btn-outline-primary move-btn" 
                         onclick="document.location='@Url.Action("Index", "Users", 
                         new{
                             NameSearchTerm = Model.NameSearchTerm, 
                             SortOrder = Model.SortOrder,
-                            Page = Model.Items.CurrentPage - 1
+                            Page = Model.Page.CurrentPage - 1
                         })'">
                     Prev
                 </button>
             }
-            @if (Model.Items.HasNext)
+            @if (Model.Page.HasNext)
             {
                 <button type="button" class="btn btn-primary move-btn" 
                         onclick="document.location='@Url.Action("Index", "Users", 
                         new{
                             NameSearchTerm = Model.NameSearchTerm, 
                             SortOrder = Model.SortOrder, 
-                            Page = Model.Items.CurrentPage + 1
+                            Page = Model.Page.CurrentPage + 1
                         })'">
                     Next
                 </button>

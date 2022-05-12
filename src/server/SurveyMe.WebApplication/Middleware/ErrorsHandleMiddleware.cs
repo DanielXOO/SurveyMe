@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
-using SurveyMe.Foundation.Exceptions;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 
 namespace SurveyMe.WebApplication.Middleware;

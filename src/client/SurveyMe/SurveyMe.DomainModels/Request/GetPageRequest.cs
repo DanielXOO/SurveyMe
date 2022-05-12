@@ -1,9 +1,8 @@
 ﻿using SurveyMe.Common.Pagination;
-using SurveyMe.DomainModels.Common;
 
-namespace SurveyMe.DomainModels.Queries;
+namespace SurveyMe.DomainModels.Request;
 
-public sealed class GetPageQuery
+public sealed class GetPageRequest
 {
     public string NameSearchTerm { get; set; } = "";
     
