@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SurveyMe.Foundation.Exceptions;
+﻿namespace SurveyMe.Common.Exceptions;
 
 public class ForbidException : Exception
 {

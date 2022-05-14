@@ -2,10 +2,8 @@
 
 namespace SurveyMe.WebApplication.Models.ViewModels
 {
-    public sealed class QuestionCreateOrEditViewModel
+    public sealed class QuestionAddOrEditViewModel
     {
-        public Guid Id { get; set; }
-        
         public string Title { get; set; }
 
         public QuestionType Type { get; set; }

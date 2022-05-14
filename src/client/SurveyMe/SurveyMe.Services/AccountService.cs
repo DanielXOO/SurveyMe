@@ -4,22 +4,21 @@ using SurveyMe.Services.Abstracts;
 
 namespace SurveyMe.Services;
 
-public class AccountApi : IAccountService
+public class AccountService : IAccountService
 {
-    private readonly IClient _client;
+    private readonly IUserApi _userApi;
     private const string ServiceBasePath = "/account";
     
-    public AccountApi(IClient client)
+    public AccountService(IUserApi userApi)
     {
-        _client = client;
+        _userApi = userApi;
     }
     
     
     public async Task LoginAsync(UserLoginRequestModel user)
     {
         var url = "account/login";
-
-        await _client.SendPostRequestAsync(url, user);
+        throw new NotImplementedException();
     }
 
     public async Task RegistrationAsync(UserRegistrationRequestModel user)

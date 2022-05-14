@@ -5,14 +5,14 @@ using SurveyMe.Services.Abstracts;
 
 namespace SurveyMe.Services;
 
-public sealed class UserApi : IUserApi
+public sealed class UserService : IUserService
 {
-    private readonly IClient _client;
+    private readonly IUserApi _userApi;
     private const string ServiceBasePath = "/users";
     
-    public UserApi(IClient client)
+    public UserService(IUserApi userApi)
     {
-        _client = client;
+        _userApi = userApi;
     }
     
     
@@ -20,23 +20,22 @@ public sealed class UserApi : IUserApi
     {
         var url = $"{ServiceBasePath}/{id}";
 
-        await _client.SendPatchRequestAsync(url, userDeleteOrEditModel);
+        await _userApi.EditUserAsync(url, userDeleteOrEditModel);
     }
 
     public async Task<UserDeleteOrEditResponseModel> GetUserAsync(Guid id)
     {
         var url = $"{ServiceBasePath}/{id}";
 
-        var user = await _client.SendGetRequestAsync<UserDeleteOrEditResponseModel>(url);
+        var user = await _userApi.GetUserAsync(url);
 
         return user;
     }
 
-    public async Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync(GetPageRequest request)
+    public async Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync(GetPageRequest request, int page = 1)
     {
-        //TODO: generic
-        var pagedResult = await _client
-            .SendGetRequestAsync<PageResponseModel<UserWithSurveysCountResponseModel>, GetPageRequest>(ServiceBasePath, request);
+        var pagedResult = await _userApi
+            .GetUsersAsync(ServiceBasePath, request);
 
         return pagedResult;
     }
@@ -45,6 +44,6 @@ public sealed class UserApi : IUserApi
     {
         var url = $"{ServiceBasePath}/{id}";
         
-        await _client.SendDeleteRequestAsync(url);
+        await _userApi.DeleteUserAsync(url);
     }
 }

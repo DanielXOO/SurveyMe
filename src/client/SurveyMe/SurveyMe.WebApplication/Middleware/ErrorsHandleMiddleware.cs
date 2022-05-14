@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
-using SurveyMe.Foundation.Exceptions;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 
 namespace SurveyMe.WebApplication.Middleware;
@@ -39,6 +39,7 @@ public sealed class ErrorsHandleMiddleware
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
+            await HandleErrorAsync(context, ex, StatusCodes.Status400BadRequest);
         }
         catch (Exception ex)
         {
@@ -56,7 +57,7 @@ public sealed class ErrorsHandleMiddleware
     /// <param name="statusCode">http error status code</param>
     private static async Task HandleErrorAsync(HttpContext context, Exception ex, int statusCode)
     {
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = "application/json;charset=utf-8";
 
         context.Response.StatusCode = statusCode;
 

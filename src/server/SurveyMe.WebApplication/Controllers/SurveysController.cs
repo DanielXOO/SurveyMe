@@ -67,7 +67,7 @@ public sealed class SurveysController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [HttpPost]
-    public async Task<IActionResult> AddSurvey([FromBody] SurveyResponseModel surveyModel)
+    public async Task<IActionResult> AddSurvey([FromBody] SurveyRequestModel surveyModel)
     {
         var authorId = User.GetUserId();
         var author = await _userService.GetUserByIdAsync(authorId);
@@ -123,7 +123,7 @@ public sealed class SurveysController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseErrorResponse))]
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> EditSurvey([FromBody] SurveyResponseModel surveyModel, Guid id)
+    public async Task<IActionResult> EditSurvey([FromBody] SurveyRequestModel surveyModel, Guid id)
     {
         if (surveyModel.Id != id)
         {

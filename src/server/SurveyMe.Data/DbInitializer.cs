@@ -15,19 +15,68 @@ public static class DbInitializer
 
         var users = new[]
         {
-            new InitUser()
+            new InitUser
             {
                 DisplayName = "Admin",
                 Password = "Admin123",
                 RoleNames = new[] {RoleNames.Admin},
                 UserName = "Admin"
             },
-            new InitUser()
+            new InitUser
             {
-                DisplayName = "User",
+                DisplayName = "User1",
                 Password = "User1234",
                 RoleNames = new[] {RoleNames.User},
-                UserName = "User"
+                UserName = "User1"
+            },
+            new InitUser
+            {
+                DisplayName = "User2",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User2"
+            },
+            new InitUser
+            {
+                DisplayName = "User3",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User4"
+            },
+            new InitUser
+            {
+                DisplayName = "User5",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User5"
+            },
+            new InitUser
+            {
+                DisplayName = "User6",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User6"
+            },
+            new InitUser
+            {
+                DisplayName = "User7",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User7"
+            },
+            new InitUser
+            {
+                DisplayName = "User8",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User8"
+            },
+            new InitUser
+            {
+                DisplayName = "User9",
+                Password = "User1234",
+                RoleNames = new[] {RoleNames.User},
+                UserName = "User9"
             }
         };
 
@@ -44,7 +93,7 @@ public static class DbInitializer
             var registeredUser = await userManager.FindByNameAsync(user.UserName);
             if (registeredUser == null)
             {
-                var newUser = new User()
+                var newUser = new User
                 {
                     DisplayName = user.DisplayName,
                     UserName = user.UserName,
@@ -83,7 +132,7 @@ public static class DbInitializer
             var existedRole = await roleManager.FindByNameAsync(roleName);
             if (existedRole == null)
             {
-                await roleManager.CreateAsync(new Role() {Name = roleName});
+                await roleManager.CreateAsync(new Role {Name = roleName});
             }
             else
             {

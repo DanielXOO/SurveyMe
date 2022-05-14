@@ -49,23 +49,26 @@
         {
             <tr>
                 <td>@item.Name</td>
-                <td>@item.UpdateDate.ToShortDateString()</td>
+                <td>@item.LastChangeDate.ToShortDateString()</td>
                 <td>0</td>
                 <td>
                     <a href="@item.SurveyLink">Link</a>
                 </td>
                 <td>
-                    <a href="@item.ResultsLink">Result</a>
+                    <a href="@item.ResultLink">Result</a>
                 </td>
                 <td>
-                    
+                    <div class="d-flex flex-row"></div>
                 </td>
             </tr>
         }
         </tbody>
     </table>
     <nav class="navbar navbar-dark bg-dark">
-        
+        <button type="button" class="btn btn-outline-primary move-btn ms-5" 
+                onclick="document.location='@Url.Action("AddSurvey", "Surveys")'">
+            Create survey
+        </button>
         <div class="btn-group me-5" id="table-control">
             @if (Model.Page.HasPrevious)
             {

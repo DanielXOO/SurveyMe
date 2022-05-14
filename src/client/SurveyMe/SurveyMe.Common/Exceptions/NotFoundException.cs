@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SurveyMe.Foundation.Exceptions;
+﻿namespace SurveyMe.Common.Exceptions;
 
 public sealed class NotFoundException : Exception
 {

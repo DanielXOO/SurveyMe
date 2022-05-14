@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Refit;
 using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
 
-namespace SurveyMe.Services.Abstracts;
+namespace SurveyMe.Data.Abstracts;
 
 public interface IFileApi
 {
-    [Multipart]
     [Post("/files")]
     Task<FileInfo> UploadAsync(IFormFile fileModel);
 

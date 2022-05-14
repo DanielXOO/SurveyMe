@@ -38,10 +38,10 @@ public class FilesController : Controller
     {
         var fileStream = fileModel.OpenReadStream();
 
-        var file = new File()
+        var file = new File
         {
             Data = fileStream,
-            Info = new FileInfo()
+            Info = new FileInfo
             {
                 Id = Guid.NewGuid(),
                 Name = fileModel.FileName

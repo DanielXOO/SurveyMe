@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Models;
+using SurveyMe.WebApplication.Models.RequestModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
@@ -12,6 +13,9 @@ public sealed class SurveyProfile : Profile
         CreateMap<Survey, SurveyWithLinksResponseModel>();
         
         CreateMap<SurveyResponseModel, Survey>()
+            .ReverseMap();
+        
+        CreateMap<SurveyRequestModel, Survey>()
             .ReverseMap();
         
         CreateMap<SurveyAnswersStatistic, SurveyAnswersStatisticResponseModel>();

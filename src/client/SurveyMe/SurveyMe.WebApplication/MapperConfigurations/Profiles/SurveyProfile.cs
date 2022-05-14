@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SurveyMe.DomainModels.Request;
 using SurveyMe.DomainModels.Response;
 using SurveyMe.WebApplication.Models.ViewModels;
 
@@ -9,5 +10,7 @@ public class SurveyProfile : Profile
     public SurveyProfile()
     {
         CreateMap<SurveyWithLinksResponseModel, SurveyWithLinksViewModel>();
+        
+        CreateMap<SurveyAddOrEditViewModel, SurveyRequestModel>();
     }
 }

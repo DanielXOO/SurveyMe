@@ -1,6 +1,6 @@
 namespace SurveyMe.WebApplication.Models.ViewModels
 {
-    public class QuestionOptionsViewModel
+    public class QuestionOptionViewModel
     {
         public Guid Id { get; set; }
 

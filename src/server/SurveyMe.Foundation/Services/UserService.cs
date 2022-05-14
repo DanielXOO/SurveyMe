@@ -43,7 +43,7 @@ public sealed class UserService : IUserService
         var usersPaged = await _unitOfWork.Users
             .GetUsersAsync(pageSize, currentPage, searchRequest, order);
 
-        var usersPagedWithSurveysCount = usersPaged.MapPagedResult(user => new UserWithSurveysCount()
+        var usersPagedWithSurveysCount = usersPaged.MapPagedResult(user => new UserWithSurveysCount
         {
             User = user.User,
             SurveysCount = user.SurveysCount

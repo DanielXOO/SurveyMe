@@ -10,6 +10,6 @@ namespace SurveyMe.WebApplication.Models.ViewModels
         
         public QuestionType Type { get; set; }
 
-        public ICollection<QuestionOptionsViewModel> Options { get; set; }
+        public ICollection<QuestionOptionViewModel> Options { get; set; }
     }
 }

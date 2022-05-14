@@ -54,7 +54,7 @@ public class FileService : IFileService
         var fullPath = $"{_configuration.Value.BasePath}/{file.Id}{fileExtension}";
         var streamWrite = new FileStream(fullPath, FileMode.Open);
 
-        var fileModel = new File()
+        var fileModel = new File
         {
             Data = streamWrite,
             Info = file

@@ -15,5 +15,8 @@ public class PageResponseProfile : Profile
             PagedResultViewModel<UserWithSurveysCountViewModel>>();
 
         CreateMap<PageResponseModel<SurveyWithLinksResponseModel>, PageResponseViewModel<SurveyWithLinksViewModel>>();
+        
+        CreateMap<PagedResultResponseModel<SurveyWithLinksResponseModel>,
+            PagedResultViewModel<SurveyWithLinksViewModel>>();
     }
 }

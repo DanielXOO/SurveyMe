@@ -3,9 +3,9 @@ using SurveyMe.DomainModels.Response;
 
 namespace SurveyMe.Services.Abstracts;
 
-public interface IUserApi
+public interface IUserService
 {
-    Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync(GetPageRequest request);
+    Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync(GetPageRequest request, int page = 1);
 
     Task DeleteUserAsync(Guid id);
 

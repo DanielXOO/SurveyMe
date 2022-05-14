@@ -33,7 +33,7 @@ public sealed class UserRepository : Repository<User>, IUserRepository
         };
 
         var userWithSurveysCount = users.Select(user =>
-            new UserWithSurveysCount()
+            new UserWithSurveysCount
             {
                 User = user,
                 SurveysCount = user.Surveys.Count

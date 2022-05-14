@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.DomainModels;
+﻿namespace SurveyMe.DomainModels.Common;
 
 public static class RoleNames
 {
