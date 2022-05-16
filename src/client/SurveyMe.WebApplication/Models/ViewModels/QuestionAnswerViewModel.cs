@@ -1,6 +1,6 @@
 namespace SurveyMe.WebApplication.Models.ViewModels
 {
-    public sealed class QuestionAnswerView
+    public sealed class QuestionAnswerViewModel
     {
         public Guid QuestionId { get; set; }
 
@@ -10,7 +10,7 @@ namespace SurveyMe.WebApplication.Models.ViewModels
 
         public double ScaleAnswer { get; set; }
         
-        public FileAnswerViewModel FileAnswer { get; set; }
+        public FileAnswerViewModel? FileAnswer { get; set; }
         
         public ICollection<Guid> OptionIds { get; set; }
     }

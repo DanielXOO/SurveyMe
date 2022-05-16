@@ -8,7 +8,7 @@ namespace SurveyMe.Data.Abstracts;
 public interface IFileApi
 {
     [Post("/files")]
-    Task<FileInfo> UploadAsync(IFormFile fileModel);
+    Task<FileInfo> UploadAsync([Body]IFormFile fileModel);
 
     [Get("/files/{id}")]
     Task<FileContentResult> LoadAsync(Guid id);

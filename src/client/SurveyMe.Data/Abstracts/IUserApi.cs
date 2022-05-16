@@ -1,16 +1,20 @@
-﻿using SurveyMe.DomainModels.Request;
+﻿using Refit;
+using SurveyMe.DomainModels.Request;
 using SurveyMe.DomainModels.Response;
 
 namespace SurveyMe.Data.Abstracts;
 
 public interface IUserApi
 {
-    Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync(string url, GetPageRequest query,
-        int page = 1);
+    [Get("/users")]
+    Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync([Query]GetPageRequest query, int page = 1);
     
-    Task DeleteUserAsync(string url);
+    [Delete("/users/{id}")]
+    Task DeleteUserAsync(Guid id);
 
-    Task EditUserAsync(string url, UserDeleteOrEditRequestModel userDeleteOrEditModel);
+    [Patch("/users/{id}")]
+    Task EditUserAsync([Body]UserDeleteOrEditRequestModel userDeleteOrEditModel, Guid id);
 
-    Task<UserDeleteOrEditResponseModel> GetUserAsync(string url);
+    [Get("/users/{id}")]
+    Task<UserDeleteOrEditResponseModel> GetUserAsync(Guid id);
 }

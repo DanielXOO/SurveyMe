@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SurveyMe.Common.Logging.Abstracts;
+﻿namespace SurveyMe.Common.Logging.Abstracts;
 
 public interface ILogger
 {

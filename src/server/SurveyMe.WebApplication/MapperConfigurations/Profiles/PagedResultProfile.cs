@@ -10,7 +10,7 @@ public sealed class PagedResultProfile : Profile
 {
     public PagedResultProfile()
     {
-        CreateMap<PagedResult<Survey>, PagedResultResponseModel<SurveyWithLinksResponseModel>>();
+        CreateMap<PagedResult<Survey>, PagedResultResponseModel<SurveyResponseModel>>();
 
         CreateMap<PagedResult<UserWithSurveysCount>, PagedResultResponseModel<UserWithSurveysCountResponseModel>>()
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))

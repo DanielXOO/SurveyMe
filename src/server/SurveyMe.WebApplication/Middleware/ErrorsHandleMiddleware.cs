@@ -38,6 +38,12 @@ public sealed class ErrorsHandleMiddleware
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
+            await HandleErrorAsync(context, ex, StatusCodes.Status400BadRequest);
+        }
+        catch (ForbidException ex)
+        {
+            _logger.LogCritical(ex, "User has not access");
+            await HandleErrorAsync(context, ex, StatusCodes.Status403Forbidden);
         }
         catch (Exception ex)
         {

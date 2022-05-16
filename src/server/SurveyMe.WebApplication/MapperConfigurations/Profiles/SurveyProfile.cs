@@ -10,8 +10,6 @@ public sealed class SurveyProfile : Profile
 {
     public SurveyProfile()
     {
-        CreateMap<Survey, SurveyWithLinksResponseModel>();
-        
         CreateMap<SurveyResponseModel, Survey>()
             .ReverseMap();
         

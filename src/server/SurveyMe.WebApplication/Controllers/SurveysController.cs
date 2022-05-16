@@ -33,27 +33,19 @@ public sealed class SurveysController : Controller
     }
 
 
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponseModel<SurveyWithLinksResponseModel>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponseModel<SurveyResponseModel>))]
     [HttpGet]
     public async Task<IActionResult> GetSurveysPage([FromQuery] GetPageRequest request, int page = 1)
     {
         var surveys = await _surveyService
             .GetSurveysAsync(page, request.PageSize, request.SortOrder, request.NameSearchTerm);
         
-        var pageResponse = new PageResponseModel<SurveyWithLinksResponseModel>
+        var pageResponse = new PageResponseModel<SurveyResponseModel>
         {
             NameSearchTerm = request.NameSearchTerm,
             SortOrder = request.SortOrder,
-            Page = _mapper.Map<PagedResultResponseModel<SurveyWithLinksResponseModel>>(surveys)
+            Page = _mapper.Map<PagedResultResponseModel<SurveyResponseModel>>(surveys)
         };
-  
-        foreach (var surveyWithLinksResponseModel in pageResponse.Page.Items)
-        {
-            surveyWithLinksResponseModel.SurveyLink = 
-                Url.Action(nameof(Answer), "Surveys", 
-                    new { surveyId = surveyWithLinksResponseModel.Id, id = Guid.NewGuid() });
-            surveyWithLinksResponseModel.ResultLink = "#";
-        }
 
         if (surveys.TotalPages < surveys.CurrentPage && surveys.TotalPages > 0)
         {
@@ -69,8 +61,11 @@ public sealed class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> AddSurvey([FromBody] SurveyRequestModel surveyModel)
     {
-        var authorId = User.GetUserId();
-        var author = await _userService.GetUserByIdAsync(authorId);
+        
+        //TODO: Add auth and uncomment
+        //var authorId = User.GetUserId();
+        //TODO: Change guid
+        var author = await _userService.GetUserByIdAsync(Guid.NewGuid());
 
         if (!ModelState.IsValid)
         {
@@ -164,7 +159,7 @@ public sealed class SurveysController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [HttpPost("{surveyId:guid}/answers")]
-    public async Task<IActionResult> Answer([FromBody]SurveyAnswerRequestModel surveyAnswerRequestModel, 
+    public async Task<IActionResult> Answer([FromBody]SurveyAnswerRequestModel surveyAnswerRequestModel,
         Guid surveyId)
     {
         if (surveyAnswerRequestModel.SurveyId != surveyId)
@@ -190,7 +185,7 @@ public sealed class SurveysController : Controller
     
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SurveyResponseModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
-    [HttpGet("{surveyId:guid}/answers/statistic")]
+    [HttpGet("{surveyId:guid}/statistics/")]
     public async Task<IActionResult> GetSurveyStatistic(Guid surveyId)
     {
         var surveyStatistic = await _surveyAnswersService.GetStatisticByIdAsync(surveyId);
@@ -236,7 +231,7 @@ public sealed class SurveysController : Controller
                         answer.TextAnswer = questionFromRequest.TextAnswer;
                         break;
                     case QuestionType.File:
-                        answer.FileAnswerId = questionFromRequest.FileId;
+                        answer.FileAnswerId = questionFromRequest.FileAnswer.FileId;
                         break;
                     case QuestionType.Rate:
                         answer.RateAnswer = questionFromRequest.RateAnswer;

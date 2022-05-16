@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using SurveyMe.Common.Pagination;
+﻿using SurveyMe.Common.Pagination;
 
 namespace SurveyMe.Common.Extensions;
 

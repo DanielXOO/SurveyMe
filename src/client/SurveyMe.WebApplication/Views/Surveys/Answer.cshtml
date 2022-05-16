@@ -1,0 +1,198 @@
+@using SurveyMe.DomainModels.Common
+@model SurveyMe.WebApplication.Models.ViewModels.SurveyViewModel
+
+<div id="survey-page">
+    <div id="title-card" class="d-flex justify-center flex-column p-5">
+       <p class="fs-2 text-center">@Model.Name</p>
+    </div>
+    @foreach (var question in Model.Questions)
+    {
+        <div class="question-card d-flex flex-column a p-5 mt-4" id="@question.Id">
+            <div class="text-center">
+                <p class="fs-4">@question.Title</p>
+            </div>
+            
+                @switch (question.Type)
+                {
+                    case QuestionType.Text:
+                        <div class="answer-field mt-3 text-center">
+                            <input class="answer-data w-75" name="@question.Id" type="text">
+                            <input type="hidden" class="question-type" value="text">
+                        </div>
+                        break;
+                    case QuestionType.Radio:
+                        foreach (var questionOption in question.Options)
+                        {
+                            <div class="answer-field">
+                                <input class="answer-data" value="@questionOption.Text" name="@question.Id"
+                                       id="@questionOption.Id" type="radio">
+                                <label for="@questionOption.Id">@questionOption.Text</label>
+                                <input type="hidden" class="question-type" value="radio">
+                            </div>
+                        }
+                        break;
+                    case QuestionType.Checkbox:
+                        foreach (var questionOption in question.Options)
+                        {
+                            <div class="answer-field">
+                                <input class="answer-data" value="@questionOption.Text" name="@question.Id" 
+                                    id="@questionOption.Id" type="checkbox">
+                                <label for="@questionOption.Id">@questionOption.Text</label>
+                                <input type="hidden" class="question-type" value="checkbox">
+                            </div>
+                        }
+                        break;
+                    case QuestionType.File:
+                        <div class="answer-field">
+                            <input class="answer-data" name="@question.Id" id="files" type="file">
+                            <input type="hidden" class="question-type" value="file">
+                        </div>
+                        break;
+                    case QuestionType.Rate:
+                        <div class="answer-field">
+                            <fieldset class="starability-basic">
+                                <input type="radio" id="@question.Id no-rate" class="input-no-rate" name="@question.Id" value="0" checked aria-label="No rating."/>
+                                <input type="radio" id="@question.Id star-20" name="@question.Id" value="20"/>
+                                <label for="@question.Id star-20" title="Terrible">1 star</label>
+                                <input type="radio" id="@question.Id star-40" name="@question.Id" value="40"/>
+                                <label for="@question.Id star-40" title="Not good">2 stars</label>
+                                <input type="radio" id="@question.Id star-60" name="@question.Id" value="60"/>
+                                <label for="@question.Id star-60" title="Average">3 stars</label>
+                                <input type="radio" id="@question.Id star-80" name="@question.Id" value="80"/>
+                                <label for="@question.Id star-80" title="Very good">4 stars</label>
+                                <input type="radio" id="@question.Id star-100" name="@question.Id" value="100"/>
+                                <label for="@question.Id star-100" title="Amazing">5 stars</label>
+                            </fieldset>
+                            <input type="hidden" class="question-type" value="rate">
+                        </div>
+                        break;
+                    case QuestionType.Scale:
+                        <div class="answer-field">
+                            <label for="@question.Id">0</label>
+                            <input class="answer-data" min="0" max="100" name="@question.Id" id="@question.Id" type="range">
+                            <label for="@question.Id">100</label>
+                            <input type="hidden" class="question-type" value="scale">
+                        </div>
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(question.Type), "No question type");
+                }
+            </div>
+    
+    }
+    
+    <button id="submit">Send answer</button>
+</div>
+
+@section Scripts
+{
+    <script>
+    let filesInfo = new Map();
+    
+    $('input:file').change(
+        async (e) => {
+            const file = new FormData();
+            file.append('fileModel', $(e.target).prop('files')[0])
+            await fetch('@Url.ActionLink("Upload", "Files")',
+            {
+                method: 'POST',
+                body: file
+            }).then(async (response) =>{
+                if (response.status > 399){
+                    alert(`Error ${response.status}`);
+                }
+                else {
+                    const data = await response.json();
+                    filesInfo.set(data.id, data);
+                    $(e.target).parent().append(`<input class="file-id" type="hidden" id="${data.id}">`)
+                }
+            });
+        });
+    
+        $(`#submit`).on(`click`,
+            async () => {
+                const answer = {
+                    surveyId: '@Model.Id',
+                    questions : $('.question-card').map(function (){
+                        const type = $(this).find('.question-type').val();   
+                        const questionCard = this;
+                        let value;
+                        let questionAnswer = {
+                            questionId: $(this).attr('id'),
+                            textAnswer: '',
+                            fileAnswer: {},
+                            rateAnswer: 0.0,
+                            scaleAnswer: 0.0,
+                            optionIds: []
+                        };
+                        switch (type)
+                        {
+                            case 'checkbox':
+                                $(this).find('.answer-data').each(function (){  
+                                    value = $(this).filter(':checked').val();
+                                    const id =  $(this).filter(':checked').attr('id');
+                                    if (value != null){
+                                         questionAnswer.optionIds.push(id);
+                                    }
+                                });
+                                break;
+                            case 'radio':
+                                $(this).find('.answer-data').each(function (){  
+                                    value = $(this).filter(':checked').val();
+                                    const id =  $(this).filter(':checked').attr('id');
+                                    if (value != null){
+                                        questionAnswer.optionIds.push(id);
+                                    }
+                                });
+                                break;
+                            case 'text':
+                                questionAnswer.textAnswer =  $(this).find('.answer-data').val();
+                                break;
+                            case 'file':
+                                const id = $(questionCard).find('.file-id').attr('id');
+                                const file = filesInfo.get(id);
+                                questionAnswer.fileAnswer = {
+                                    fileId: file.id,
+                                    contentType: file.contentType,
+                                    name: file.name,
+                                    extension: file.extension 
+                                };
+                                break;
+                            case 'rate':
+                                $(this).find('input[type=radio]').each(function (){  
+                                    value = $(this).filter(':checked').val();
+                                    if (value != null){
+                                        questionAnswer.rateAnswer = value * 0.01;
+                                    }
+                                });
+                                break;
+                            case 'scale':
+                                value =  $(this).find('input[type=range]').val();
+                                questionAnswer.scaleAnswer = value * 0.01;
+                                break;
+                        }
+                                                
+                        return questionAnswer;
+                    }).get()
+                }
+
+                $.ajax({
+                    type: "POST",
+                    accept : "application/json",
+                    contentType: "application/json",
+                    url: `@Url.ActionLink("Answer", "Surveys", new { id = string.Empty })`,
+                    data: JSON.stringify(answer),
+                    success: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
+                });
+            }
+        );
+    </script>
+}

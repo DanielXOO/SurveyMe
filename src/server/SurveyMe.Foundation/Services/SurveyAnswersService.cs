@@ -38,7 +38,11 @@ public class SurveySurveyAnswersService : ISurveyAnswersService
     public async Task<SurveyAnswersStatistic> GetStatisticByIdAsync(Guid surveyId)
     {
         var survey = await _unitOfWork.Surveys.GetByIdAsync(surveyId);
+        
+        //TODO: Get all answers for questions ids
         var surveyStatisticDb = await _unitOfWork.Answers.GetSurveyStatistic(survey);
+        
+        //TODO: match them
         var surveyStatistic = _mapper.Map<SurveyAnswersStatistic>(surveyStatisticDb);
 
         return surveyStatistic;

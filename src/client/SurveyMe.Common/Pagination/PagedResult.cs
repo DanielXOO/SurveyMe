@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SurveyMe.Common.Pagination;
+﻿namespace SurveyMe.Common.Pagination;
 
 public class PagedResult<TModel>
 {

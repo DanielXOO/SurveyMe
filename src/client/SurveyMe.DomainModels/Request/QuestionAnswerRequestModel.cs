@@ -12,7 +12,7 @@ public sealed class QuestionAnswerRequestModel
 
     public double ScaleAnswer { get; set; }
     
-    public Guid FileId { get; set; }
+    public FileAnswerRequestModel? FileAnswer { get; set; }
         
     public ICollection<Guid>? OptionIds { get; set; }
 }

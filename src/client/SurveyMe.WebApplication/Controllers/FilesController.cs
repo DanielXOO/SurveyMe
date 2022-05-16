@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Data.Abstracts;
-using SurveyMe.Services.Abstracts;
 
 namespace SurveyMe.WebApplication.Controllers;
 
 //TODO: Upload do not work
-public class FileController : Controller
+public class FilesController : Controller
 {
     private readonly IFileApi _fileApi;
     
     
-    public FileController(IFileApi fileApi)
+    public FilesController(IFileApi fileApi)
     {
         _fileApi = fileApi;
     }
@@ -20,11 +19,6 @@ public class FileController : Controller
     public async Task<IActionResult> Upload([FromForm]IFormFile fileModel)
     {
         var fileInfo = await _fileApi.UploadAsync(fileModel);
-
-        if (fileInfo == null)
-        {
-            //TODO: Throw exception
-        }
 
         return Ok(fileInfo);
     }

@@ -21,6 +21,7 @@ public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerReposito
         return answers;
     }
 
+    //TODO: Id survey (join)
     public async Task<SurveyAnswersStatistic> GetSurveyStatistic(Survey survey)
     {
         var surveyStatistic = new SurveyAnswersStatistic
@@ -58,12 +59,6 @@ public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerReposito
                     questionAnswersStatistic.AverageRate = questionAnswers
                         .Average(questionAnswer => questionAnswer.RateAnswer);
                     break;
-                case QuestionType.Scale:
-                    questionAnswersStatistic.AverageScale = questionAnswers
-                        .Average(questionAnswer => questionAnswer.RateAnswer);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(surveyQuestion.Type), "No such type");
             }
             surveyStatistic.QuestionAnswersStatistic.Add(questionAnswersStatistic);
         }

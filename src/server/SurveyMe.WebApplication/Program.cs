@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -12,7 +11,6 @@ using SurveyMe.Foundation.MapperConfigurations.Profiles;
 using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Extensions;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 

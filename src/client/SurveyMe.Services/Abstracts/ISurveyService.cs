@@ -5,7 +5,7 @@ namespace SurveyMe.Services.Abstracts;
 
 public interface ISurveyService
 {
-    Task<PageResponseModel<SurveyWithLinksResponseModel>> GetSurveysAsync(GetPageRequest request, int page = 1);
+    Task<PageResponseModel<SurveyResponseModel>> GetSurveysAsync(GetPageRequest request, int page = 1);
 
     Task AddSurveyAsync(SurveyRequestModel surveyModel);
 
@@ -13,5 +13,5 @@ public interface ISurveyService
 
     Task DeleteSurveyAsync(Guid id);
 
-    Task EditSurveyAsync(SurveyResponseModel surveyModel, Guid id);
+    Task EditSurveyAsync(SurveyRequestModel surveyModel, Guid id);
 }

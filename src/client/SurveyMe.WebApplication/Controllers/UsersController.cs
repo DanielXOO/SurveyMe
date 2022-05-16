@@ -1,25 +1,25 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Data.Abstracts;
 using SurveyMe.DomainModels.Request;
-using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Models.ViewModels;
 
 namespace SurveyMe.WebApplication.Controllers;
 
 public class UsersController : Controller
 {
-    private readonly IUserService _userService;
+    private readonly IUserApi _userApi;
     private readonly IMapper _mapper;
 
-    public UsersController(IUserService userService, IMapper mapper)
+    public UsersController(IMapper mapper, IUserApi userApi)
     {
-        _userService = userService;
         _mapper = mapper;
+        _userApi = userApi;
     }
     
     public async Task<IActionResult> Index(GetPageRequest request, int page = 1)
     {
-        var pageResponse = await _userService.GetUsersAsync(request);
+        var pageResponse = await _userApi.GetUsersAsync(request, page);
         var pageResponseViewModel = _mapper
             .Map<PageResponseViewModel<UserWithSurveysCountViewModel>>(pageResponse);
         
@@ -29,16 +29,16 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var user = await _userService.GetUserAsync(id);
+        var user = await _userApi.GetUserAsync(id);
         var userDeleteOrEditViewModel = _mapper.Map<UserDeleteOrEditViewModel>(user);
         
         return View(userDeleteOrEditViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteUser(UserDeleteOrEditViewModel user, string returnUrl = "")
+    public async Task<IActionResult> DeleteUser(UserDeleteOrEditViewModel user)
     {
-        await _userService.DeleteUserAsync(user.Id);
+        await _userApi.DeleteUserAsync(user.Id);
 
         return RedirectToAction("Index", "Users");
     }
@@ -46,7 +46,7 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> EditUser(Guid id)
     {
-        var user = await _userService.GetUserAsync(id);
+        var user = await _userApi.GetUserAsync(id);
         var userDeleteOrEditViewModel = _mapper.Map<UserDeleteOrEditViewModel>(user);
         
         return View(userDeleteOrEditViewModel);
@@ -57,7 +57,7 @@ public class UsersController : Controller
     {
         var user = _mapper.Map<UserDeleteOrEditRequestModel>(userDeleteOrEditViewModel);
         
-        await _userService.EditUserAsync(user, user.Id);
+        await _userApi.EditUserAsync(user, user.Id);
 
         return RedirectToAction("Index", "Users");
     }

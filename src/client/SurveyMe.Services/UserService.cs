@@ -18,32 +18,25 @@ public sealed class UserService : IUserService
     
     public async Task EditUserAsync(UserDeleteOrEditRequestModel userDeleteOrEditModel, Guid id)
     {
-        var url = $"{ServiceBasePath}/{id}";
-
-        await _userApi.EditUserAsync(url, userDeleteOrEditModel);
+        await _userApi.EditUserAsync(userDeleteOrEditModel, id);
     }
 
     public async Task<UserDeleteOrEditResponseModel> GetUserAsync(Guid id)
     {
-        var url = $"{ServiceBasePath}/{id}";
-
-        var user = await _userApi.GetUserAsync(url);
+        var user = await _userApi.GetUserAsync(id);
 
         return user;
     }
 
     public async Task<PageResponseModel<UserWithSurveysCountResponseModel>> GetUsersAsync(GetPageRequest request, int page = 1)
     {
-        var pagedResult = await _userApi
-            .GetUsersAsync(ServiceBasePath, request);
+        var pagedResult = await _userApi.GetUsersAsync(request, page);
 
         return pagedResult;
     }
 
     public async Task DeleteUserAsync(Guid id)
     {
-        var url = $"{ServiceBasePath}/{id}";
-        
-        await _userApi.DeleteUserAsync(url);
+        await _userApi.DeleteUserAsync(id);
     }
 }

@@ -16,7 +16,7 @@ public class SurveyService : ISurveyService
     }
     
     
-    public async Task<PageResponseModel<SurveyWithLinksResponseModel>> GetSurveysAsync(GetPageRequest request, int page = 1)
+    public async Task<PageResponseModel<SurveyResponseModel>> GetSurveysAsync(GetPageRequest request, int page = 1)
     {
        var surveys = await _surveyApi.GetSurveysAsync(request, page);
 
@@ -30,16 +30,18 @@ public class SurveyService : ISurveyService
 
     public async Task<SurveyResponseModel> GetSurveyAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var user = await _surveyApi.GetSurveyAsync(id);
+
+        return user;
     }
 
     public async Task DeleteSurveyAsync(Guid id)
     {
-        throw new NotImplementedException();
+        await _surveyApi.DeleteSurvey(id);
     }
 
-    public async Task EditSurveyAsync(SurveyResponseModel surveyModel, Guid id)
+    public async Task EditSurveyAsync(SurveyRequestModel surveyModel, Guid id)
     {
-        throw new NotImplementedException();
+        await _surveyApi.EditSurveyAsync(surveyModel, id);
     }
 }

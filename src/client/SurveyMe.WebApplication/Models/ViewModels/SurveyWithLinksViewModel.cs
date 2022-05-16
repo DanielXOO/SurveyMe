@@ -10,6 +10,6 @@
 
         public string? SurveyLink { get; set; }
 
-        public string ResultLink { get; set; }
+        public string? ResultLink { get; set; }
     }
 }

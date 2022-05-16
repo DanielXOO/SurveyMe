@@ -1,0 +1,35 @@
+@using SurveyMe.DomainModels.Common
+@model SurveyMe.WebApplication.Models.ViewModels.SurveyAnswersStatisticViewModel
+
+<div id="survey-page">
+    <div id="title-card" class="d-flex justify-center flex-column p-5">
+        <p class="fs-2 text-center">@Model.SurveyTitle</p>
+        <p class="fs-5 text-center">Survey answers count @Model.AnswersCount</p>
+    </div>
+    @foreach (var question in Model.QuestionAnswersStatistic)
+    {
+        <div class="question-card d-flex flex-column a p-5 mt-4">
+            <div class="text-center">
+                <p class="fs-4">@question.QuestionTitle</p>
+                <p class="fs-5">Question answers count @question.AnswersCount</p>
+            </div>
+            
+            @switch (question.QuestionType)
+            {
+                case QuestionType.Radio or QuestionType.Checkbox:
+                    <div class="answer-field">
+                        @foreach (var questionOption in question.OptionAnswersStatistic)
+                        {
+                            <p>Answer:@questionOption.OptionText Count:@questionOption.AnswersCount</p>
+                        }
+                    </div>
+                    break;
+                case QuestionType.Rate:
+                    <div class="answer-field">
+                        <p>Avarage rating @question.AverageRate</p>
+                    </div>
+                    break;
+            }
+        </div>
+    }
+</div>

@@ -9,8 +9,16 @@ public class SurveyProfile : Profile
 {
     public SurveyProfile()
     {
-        CreateMap<SurveyWithLinksResponseModel, SurveyWithLinksViewModel>();
+        CreateMap<SurveyResponseModel, SurveyWithLinksViewModel>();
         
-        CreateMap<SurveyAddOrEditViewModel, SurveyRequestModel>();
+        CreateMap<SurveyResponseModel, SurveyViewModel>();
+        
+        CreateMap<SurveyAddOrEditViewModel, SurveyRequestModel>().ReverseMap();
+        
+        CreateMap<SurveyAddOrEditViewModel, SurveyResponseModel>().ReverseMap();
+
+        CreateMap<AnswerViewModel, SurveyAnswerRequestModel>();
+
+        CreateMap<SurveyAnswersStatisticResponseModel, SurveyAnswersStatisticViewModel>();
     }
 }
