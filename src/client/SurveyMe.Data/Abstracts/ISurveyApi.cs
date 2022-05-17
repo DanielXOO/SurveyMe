@@ -20,10 +20,10 @@ public interface ISurveyApi
     public Task EditSurveyAsync([Body] SurveyRequestModel surveyModel, Guid id);
 
     [Delete("/surveys/{id}")]
-    Task DeleteSurvey(Guid id);
+    Task DeleteSurveyAsync(Guid id);
 
     [Post("/surveys/{surveyId}/answers")]
-    Task Answer([Body] SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId);
+    Task AnswerAsync([Body] SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId);
 
     [Get("/surveys/{surveyId}/statistics")]
     Task<SurveyAnswersStatisticResponseModel> GetSurveyStatisticAsync(Guid surveyId);

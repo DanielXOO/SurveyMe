@@ -37,11 +37,23 @@ public class SurveyService : ISurveyService
 
     public async Task DeleteSurveyAsync(Guid id)
     {
-        await _surveyApi.DeleteSurvey(id);
+        await _surveyApi.DeleteSurveyAsync(id);
     }
 
     public async Task EditSurveyAsync(SurveyRequestModel surveyModel, Guid id)
     {
         await _surveyApi.EditSurveyAsync(surveyModel, id);
+    }
+
+    public async Task AnswerAsync(SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId)
+    {
+        await _surveyApi.AnswerAsync(surveyAnswerRequestModel, surveyId);
+    }
+
+    public async Task<SurveyAnswersStatisticResponseModel> GetSurveyStatisticAsync(Guid surveyId)
+    {
+        var statistic = await _surveyApi.GetSurveyStatisticAsync(surveyId);
+
+        return statistic;
     }
 }

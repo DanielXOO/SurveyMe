@@ -51,7 +51,7 @@ public sealed class ErrorsHandleMiddleware
         {
             _logger.LogCritical(ex, "Api error");
             
-            var error = HandleErrorAsync(ex, StatusCodes.Status500InternalServerError);
+            var error = HandleErrorAsync(ex, (int)ex.StatusCode);
             await SendErrorResponse(context, error);
         }
         catch (Exception ex)

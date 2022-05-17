@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace SurveyMe.DomainModels;
 
 public sealed class QuestionAnswer

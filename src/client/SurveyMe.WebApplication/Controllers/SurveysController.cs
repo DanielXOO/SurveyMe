@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SurveyMe.Data.Abstracts;
 using SurveyMe.DomainModels.Request;
+using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Models.ViewModels;
 
 namespace SurveyMe.WebApplication.Controllers;
 
 public class SurveysController : Controller
 {
-    private readonly ISurveyApi _surveyApi;
+    private readonly ISurveyService _surveyService;
     private readonly IMapper _mapper;
     
-    public SurveysController(ISurveyApi surveyApi, IMapper mapper)
+    public SurveysController(ISurveyService surveyService, IMapper mapper)
     {
-        _surveyApi = surveyApi;
+        _surveyService = surveyService;
         _mapper = mapper;
     }
 
@@ -21,7 +21,7 @@ public class SurveysController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(GetPageRequest request, int page = 1)
     {
-        var pageResult = await _surveyApi.GetSurveysAsync(request, page);
+        var pageResult = await _surveyService.GetSurveysAsync(request, page);
 
         var pageResultViewModel = _mapper.Map<PageResponseViewModel<SurveyWithLinksViewModel>>(pageResult);
         
@@ -48,7 +48,7 @@ public class SurveysController : Controller
     public async Task<IActionResult> AddSurvey([FromBody] SurveyAddOrEditViewModel surveyModel)
     {
         var surveyRequest = _mapper.Map<SurveyRequestModel>(surveyModel);
-        await _surveyApi.AddSurveyAsync(surveyRequest);
+        await _surveyService.AddSurveyAsync(surveyRequest);
 
         return Ok();
     }
@@ -56,7 +56,7 @@ public class SurveysController : Controller
     [HttpGet("[action]/{id:guid}")]
     public async Task<IActionResult> EditSurvey(Guid id)
     {
-        var survey =  await _surveyApi.GetSurveyAsync(id);
+        var survey =  await _surveyService.GetSurveyAsync(id);
         var surveyView = _mapper.Map<SurveyAddOrEditViewModel>(survey);
         
         return View(surveyView);
@@ -66,7 +66,7 @@ public class SurveysController : Controller
     public async Task<IActionResult> EditSurvey([FromBody] SurveyAddOrEditViewModel surveyModel)
     {
         var surveyRequest = _mapper.Map<SurveyRequestModel>(surveyModel);
-        await _surveyApi.EditSurveyAsync(surveyRequest, surveyRequest.Id);
+        await _surveyService.EditSurveyAsync(surveyRequest, surveyRequest.Id);
         
         return Ok();
     }
@@ -80,7 +80,7 @@ public class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteConfirm(SurveyDeleteViewModel surveyModel)
     {
-        await _surveyApi.DeleteSurvey(surveyModel.Id);
+        await _surveyService.DeleteSurveyAsync(surveyModel.Id);
 
         return Redirect(surveyModel.ReturnUrl);
     }
@@ -88,7 +88,7 @@ public class SurveysController : Controller
     [HttpGet("[action]/{id:guid}")]
     public async Task<IActionResult> Answer(Guid id)
     {
-        var survey = await _surveyApi.GetSurveyAsync(id);
+        var survey = await _surveyService.GetSurveyAsync(id);
         var surveyView = _mapper.Map<SurveyViewModel>(survey);
             
         return View(surveyView);
@@ -98,7 +98,7 @@ public class SurveysController : Controller
     public async Task<IActionResult> Answer([FromBody]AnswerViewModel answerViewModel)
     {
         var answer = _mapper.Map<SurveyAnswerRequestModel>(answerViewModel);
-        await _surveyApi.Answer(answer, answer.SurveyId);
+        await _surveyService.AnswerAsync(answer, answer.SurveyId);
         
         return Ok();
     }
@@ -106,7 +106,7 @@ public class SurveysController : Controller
     [HttpGet]
     public async Task<IActionResult> SurveyStatistic(Guid id)
     {
-        var statistic = await _surveyApi.GetSurveyStatisticAsync(id);
+        var statistic = await _surveyService.GetSurveyStatisticAsync(id);
         var statisticView = _mapper.Map<SurveyAnswersStatisticViewModel>(statistic);
         
         return View(statisticView);

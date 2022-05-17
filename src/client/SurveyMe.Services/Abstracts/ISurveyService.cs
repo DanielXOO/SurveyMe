@@ -14,4 +14,8 @@ public interface ISurveyService
     Task DeleteSurveyAsync(Guid id);
 
     Task EditSurveyAsync(SurveyRequestModel surveyModel, Guid id);
+    
+    Task AnswerAsync(SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId);
+
+    Task<SurveyAnswersStatisticResponseModel> GetSurveyStatisticAsync(Guid surveyId);
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace SurveyMe.DomainModels;
 
 public class QuestionAnswerOption

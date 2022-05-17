@@ -1,7 +1,6 @@
 ﻿using SurveyMe.Common.Pagination;
 using SurveyMe.Data.Core;
 using Microsoft.EntityFrameworkCore;
-using SurveyMe.Data.Models;
 using SurveyMe.Data.Repositories.Abstracts;
 using SurveyMe.DomainModels;
 

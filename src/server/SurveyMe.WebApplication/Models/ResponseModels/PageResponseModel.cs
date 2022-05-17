@@ -2,7 +2,7 @@
 
 namespace SurveyMe.WebApplication.Models.ResponseModels;
 
-public class PageResponseModel<T>
+public sealed class PageResponseModel<T>
 {
     public string NameSearchTerm { get; set; }
 

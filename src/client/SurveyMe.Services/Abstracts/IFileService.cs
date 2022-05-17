@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
 
 namespace SurveyMe.Services.Abstracts;
 

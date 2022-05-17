@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SurveyMe.Foundation.Models;
+﻿namespace SurveyMe.Foundation.Models;
 
 public sealed class OptionAnswersStatistic
 {

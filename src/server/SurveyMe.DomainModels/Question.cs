@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SurveyMe.DomainModels;
+﻿namespace SurveyMe.DomainModels;
 
 public sealed class Question
 {

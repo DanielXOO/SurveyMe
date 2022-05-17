@@ -28,57 +28,68 @@ public sealed class ErrorsHandleMiddleware
         catch (BadRequestException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
-            await HandleErrorAsync(context, ex, StatusCodes.Status400BadRequest);
+            
+            var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
+            await SendErrorResponse(context, error);
         }
         catch (NotFoundException ex)
         {
             _logger.LogCritical(ex, "Not found error");
-            await HandleErrorAsync(context, ex, StatusCodes.Status404NotFound);
+            
+            var error = HandleErrorAsync(ex, StatusCodes.Status404NotFound);
+            await SendErrorResponse(context, error);
         }
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
-            await HandleErrorAsync(context, ex, StatusCodes.Status400BadRequest);
+            
+            var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
+            await SendErrorResponse(context, error);
         }
         catch (ForbidException ex)
         {
             _logger.LogCritical(ex, "User has not access");
-            await HandleErrorAsync(context, ex, StatusCodes.Status403Forbidden);
+            
+            var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
+            await SendErrorResponse(context, error);
         }
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "Server error");
-            await HandleErrorAsync(context, ex, StatusCodes.Status500InternalServerError);
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status500InternalServerError);
+            await SendErrorResponse(context, error);
         }
     }
 
 
-    /// <summary>
-    /// Handle exceptions and send response with error code
-    /// </summary>
-    /// <param name="context">http context</param>
-    /// <param name="ex">exception</param>
-    /// <param name="statusCode">http error status code</param>
-    private static async Task HandleErrorAsync(HttpContext context, Exception ex, int statusCode)
+    private static BaseErrorResponse HandleErrorAsync(Exception ex, int statusCode)
     {
-        context.Response.ContentType = "application/json";
-
-        context.Response.StatusCode = statusCode;
-
-        var response = new BaseErrorResponse
+        var errorResponse = new BaseErrorResponse
         {
-            StatusCode = context.Response.StatusCode,
-            Message = ReasonPhrases.GetReasonPhrase(context.Response.StatusCode),
-            Details = new List<string>()
+            StatusCode = statusCode,
+            Message =  ReasonPhrases.GetReasonPhrase(statusCode),
+            Details = ex.Message
         };
         
-        while (ex != null)
+        if (ex.InnerException != null)
         {
-            response.Details.Add(ex.Message);
-            ex = ex.InnerException;
+            errorResponse.InnerError = HandleErrorAsync(ex.InnerException, statusCode);
         }
+        
+        return errorResponse;
+    }
 
-        var jsonResponse = JsonSerializer.Serialize(response);
+    /// <summary>
+    /// Send server response with info about exception
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="errorResponse"></param>
+    private static async Task SendErrorResponse(HttpContext context, BaseErrorResponse errorResponse)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = errorResponse.StatusCode;
+        var jsonResponse = JsonSerializer.Serialize(errorResponse);
         
         await context.Response.WriteAsync(jsonResponse);
     }
