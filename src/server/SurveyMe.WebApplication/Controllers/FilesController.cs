@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using File = SurveyMe.Foundation.Models.File;
-using FileInfo = SurveyMe.DomainModels.FileInfo;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.WebApplication.Controllers;
 

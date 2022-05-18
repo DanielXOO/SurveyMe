@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SurveyMe.DomainModels.Response;
-using SurveyMe.WebApplication.Models.ViewModels;
+using SurveyMe.WebApplication.Models.ViewModels.Pages;
+using SurveyMe.WebApplication.Models.ViewModels.Surveys;
+using SurveyMe.WebApplication.Models.ViewModels.Users;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 

@@ -1,6 +1,6 @@
 ﻿using SurveyMe.Common.Pagination;
 using SurveyMe.Data.Contracts;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Surveys;
 
 namespace SurveyMe.Data.Repositories.Abstracts;
 

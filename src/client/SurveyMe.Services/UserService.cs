@@ -1,5 +1,6 @@
 ﻿using SurveyMe.Data.Abstracts;
-using SurveyMe.DomainModels.Request;
+using SurveyMe.DomainModels.Request.Queries;
+using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.DomainModels.Response;
 using SurveyMe.Services.Abstracts;
 

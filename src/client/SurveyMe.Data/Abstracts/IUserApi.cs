@@ -1,5 +1,6 @@
 ﻿using Refit;
-using SurveyMe.DomainModels.Request;
+using SurveyMe.DomainModels.Request.Queries;
+using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.DomainModels.Response;
 
 namespace SurveyMe.Data.Abstracts;

@@ -1,5 +1,5 @@
 @using SurveyMe.DomainModels.Common
-@model SurveyMe.WebApplication.Models.ViewModels.SurveyViewModel
+@model SurveyMe.WebApplication.Models.ViewModels.Surveys.SurveyViewModel
 
 <div id="survey-page">
     <div id="title-card" class="d-flex justify-center flex-column p-5">
@@ -117,17 +117,15 @@
                         const type = $(this).find('.question-type').val();   
                         const questionCard = this;
                         let value;
-                        let questionAnswer = {
-                            questionId: $(this).attr('id'),
-                            textAnswer: '',
-                            fileAnswer: {},
-                            rateAnswer: 0.0,
-                            scaleAnswer: 0.0,
-                            optionIds: []
-                        };
+                        let questionAnswer;
                         switch (type)
                         {
                             case 'checkbox':
+                                questionAnswer = {
+                                    questionType: type,
+                                    questionId: $(this).attr('id'),
+                                    optionIds: []
+                                };
                                 $(this).find('.answer-data').each(function (){  
                                     value = $(this).filter(':checked').val();
                                     const id =  $(this).filter(':checked').attr('id');
@@ -137,28 +135,47 @@
                                 });
                                 break;
                             case 'radio':
+                                questionAnswer = {
+                                    questionType: type,
+                                    questionId: $(this).attr('id'),
+                                    optionId: ""
+                                };
                                 $(this).find('.answer-data').each(function (){  
                                     value = $(this).filter(':checked').val();
                                     const id =  $(this).filter(':checked').attr('id');
                                     if (value != null){
-                                        questionAnswer.optionIds.push(id);
+                                        questionAnswer.optionId = id;
                                     }
                                 });
                                 break;
                             case 'text':
-                                questionAnswer.textAnswer =  $(this).find('.answer-data').val();
+                                questionAnswer = {
+                                    questionType: type,
+                                    questionId: $(this).attr('id'),
+                                    textAnswer:  $(this).find('.answer-data').val()
+                                };
                                 break;
                             case 'file':
                                 const id = $(questionCard).find('.file-id').attr('id');
                                 const file = filesInfo.get(id);
-                                questionAnswer.fileAnswer = {
-                                    fileId: file.id,
-                                    contentType: file.contentType,
-                                    name: file.name,
-                                    extension: file.extension 
+                                
+                                questionAnswer = {
+                                    questionType: type,
+                                    questionId: $(this).attr('id'),
+                                    file: {
+                                        fileId: file.id,
+                                        contentType: file.contentType,
+                                        name: file.name
+                                    }
                                 };
                                 break;
                             case 'rate':
+                                questionAnswer = {
+                                    questionType: type,
+                                    questionId: $(this).attr('id'),
+                                    rateAnswer: 0.0
+                                };
+                                
                                 $(this).find('input[type=radio]').each(function (){  
                                     value = $(this).filter(':checked').val();
                                     if (value != null){
@@ -167,6 +184,12 @@
                                 });
                                 break;
                             case 'scale':
+                                questionAnswer = {
+                                    questionType: type,  
+                                    questionId: $(this).attr('id'),
+                                    scaleAnswer: 0.0
+                                };
+                                
                                 value =  $(this).find('input[type=range]').val();
                                 questionAnswer.scaleAnswer = value * 0.01;
                                 break;
@@ -180,7 +203,7 @@
                     type: "POST",
                     accept : "application/json",
                     contentType: "application/json",
-                    url: `@Url.ActionLink("Answer", "Surveys", new { id = string.Empty })`,
+                    url: `@Url.ActionLink("Answer", "Surveys", new {id = string.Empty})`,
                     data: JSON.stringify(answer),
                     success: function (response) {
                         alert(response.responseText);

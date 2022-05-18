@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.RequestModels.QueryModels;
-using SurveyMe.WebApplication.Models.RequestModels.UserModels;
-using SurveyMe.WebApplication.Models.ResponseModels;
-using SurveyMe.WebApplication.Models.ResponseModels.PageModels;
-using SurveyMe.WebApplication.Models.ResponseModels.UserModels;
+using SurveyMe.WebApplication.Models.Requests.Queries;
+using SurveyMe.WebApplication.Models.Requests.Users;
+using SurveyMe.WebApplication.Models.Responses.Pages;
+using SurveyMe.WebApplication.Models.Responses.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
 

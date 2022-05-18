@@ -1,5 +1,5 @@
 @using SurveyMe.DomainModels.Common
-@model SurveyMe.WebApplication.Models.ViewModels.SurveyAddOrEditViewModel
+@model SurveyMe.WebApplication.Models.ViewModels.Surveys.SurveyAddOrEditViewModel
 
 <div id="survey-page" class="mt-4">
     <div class="errors" asp-validation-summary="All"></div>
@@ -32,26 +32,26 @@
                 let layout;
                                 
                 switch (question.type) {
-                    case @((int)QuestionType.Radio):
+                    case '@QuestionType.Radio':
                         layout = GenerateOptions(question.options, question.type);
                         break;
-                    case @((int)QuestionType.Checkbox):
+                    case '@QuestionType.Checkbox':
                         layout = GenerateOptions(question.options, question.type)
                         break;
-                    case @((int)QuestionType.Text):
+                    case '@QuestionType.Text':
                         layout = `
                             <input type="hidden" class="type" value="text">
                             `;
                         break;
-                    case @((int)QuestionType.File):
+                    case '@QuestionType.File':
                         layout = `
                                 <input type="hidden" class="type" value="file"> `;
                         break;
-                    case @((int)QuestionType.Rate):
+                    case '@QuestionType.Rate':
                         layout = `
                                 <input type="hidden" class="type" value="rate"> `;
                         break;
-                    case @((int)QuestionType.Scale):
+                    case '@QuestionType.Scale':
                         layout = `
                                 <input type="hidden" class="type" value="range"> `;
                         break;

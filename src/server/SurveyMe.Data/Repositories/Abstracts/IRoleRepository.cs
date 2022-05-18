@@ -1,5 +1,5 @@
 ﻿using SurveyMe.Data.Contracts;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
 
 namespace SurveyMe.Data.Repositories.Abstracts;
 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SurveyMe.Common.Time;
 using SurveyMe.Data;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Users;
 using ILogger = SurveyMe.Common.Logging.Abstracts.ILogger;
 
 namespace SurveyMe.WebApplication.Extensions;

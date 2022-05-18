@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using SurveyMe.Common.Pagination;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Surveys;
 using SurveyMe.Foundation.Models;
-using SurveyMe.WebApplication.Models.ResponseModels;
-using SurveyMe.WebApplication.Models.ResponseModels.PageModels;
-using SurveyMe.WebApplication.Models.ResponseModels.SurveyModels;
-using SurveyMe.WebApplication.Models.ResponseModels.UserModels;
+using SurveyMe.WebApplication.Models.Responses.Pages;
+using SurveyMe.WebApplication.Models.Responses.Surveys;
+using SurveyMe.WebApplication.Models.Responses.Users;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Questions;
 
 namespace SurveyMe.Foundation.Models;
 

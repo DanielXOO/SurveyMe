@@ -2,7 +2,8 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using SurveyMe.Data;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Users;
 using SurveyMe.Foundation.Models;
 using SurveyMe.Foundation.Services.Abstracts;
 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Common.Time;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Users;
 
 namespace SurveyMe.Data;
 

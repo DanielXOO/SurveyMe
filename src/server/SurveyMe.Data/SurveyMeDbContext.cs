@@ -1,5 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Answers;
+using SurveyMe.DomainModels.Questions;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Users;
 
 namespace SurveyMe.Data;
 

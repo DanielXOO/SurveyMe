@@ -1,8 +1,10 @@
 ﻿using SurveyMe.Data.Core;
 using SurveyMe.Data.Repositories;
 using SurveyMe.Data.Repositories.Abstracts;
-using SurveyMe.DomainModels;
-using FileInfo = SurveyMe.DomainModels.FileInfo;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Users;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Data;
 

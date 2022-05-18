@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SurveyMe.Common.Pagination;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Users;
 using SurveyMe.Foundation.Models;
 
 namespace SurveyMe.Foundation.Services.Abstracts;

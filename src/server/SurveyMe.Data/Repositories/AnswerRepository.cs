@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Core;
 using SurveyMe.Data.Models;
 using SurveyMe.Data.Repositories.Abstracts;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Surveys;
 
 namespace SurveyMe.Data.Repositories;
 
@@ -46,7 +46,7 @@ public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerReposito
 
             switch (surveyQuestion.Type)
             {
-                case QuestionType.Radio or QuestionType.Checkbox:
+                /*case QuestionType.Radio or QuestionType.Checkbox:
                     questionAnswersStatistic.OptionAnswersStatistic = surveyQuestion.Options
                         .Select(option => new OptionAnswersStatistic
                         {
@@ -58,7 +58,7 @@ public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerReposito
                 case QuestionType.Rate:
                     questionAnswersStatistic.AverageRate = questionAnswers
                         .Average(questionAnswer => questionAnswer.RateAnswer);
-                    break;
+                    break;*/
             }
             surveyStatistic.QuestionAnswersStatistic.Add(questionAnswersStatistic);
         }

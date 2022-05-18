@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
 
 namespace SurveyMe.Data.Stores;
 

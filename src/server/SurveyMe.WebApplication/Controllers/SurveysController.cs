@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Extensions;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Surveys;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.RequestModels.QueryModels;
-using SurveyMe.WebApplication.Models.RequestModels.SurveyModels;
-using SurveyMe.WebApplication.Models.ResponseModels;
-using SurveyMe.WebApplication.Models.ResponseModels.PageModels;
-using SurveyMe.WebApplication.Models.ResponseModels.StatisticModels;
-using SurveyMe.WebApplication.Models.ResponseModels.SurveyModels;
+using SurveyMe.WebApplication.Models.Requests.Queries;
+using SurveyMe.WebApplication.Models.Requests.Surveys;
+using SurveyMe.WebApplication.Models.Responses.Pages;
+using SurveyMe.WebApplication.Models.Responses.Statistics;
+using SurveyMe.WebApplication.Models.Responses.Surveys;
 
 namespace SurveyMe.WebApplication.Controllers;
 
@@ -197,60 +197,4 @@ public sealed class SurveysController : Controller
         
         return Ok(surveyStatisticResponseModel);
     }
-    
-    
-    
-    /// <summary>
-    /// Map SurveyAnswerRequestModel into SurveyAnswer
-    /// </summary>
-    /// <param name="answerRequestModel">Request model</param>
-    /// <returns>Answer domain model</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Throws if no such question type</exception>
-    /*private async Task<SurveyAnswer> CreateFromAnswerRequestModel(SurveyAnswerRequestModel answerRequestModel)
-    {
-        var existingSurvey = await _surveyService.GetSurveyByIdAsync(answerRequestModel.SurveyId);
-        
-        var answer = new SurveyAnswer
-        {
-            SurveyId = answerRequestModel.SurveyId,
-            QuestionAnswers = answerRequestModel.Questions.Select(questionFromRequest =>
-            {
-                var answer = new QuestionAnswer
-                {
-                    QuestionId = questionFromRequest.QuestionId
-                };
-                
-                var questionDb = existingSurvey.Questions
-                    .FirstOrDefault(q => q.Id == questionFromRequest.QuestionId);
-
-                switch (questionDb?.Type)
-                {
-                    case QuestionType.Checkbox or QuestionType.Radio:
-                        answer.Options = questionFromRequest.OptionIds.Select(optionId => new QuestionAnswerOption
-                        {
-                            QuestionOptionId = optionId
-                        }).ToList();
-                        break;
-                    case QuestionType.Text:
-                        answer.TextAnswer = questionFromRequest.TextAnswer;
-                        break;
-                    case QuestionType.File:
-                        answer.FileAnswerId = questionFromRequest.FileAnswer.File.Id;
-                        break;
-                    case QuestionType.Rate:
-                        answer.RateAnswer = questionFromRequest.RateAnswer;
-                        break;
-                    case QuestionType.Scale:
-                        answer.ScaleAnswer = questionFromRequest.ScaleAnswer;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(questionDb.Type), "No such type");
-                }
-
-                return answer;
-            }).ToList()
-        };
-
-        return answer;
-    }*/
 }

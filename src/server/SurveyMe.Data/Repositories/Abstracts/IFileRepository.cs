@@ -1,5 +1,5 @@
 using SurveyMe.Data.Contracts;
-using FileInfo = SurveyMe.DomainModels.FileInfo;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Data.Repositories.Abstracts;
 

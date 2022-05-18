@@ -1,4 +1,4 @@
-﻿using SurveyMe.DomainModels;
+﻿using SurveyMe.DomainModels.Users;
 
 namespace SurveyMe.Data.Models;
 

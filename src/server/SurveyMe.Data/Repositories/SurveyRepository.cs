@@ -2,7 +2,7 @@
 using SurveyMe.Data.Core;
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Repositories.Abstracts;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Surveys;
 
 namespace SurveyMe.Data.Repositories;
 

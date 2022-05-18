@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
-using SurveyMe.DomainModels.Request;
+using SurveyMe.DomainModels.Request.Answers;
+using SurveyMe.DomainModels.Request.Questions;
 using SurveyMe.DomainModels.Response;
-using SurveyMe.WebApplication.Models.ViewModels;
+using SurveyMe.WebApplication.Models.ViewModels.Answers;
+using SurveyMe.WebApplication.Models.ViewModels.Questions;
+using SurveyMe.WebApplication.Models.ViewModels.Statistics;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 
@@ -26,8 +29,25 @@ public class QuestionProfile : Profile
         
         CreateMap<QuestionOptionResponseModel, QuestionOptionViewModel>();
         
-        CreateMap<QuestionAnswerViewModel, QuestionAnswerRequestModel>();
+        CreateMap<BaseAnswerViewModel, BaseAnswerRequestModel>()
+            .Include<TextAnswerViewModel, TextAnswerRequestModel>()
+            .Include<RadioAnswerViewModel, RadioAnswerRequestModel>()
+            .Include<CheckboxAnswerViewModel, CheckboxAnswerRequestModel>()
+            .Include<RateAnswerViewModel, RateAnswerRequestModel>()
+            .Include<ScaleAnswerViewModel, ScaleAnswerRequestModel>()
+            .Include<FileAnswerViewModel, FileAnswerRequestModel>();
 
+
+        CreateMap<TextAnswerViewModel, TextAnswerRequestModel>();
+        
+        CreateMap<RadioAnswerViewModel, RadioAnswerRequestModel>();
+        
+        CreateMap<CheckboxAnswerViewModel, CheckboxAnswerRequestModel>();
+        
+        CreateMap<RateAnswerViewModel, RateAnswerRequestModel>();
+        
+        CreateMap<ScaleAnswerViewModel, ScaleAnswerRequestModel>();
+        
         CreateMap<FileAnswerViewModel, FileAnswerRequestModel>();
 
         CreateMap<QuestionAnswersStatisticResponseModel, QuestionAnswersStatisticViewModel>();

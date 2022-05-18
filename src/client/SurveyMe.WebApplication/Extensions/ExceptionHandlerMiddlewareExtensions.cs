@@ -1,4 +1,4 @@
-﻿using SurveyMe.WebApplication.Middleware;
+﻿using SurveyMe.WebApplication.Middlewares;
 
 namespace SurveyMe.WebApplication.Extensions;
 

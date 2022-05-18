@@ -1,13 +1,20 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Refit;
 using SurveyMe.Data.Abstracts;
 using SurveyMe.Services;
 using SurveyMe.Services.Abstracts;
+using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMvc();
+builder.Services.AddMvc().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.JsonSerializerOptions.Converters.Add(new AnswerViewJsonConverter());
+});
 
 var baseApiAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress"]);
 
@@ -29,7 +36,14 @@ builder.Services.AddRefitClient<IFileApi>()
         configuration.BaseAddress = baseApiAddress;
     });
 
-builder.Services.AddRefitClient<ISurveyApi>()
+builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
+    {
+        ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions
+        {
+            Converters = { new AnswerRequestJsonConverter(), new JsonStringEnumConverter()},
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase 
+        })
+    })
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = baseApiAddress;

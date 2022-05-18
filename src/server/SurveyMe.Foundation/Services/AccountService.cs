@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Time;
 using SurveyMe.Data;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Users;
 using SurveyMe.Foundation.Services.Abstracts;
 
 namespace SurveyMe.Foundation.Services;

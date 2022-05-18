@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Data.Abstracts;
-using SurveyMe.DomainModels.Request;
+using SurveyMe.DomainModels.Request.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
 

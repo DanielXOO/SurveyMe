@@ -1,5 +1,5 @@
 using System.IO;
-using FileInfo = SurveyMe.DomainModels.FileInfo;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Foundation.Models;
 

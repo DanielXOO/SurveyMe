@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using SurveyMe.DomainModels;
-using SurveyMe.WebApplication.Models.RequestModels.AnswersModels;
-using SurveyMe.WebApplication.Models.RequestModels.FileModels;
-using SurveyMe.WebApplication.Models.RequestModels.QuestionModels;
+using SurveyMe.DomainModels.Questions;
+using SurveyMe.WebApplication.Models.Requests.Answers;
+using SurveyMe.WebApplication.Models.Requests.Files;
 
 namespace SurveyMe.WebApplication.Converters;
 

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
-using SurveyMe.DomainModels.Request;
+using SurveyMe.DomainModels.Request.Queries;
+using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.Services.Abstracts;
-using SurveyMe.WebApplication.Models.ViewModels;
+using SurveyMe.WebApplication.Models.ViewModels.Pages;
+using SurveyMe.WebApplication.Models.ViewModels.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
 
