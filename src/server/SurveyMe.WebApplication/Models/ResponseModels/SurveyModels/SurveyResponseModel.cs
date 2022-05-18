@@ -1,4 +1,6 @@
-﻿namespace SurveyMe.WebApplication.Models.ResponseModels;
+﻿using SurveyMe.WebApplication.Models.ResponseModels.QuestionModels;
+
+namespace SurveyMe.WebApplication.Models.ResponseModels.SurveyModels;
 
 public sealed class SurveyResponseModel
 {

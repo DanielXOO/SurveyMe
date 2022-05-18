@@ -3,6 +3,9 @@ using SurveyMe.Common.Pagination;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Models;
 using SurveyMe.WebApplication.Models.ResponseModels;
+using SurveyMe.WebApplication.Models.ResponseModels.PageModels;
+using SurveyMe.WebApplication.Models.ResponseModels.SurveyModels;
+using SurveyMe.WebApplication.Models.ResponseModels.UserModels;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 

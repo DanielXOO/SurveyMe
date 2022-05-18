@@ -3,6 +3,8 @@ using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Models;
 using SurveyMe.WebApplication.Models.RequestModels.SurveyModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
+using SurveyMe.WebApplication.Models.ResponseModels.StatisticModels;
+using SurveyMe.WebApplication.Models.ResponseModels.SurveyModels;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 

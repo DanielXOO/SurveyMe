@@ -6,6 +6,8 @@ using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.RequestModels.QueryModels;
 using SurveyMe.WebApplication.Models.RequestModels.UserModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
+using SurveyMe.WebApplication.Models.ResponseModels.PageModels;
+using SurveyMe.WebApplication.Models.ResponseModels.UserModels;
 
 namespace SurveyMe.WebApplication.Controllers;
 

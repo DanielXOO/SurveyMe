@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.WebApplication.Models.ResponseModels;
+﻿namespace SurveyMe.WebApplication.Models.ResponseModels.PageModels;
 
 public sealed class PagedResultResponseModel<TModel>
 {

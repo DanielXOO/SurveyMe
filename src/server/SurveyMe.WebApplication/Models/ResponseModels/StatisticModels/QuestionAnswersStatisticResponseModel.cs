@@ -1,6 +1,6 @@
 ﻿using SurveyMe.DomainModels;
 
-namespace SurveyMe.WebApplication.Models.ResponseModels;
+namespace SurveyMe.WebApplication.Models.ResponseModels.StatisticModels;
 
 public sealed class QuestionAnswersStatisticResponseModel
 {
