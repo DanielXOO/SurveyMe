@@ -1,6 +1,6 @@
 ﻿using SurveyMe.Common.Pagination;
 
-namespace SurveyMe.WebApplication.Models.RequestModels;
+namespace SurveyMe.WebApplication.Models.RequestModels.QueryModels;
 
 public sealed class GetPageRequest
 {

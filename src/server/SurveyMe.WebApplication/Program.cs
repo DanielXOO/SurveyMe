@@ -13,6 +13,7 @@ using SurveyMe.Common.Time;
 using SurveyMe.Foundation.MapperConfigurations.Profiles;
 using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
+using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,13 +30,20 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    o.JsonSerializerOptions.Converters.Add(new AnswerJsonConverter());
 });
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc($"api-v{version}", new OpenApiInfo
     {
         Title = "SurveyMe Api",
-        Version = version
+        Version = version,
+        Contact = new OpenApiContact
+        {
+            Name = "DanielXOO",
+            Email = "dankulinkovich@gmail.com",
+            Url = new Uri("https://github.com/DanielXOO")
+        }
     });
 
     var filePath = Path.Combine(AppContext.BaseDirectory, "SurveyMe.WebApplication.xml");

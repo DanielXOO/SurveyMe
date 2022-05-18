@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.WebApplication.Models.RequestModels;
+﻿namespace SurveyMe.WebApplication.Models.RequestModels.QuestionModels;
 
 public sealed class QuestionOptionRequestModel
 {

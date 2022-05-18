@@ -4,7 +4,7 @@ using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.RequestModels;
+using SurveyMe.WebApplication.Models.RequestModels.UserModels;
 
 namespace SurveyMe.WebApplication.Controllers;
 

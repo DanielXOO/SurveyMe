@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Extensions;
 using SurveyMe.DomainModels;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.RequestModels;
+using SurveyMe.WebApplication.Models.RequestModels.QueryModels;
+using SurveyMe.WebApplication.Models.RequestModels.SurveyModels;
 using SurveyMe.WebApplication.Models.ResponseModels;
 
 namespace SurveyMe.WebApplication.Controllers;
@@ -14,7 +14,6 @@ namespace SurveyMe.WebApplication.Controllers;
 /// <summary>
 /// Controller for surveys and answers
 /// </summary>
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public sealed class SurveysController : Controller
@@ -177,10 +176,10 @@ public sealed class SurveysController : Controller
         var authorId = User.GetUserId();
         var author = await _userService.GetUserByIdAsync(authorId);
         
-        var answer = await CreateFromAnswerRequestModel(surveyAnswerRequestModel);
+        //var answer = await CreateFromAnswerRequestModel(surveyAnswerRequestModel);
 
         //pass authorId
-        await _surveyAnswersService.AddAnswerAsync(answer, author);
+        //await _surveyAnswersService.AddAnswerAsync(answer, author);
         
         return Ok();
     }
@@ -204,7 +203,7 @@ public sealed class SurveysController : Controller
     /// <param name="answerRequestModel">Request model</param>
     /// <returns>Answer domain model</returns>
     /// <exception cref="ArgumentOutOfRangeException">Throws if no such question type</exception>
-    private async Task<SurveyAnswer> CreateFromAnswerRequestModel(SurveyAnswerRequestModel answerRequestModel)
+    /*private async Task<SurveyAnswer> CreateFromAnswerRequestModel(SurveyAnswerRequestModel answerRequestModel)
     {
         var existingSurvey = await _surveyService.GetSurveyByIdAsync(answerRequestModel.SurveyId);
         
@@ -233,7 +232,7 @@ public sealed class SurveysController : Controller
                         answer.TextAnswer = questionFromRequest.TextAnswer;
                         break;
                     case QuestionType.File:
-                        answer.FileAnswerId = questionFromRequest.FileAnswer.FileId;
+                        answer.FileAnswerId = questionFromRequest.FileAnswer.File.Id;
                         break;
                     case QuestionType.Rate:
                         answer.RateAnswer = questionFromRequest.RateAnswer;
@@ -250,5 +249,5 @@ public sealed class SurveysController : Controller
         };
 
         return answer;
-    }
+    }*/
 }

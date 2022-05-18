@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.WebApplication.Models.RequestModels;
+﻿namespace SurveyMe.WebApplication.Models.RequestModels.UserModels;
 
 public sealed class UserEditRequestModel
 {
