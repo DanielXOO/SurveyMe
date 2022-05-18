@@ -4,7 +4,7 @@ using SurveyMe.DomainModels.Response;
 
 namespace SurveyMe.Data.Abstracts;
 
-
+[Headers("Authorization: Bearer")]
 public interface ISurveyApi
 {
     [Get("/surveys")]
@@ -17,13 +17,13 @@ public interface ISurveyApi
     public Task<SurveyResponseModel> GetSurveyAsync(Guid id);
 
     [Patch("/surveys/{id}")]
-    public Task EditSurveyAsync([Body] SurveyRequestModel surveyModel, Guid id);
+    public Task EditSurveyAsync([Body]SurveyRequestModel surveyModel, Guid id);
 
     [Delete("/surveys/{id}")]
     Task DeleteSurveyAsync(Guid id);
 
     [Post("/surveys/{surveyId}/answers")]
-    Task AnswerAsync([Body] SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId);
+    Task AnswerAsync([Body]SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId);
 
     [Get("/surveys/{surveyId}/statistics")]
     Task<SurveyAnswersStatisticResponseModel> GetSurveyStatisticAsync(Guid surveyId);

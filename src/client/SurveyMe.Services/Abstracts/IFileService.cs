@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
+﻿using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
+using File = SurveyMe.DomainModels.Common.File;
 
 namespace SurveyMe.Services.Abstracts;
 
 public interface IFileService
 {
-    Task<FileInfo> UploadAsync(IFormFile fileModel);
+    Task<FileInfo> UploadAsync(File fileModel);
 
-    Task<FileContentResult> LoadAsync(Guid id);
+    Task<File> LoadAsync(Guid id);
 }

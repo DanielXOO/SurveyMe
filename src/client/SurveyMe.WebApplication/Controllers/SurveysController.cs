@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels.Request;
 using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Models.ViewModels;
@@ -21,9 +22,14 @@ public class SurveysController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(GetPageRequest request, int page = 1)
     {
-        var pageResult = await _surveyService.GetSurveysAsync(request, page);
+        var pageResponse = await _surveyService.GetSurveysAsync(request, page);
 
-        var pageResultViewModel = _mapper.Map<PageResponseViewModel<SurveyWithLinksViewModel>>(pageResult);
+        if (pageResponse == null)
+        {
+            throw new NotFoundException("Page do not exists");
+        }
+        
+        var pageResultViewModel = _mapper.Map<PageResponseViewModel<SurveyWithLinksViewModel>>(pageResponse);
         
         foreach (var surveyWithLinksResponseModel in pageResultViewModel.Page.Items)
         {
@@ -47,6 +53,11 @@ public class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> AddSurvey([FromBody] SurveyAddOrEditViewModel surveyModel)
     {
+        if (surveyModel == null)
+        {
+            throw new BadRequestException("Survey add error");
+        }
+        
         var surveyRequest = _mapper.Map<SurveyRequestModel>(surveyModel);
         await _surveyService.AddSurveyAsync(surveyRequest);
 
@@ -57,6 +68,12 @@ public class SurveysController : Controller
     public async Task<IActionResult> EditSurvey(Guid id)
     {
         var survey =  await _surveyService.GetSurveyAsync(id);
+        
+        if (survey == null)
+        {
+            throw new NotFoundException("Survey do not exists");
+        }
+        
         var surveyView = _mapper.Map<SurveyAddOrEditViewModel>(survey);
         
         return View(surveyView);
@@ -65,6 +82,11 @@ public class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> EditSurvey([FromBody] SurveyAddOrEditViewModel surveyModel)
     {
+        if (surveyModel == null)
+        {
+            throw new BadRequestException("Survey edit error");
+        }
+        
         var surveyRequest = _mapper.Map<SurveyRequestModel>(surveyModel);
         await _surveyService.EditSurveyAsync(surveyRequest, surveyRequest.Id);
         
@@ -74,12 +96,22 @@ public class SurveysController : Controller
     [HttpGet]
     public IActionResult DeleteSurvey(SurveyDeleteViewModel surveyModel)
     {
+        if (surveyModel == null)
+        {
+            throw new BadRequestException("Survey delete error");
+        }
+        
         return View(surveyModel);
     }
 
     [HttpPost]
     public async Task<IActionResult> DeleteConfirm(SurveyDeleteViewModel surveyModel)
     {
+        if (surveyModel == null)
+        {
+            throw new BadRequestException("Survey delete error");
+        }
+        
         await _surveyService.DeleteSurveyAsync(surveyModel.Id);
 
         return Redirect(surveyModel.ReturnUrl);
@@ -89,6 +121,12 @@ public class SurveysController : Controller
     public async Task<IActionResult> Answer(Guid id)
     {
         var survey = await _surveyService.GetSurveyAsync(id);
+        
+        if (survey == null)
+        {
+            throw new NotFoundException("Survey do not exists");
+        }
+        
         var surveyView = _mapper.Map<SurveyViewModel>(survey);
             
         return View(surveyView);
@@ -97,6 +135,11 @@ public class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> Answer([FromBody]AnswerViewModel answerViewModel)
     {
+        if (answerViewModel == null)
+        {
+            throw new BadRequestException("Answering error");
+        }
+
         var answer = _mapper.Map<SurveyAnswerRequestModel>(answerViewModel);
         await _surveyService.AnswerAsync(answer, answer.SurveyId);
         
@@ -107,6 +150,12 @@ public class SurveysController : Controller
     public async Task<IActionResult> SurveyStatistic(Guid id)
     {
         var statistic = await _surveyService.GetSurveyStatisticAsync(id);
+        
+        if (statistic == null)
+        {
+            throw new NotFoundException("Statistics for survey do not exists");
+        }
+        
         var statisticView = _mapper.Map<SurveyAnswersStatisticViewModel>(statistic);
         
         return View(statisticView);

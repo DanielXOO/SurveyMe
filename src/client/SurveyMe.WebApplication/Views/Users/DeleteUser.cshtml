@@ -3,7 +3,7 @@
 <p class="title">Delete @Model.DisplayName?</p>
 
 <form method="post" asp-controller="Users"
-      asp-action="DeleteUser" asp-route-Id="@Model.Id"
+      asp-action="DeleteUserConfirm" asp-route-Id="@Model.Id"
       class="attention-form">
     <input type="submit" class="submit-button" value="Delete" />
     <input type="button" class="discard-button" value="Cancel" />

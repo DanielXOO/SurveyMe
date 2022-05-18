@@ -4,6 +4,7 @@ using SurveyMe.DomainModels.Response;
 
 namespace SurveyMe.Data.Abstracts;
 
+[Headers("Authorization: Bearer")]
 public interface IUserApi
 {
     [Get("/users")]

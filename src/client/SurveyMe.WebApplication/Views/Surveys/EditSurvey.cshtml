@@ -32,26 +32,26 @@
                 let layout;
                                 
                 switch (question.type) {
-                    case @((int) QuestionType.Radio):
+                    case @((int)QuestionType.Radio):
                         layout = GenerateOptions(question.options, question.type);
                         break;
-                    case @((int) QuestionType.Checkbox):
+                    case @((int)QuestionType.Checkbox):
                         layout = GenerateOptions(question.options, question.type)
                         break;
-                    case @((int) QuestionType.Text):
+                    case @((int)QuestionType.Text):
                         layout = `
                             <input type="hidden" class="type" value="text">
                             `;
                         break;
-                    case @((int) QuestionType.File):
+                    case @((int)QuestionType.File):
                         layout = `
                                 <input type="hidden" class="type" value="file"> `;
                         break;
-                    case @((int) QuestionType.Rate):
+                    case @((int)QuestionType.Rate):
                         layout = `
                                 <input type="hidden" class="type" value="rate"> `;
                         break;
-                    case @((int) QuestionType.Scale):
+                    case @((int)QuestionType.Scale):
                         layout = `
                                 <input type="hidden" class="type" value="range"> `;
                         break;

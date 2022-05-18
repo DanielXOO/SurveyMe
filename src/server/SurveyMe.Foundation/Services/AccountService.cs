@@ -11,30 +11,36 @@ namespace SurveyMe.Foundation.Services;
 
 public sealed class AccountService : IAccountService
 {
-    private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
     private readonly ISystemClock _systemClock;
     private readonly ISurveyMeUnitOfWork _unitOfWork;
     private readonly ITokenGenerator _tokenGenerator;
 
 
-    public AccountService(SignInManager<User> signInManager,
-        UserManager<User> userManager, ISystemClock systemClock, 
+    public AccountService(UserManager<User> userManager, ISystemClock systemClock, 
         ISurveyMeUnitOfWork unitOfWork, ITokenGenerator tokenGenerator)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
         _systemClock = systemClock;
         _unitOfWork = unitOfWork;
         _tokenGenerator = tokenGenerator;
     }
 
 
-    public async Task<ServiceResult> SignInAsync(string username, string password)
+    public async Task<string> SignInAsync(string username, string password)
     {
-        var result = await _signInManager.PasswordSignInAsync(username, password, true, false);
+        var user = await _unitOfWork.Users.GetByNameAsync(username); 
+        
+        var isCorrectPassword = await _userManager.CheckPasswordAsync(user, password);
 
-        return ConvertToServiceResult(result);
+        if (!isCorrectPassword)
+        {
+            throw new BadRequestException("Wrong username or password");
+        }
+
+        var token = _tokenGenerator.GenerateToken(user);
+
+        return token;
     }
 
     public async Task<ServiceResult> RegisterAsync(User user, string password)
@@ -42,29 +48,8 @@ public sealed class AccountService : IAccountService
         user.CreationTime = _systemClock.UtcNow;
         var result = await _userManager.CreateAsync(user, password);
         await _userManager.AddToRoleAsync(user, RoleNames.User);
-
         return ConvertToServiceResult(result);
     }
-
-    public async Task<string> GenerateTokenAsync(string userName)
-    {
-        var user = await _unitOfWork.Users.GetByNameAsync(userName);
-
-        if (user == null)
-        {
-            throw new NotFoundException("User not found");
-        }
-        
-        var token = _tokenGenerator.GenerateToken(user);
-
-        return token;
-    }
-
-    public async Task SignOutAsync()
-    {
-        await _signInManager.SignOutAsync();
-    }
-
 
     private static ServiceResult ConvertToServiceResult(IdentityResult result)
     {
@@ -73,19 +58,6 @@ public sealed class AccountService : IAccountService
             var errors = result.Errors.Select(error => error.Description).ToArray();
 
             return ServiceResult.CreateFailed(errors);
-        }
-
-        return ServiceResult.CreateSuccessful();
-    }
-
-    private static ServiceResult ConvertToServiceResult(SignInResult result)
-    {
-        if (!result.Succeeded)
-        {
-            return ServiceResult.CreateFailed(new[]
-            {
-                "Login or Password is not correct"
-            });
         }
 
         return ServiceResult.CreateSuccessful();

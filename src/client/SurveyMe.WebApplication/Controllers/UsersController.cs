@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels.Request;
 using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Models.ViewModels;
@@ -20,6 +21,12 @@ public class UsersController : Controller
     public async Task<IActionResult> Index(GetPageRequest request, int page = 1)
     {
         var pageResponse = await _userService.GetUsersAsync(request, page);
+        
+        if (pageResponse == null)
+        {
+            throw new NotFoundException("Page do not exists");
+        }
+        
         var pageResponseViewModel = _mapper
             .Map<PageResponseViewModel<UserWithSurveysCountViewModel>>(pageResponse);
         
@@ -27,20 +34,19 @@ public class UsersController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    public async Task<IActionResult> DeleteUser(UserDeleteOrEditViewModel user)
     {
-        var user = await _userService.GetUserAsync(id);
         var userDeleteOrEditViewModel = _mapper.Map<UserDeleteOrEditViewModel>(user);
         
         return View(userDeleteOrEditViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteUser(UserDeleteOrEditViewModel user)
+    public async Task<IActionResult> DeleteUserConfirm(UserDeleteOrEditViewModel user)
     {
         await _userService.DeleteUserAsync(user.Id);
 
-        return RedirectToAction("Index", "Users");
+        return Redirect(user.ReturnUrl);
     }
 
     [HttpGet]

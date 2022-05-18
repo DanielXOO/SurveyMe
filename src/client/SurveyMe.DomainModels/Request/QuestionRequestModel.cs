@@ -1,4 +1,6 @@
-﻿namespace SurveyMe.DomainModels.Request;
+﻿using SurveyMe.DomainModels.Common;
+
+namespace SurveyMe.DomainModels.Request;
 
 public sealed class QuestionRequestModel
 {
@@ -6,7 +8,7 @@ public sealed class QuestionRequestModel
 
     public string Title { get; set; }
     
-    public int Type { get; set; }
+    public QuestionType Type { get; set; }
 
     public ICollection<QuestionOptionRequestModel> Options { get; set; }
 }

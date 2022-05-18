@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels;
@@ -35,22 +34,13 @@ public sealed class AccountController : Controller
         {
             throw new BadRequestException("Invalid data");
         }
-
-        var result = await _accountService.SignInAsync(user.Login, user.Password);
-
-        if (!result.IsSuccessful)
-        {
-            throw new BadRequestException("Error SignIn");
-        }
-
-        var token = await _accountService.GenerateTokenAsync(user.Login);
-
+        
         var response = new
         {
-            access_token = token
+            access_token = await _accountService.SignInAsync(user.Login, user.Password)
         };
         
-        return Ok(response);
+        return Ok(response.access_token);
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,16 +62,8 @@ public sealed class AccountController : Controller
             throw new BadRequestException("Registration error");
         }
 
+        
+        
         return Ok();
-    }
-    
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> LogOut()
-    {
-        await _accountService.SignOutAsync();
-            
-        return Ok(); 
     }
 }

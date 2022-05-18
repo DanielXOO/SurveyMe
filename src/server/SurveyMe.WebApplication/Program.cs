@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data;
@@ -20,11 +23,13 @@ builder.Host.ConfigureLogging(logBuilder =>
     logBuilder.AddFile(builder.Configuration.GetSection("Serilog:FileLogging"));
 });
 
-var version = builder.Configuration
-    .GetSection("SwaggerConfiguration:ApiVersion").Value;
+var version = builder.Configuration["SwaggerConfiguration:ApiVersion"];
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc($"api-v{version}", new OpenApiInfo
@@ -39,6 +44,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.Configure<FileServiceConfiguration>(builder.Configuration.GetSection("FileService"));
+builder.Services.Configure<TokenGeneratorConfiguration>(builder.Configuration.GetSection("JwtTokenGeneratorService"));
 
 builder.Services.AddDbContext<SurveyMeDbContext>(options
     => options.UseSqlServer(builder.Configuration
@@ -53,7 +59,7 @@ builder.Services.AddAutoMapper(configuration =>
 });
 
 
-builder.Services.AddIdentity<User,Role>(options =>
+builder.Services.AddIdentityCore<User>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequireLowercase = true;
@@ -61,20 +67,32 @@ builder.Services.AddIdentity<User,Role>(options =>
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredLength = 8;
     })
-    .AddRoleStore<RoleStore>()
-    .AddUserStore<UserStore>();
+    .AddUserStore<UserStore>()
+    .AddRoles<Role>()
+    .AddRoleStore<RoleStore>();
 
-/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        var configuration = builder.Configuration
+            .GetSection("JwtTokenGeneratorService").Get<TokenGeneratorConfiguration>();
+        
+        //TODO: Change Audience and Issuer and enable validation
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
+            ValidIssuer = configuration.Issuer,
             ValidateAudience = false,
-            ValidateLifetime = false,
-            ValidateIssuerSigningKey = false
+            ValidAudience = configuration.Audience,
+            ValidateLifetime = true,
+            IssuerSigningKey = configuration.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true
         };
-    });*/
+        
+        options.SaveToken = true;
+    }).AddCookie();
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 

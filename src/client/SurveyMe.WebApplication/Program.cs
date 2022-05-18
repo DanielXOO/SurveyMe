@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Refit;
 using SurveyMe.Data.Abstracts;
 using SurveyMe.Services;
@@ -8,23 +9,33 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvc();
 
+var baseApiAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress"]);
+
+builder.Services.AddRefitClient<IAccountApi>()
+    .ConfigureHttpClient(configuration =>
+    {
+        configuration.BaseAddress = baseApiAddress;
+    });
+
 builder.Services.AddRefitClient<IUserApi>()
     .ConfigureHttpClient(configuration =>
     {
-        configuration.BaseAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress"]);
+        configuration.BaseAddress = baseApiAddress;
     });
 
 builder.Services.AddRefitClient<IFileApi>()
     .ConfigureHttpClient(configuration =>
     {
-        configuration.BaseAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress"]);
+        configuration.BaseAddress = baseApiAddress;
     });
 
 builder.Services.AddRefitClient<ISurveyApi>()
     .ConfigureHttpClient(configuration =>
     {
-        configuration.BaseAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress"]);
+        configuration.BaseAddress = baseApiAddress;
     });
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -44,6 +55,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

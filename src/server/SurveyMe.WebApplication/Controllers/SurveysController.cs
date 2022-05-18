@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Extensions;
@@ -13,6 +14,7 @@ namespace SurveyMe.WebApplication.Controllers;
 /// <summary>
 /// Controller for surveys and answers
 /// </summary>
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public sealed class SurveysController : Controller

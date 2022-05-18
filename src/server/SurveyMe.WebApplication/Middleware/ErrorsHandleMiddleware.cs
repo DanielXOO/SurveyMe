@@ -28,28 +28,28 @@ public sealed class ErrorsHandleMiddleware
         catch (BadRequestException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
             await SendErrorResponse(context, error);
         }
         catch (NotFoundException ex)
         {
             _logger.LogCritical(ex, "Not found error");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status404NotFound);
             await SendErrorResponse(context, error);
         }
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
             await SendErrorResponse(context, error);
         }
         catch (ForbidException ex)
         {
             _logger.LogCritical(ex, "User has not access");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
             await SendErrorResponse(context, error);
         }

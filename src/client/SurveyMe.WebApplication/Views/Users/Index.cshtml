@@ -1,4 +1,5 @@
-﻿@using SurveyMe.Common.Pagination
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@using SurveyMe.Common.Pagination
 @model SurveyMe.WebApplication.Models.ViewModels.PageResponseViewModel<SurveyMe.WebApplication.Models.ViewModels.UserWithSurveysCountViewModel>
 
 <div id="user-table">
@@ -53,18 +54,20 @@
                         <button type="button" class="btn btn-primary btn-action m-1"
                                 onclick="document.location='@Url.Action("EditUser", "Users", 
                                 new {
-                                    Name = item.UserName, 
-                                    Id = item.Id
+                                    DisplayName = item.DisplayName, 
+                                    Id = item.Id,
+                                    ReturnUrl = Context.Request.GetEncodedPathAndQuery()
                                 })'">
                             Edit
                         </button>
                         <button type="button" class="btn btn-danger btn-action m-1"
-                                onclick="document.location = '@Url.Action("DeleteUser", 
+                            onclick="document.location = '@Url.Action("DeleteUser", 
                                 "Users", new {
-                                    Id = item.Id, 
-                                    UserName = item.UserName
+                                Id = item.Id, 
+                                DisplayName = item.DisplayName,
+                                ReturnUrl = Context.Request.GetEncodedPathAndQuery()
                                 })'">
-                            Delete
+                        Delete
                         </button>
                     </div>
                 </td>
