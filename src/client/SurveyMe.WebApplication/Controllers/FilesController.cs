@@ -45,17 +45,4 @@ public class FilesController : Controller
         
         return Ok(fileInfo);
     }
-    
-    /*[HttpGet("{id:guid}")]
-    public async Task<IActionResult> Load(Guid id)
-    {
-        var file = await _fileService.LoadAsync(id);
-
-        if (file == null)
-        {
-            throw new NotFoundException("No such file");
-        }
-        
-        return File(file.Data, file.Info.ContentType, file.Info.Name);
-    }*/
 }

@@ -10,7 +10,4 @@ public interface IFileApi
     [Multipart]
     [Post("/files")]
     Task<FileInfo> UploadAsync([AliasAs("file")]StreamPart stream);
-    
-    [Get("/files/{id}")]
-    Task<File> LoadAsync(Guid id);
 }

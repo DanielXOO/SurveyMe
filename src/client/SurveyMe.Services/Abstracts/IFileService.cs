@@ -7,6 +7,4 @@ namespace SurveyMe.Services.Abstracts;
 public interface IFileService
 {
     Task<FileInfo> UploadAsync(StreamPart file);
-
-    Task<File> LoadAsync(Guid id);
 }

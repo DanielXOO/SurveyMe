@@ -22,11 +22,4 @@ public sealed class FileService : IFileService
 
         return fileInfo;
     }
-
-    public async Task<File> LoadAsync(Guid id)
-    {
-        var file = await _fileApi.LoadAsync(id);
-
-        return file;
-    }
 }

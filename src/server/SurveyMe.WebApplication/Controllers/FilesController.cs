@@ -69,19 +69,4 @@ public class FilesController : Controller
         
         return Ok(fileInfo);
     }
-    
-    /// <summary>
-    /// Action for display files or starts download of it
-    /// </summary>
-    /// <param name="id">file id</param>
-    /// <returns>file</returns>
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(File))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
-    [HttpGet("{id:guid}")]
-    public async Task<File> Load(Guid id)
-    {
-        var file = await _fileService.LoadAsync(id);
-            
-        return file;
-    }
 }
