@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
-using SurveyMe.DomainModels.Answers;
 using SurveyMe.WebApplication.Models.Requests.Files;
+using SurveyMe.WebApplication.Models.Responses.Files;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 
-public class FileProfile : Profile
+public sealed class FileProfile : Profile
 {
     public FileProfile()
     {
-        CreateMap<FileAnswer, FileInfoResponseModel>();
+        CreateMap<FileInfo, FileInfoResponseModel>();
+        
+        CreateMap<FileInfoRequestModel, FileInfo>();
     }
 }

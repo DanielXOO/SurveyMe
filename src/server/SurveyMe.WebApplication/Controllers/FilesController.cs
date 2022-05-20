@@ -6,7 +6,9 @@ using SurveyMe.DomainModels.Answers;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.Requests.Files;
+using SurveyMe.WebApplication.Models.Responses.Files;
 using File = SurveyMe.Foundation.Models.Files.File;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 
 namespace SurveyMe.WebApplication.Controllers;
@@ -39,7 +41,7 @@ public class FilesController : Controller
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileAnswer))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseErrorResponse))]
     [HttpPost]
-    public async Task<IActionResult> Upload(IFormFile file)
+    public async Task<IActionResult> Upload([FromForm]IFormFile file)
     {
 
         var getContentResult = _fileExtensionContentTypeProvider
@@ -53,9 +55,9 @@ public class FilesController : Controller
         var fileAnswer = new File()
         {
             Data = file.OpenReadStream(),
-            Info = new FileAnswer()
+            Info = new FileInfo()
             {
-                Id = Guid.NewGuid(),
+                FileId = Guid.NewGuid(),
                 Name = file.FileName,
                 ContentType = mime
             }

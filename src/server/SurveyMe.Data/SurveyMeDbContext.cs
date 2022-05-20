@@ -4,6 +4,7 @@ using SurveyMe.DomainModels.Questions;
 using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Surveys;
 using SurveyMe.DomainModels.Users;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Data;
 
@@ -105,5 +106,14 @@ public class SurveyMeDbContext : DbContext
         modelBuilder.Entity<ScaleAnswer>();
         
         modelBuilder.Entity<OptionAnswer>();
+
+        modelBuilder.Entity<FileInfo>(b =>
+        {
+            b.HasKey(e => e.FileId);
+            
+            b.HasOne(e => e.FileAnswer)
+                .WithOne(e => e.FileInfo)
+                .HasForeignKey<FileAnswer>(e => e.FileInfoId);
+        });
     }
 }

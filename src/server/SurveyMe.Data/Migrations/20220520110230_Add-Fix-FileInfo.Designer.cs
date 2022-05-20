@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyMe.Data;
 
@@ -11,9 +12,10 @@ using SurveyMe.Data;
 namespace SurveyMe.Data.Migrations
 {
     [DbContext(typeof(SurveyMeDbContext))]
-    partial class SurveyMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220520110230_Add-Fix-FileInfo")]
+    partial class AddFixFileInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

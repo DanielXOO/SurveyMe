@@ -31,9 +31,7 @@ public sealed class QuestionProfile : Profile
 
         CreateMap<TextAnswerRequestModel, TextAnswer>()
             .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.TextAnswer));
-        CreateMap<FileAnswerRequestModel, FileAnswer>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.File.Name))
-            .ForMember(dest => dest.ContentType, opt => opt.MapFrom(src => src.File.ContentType));
+        CreateMap<FileAnswerRequestModel, FileAnswer>();
         CreateMap<RateAnswerRequestModel, RateAnswer>()
             .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.RateAnswer));
         CreateMap<ScaleAnswerRequestModel, ScaleAnswer>()

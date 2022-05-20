@@ -5,6 +5,7 @@ using SurveyMe.DomainModels.Answers;
 using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Surveys;
 using SurveyMe.DomainModels.Users;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Data;
 
@@ -23,7 +24,7 @@ public class SurveyMeUnitOfWork : UnitOfWork, ISurveyMeUnitOfWork
         => (ISurveyRepository) GetRepository<Survey>();
 
     public IFileRepository Files
-        => (IFileRepository) GetRepository<FileAnswer>();
+        => (IFileRepository) GetRepository<FileInfo>();
 
 
     public SurveyMeUnitOfWork(SurveyMeDbContext dbContext)
@@ -33,6 +34,6 @@ public class SurveyMeUnitOfWork : UnitOfWork, ISurveyMeUnitOfWork
         AddSpecificRepository<Role, RoleRepository>();
         AddSpecificRepository<Survey, SurveyRepository>();
         AddSpecificRepository<SurveyAnswer, AnswerRepository>();
-        AddSpecificRepository<FileAnswer, FileRepository>();
+        AddSpecificRepository<FileInfo, FileRepository>();
     }
 }

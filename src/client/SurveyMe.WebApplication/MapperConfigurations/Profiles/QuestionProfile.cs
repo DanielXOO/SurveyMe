@@ -47,7 +47,7 @@ public class QuestionProfile : Profile
         CreateMap<RateAnswerViewModel, RateAnswerRequestModel>();
         
         CreateMap<ScaleAnswerViewModel, ScaleAnswerRequestModel>();
-        
+
         CreateMap<FileAnswerViewModel, FileAnswerRequestModel>();
 
         CreateMap<QuestionAnswersStatisticResponseModel, QuestionAnswersStatisticViewModel>();

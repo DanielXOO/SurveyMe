@@ -11,7 +11,9 @@ public class SurveyStatisticProfile : Profile
     public SurveyStatisticProfile()
     {
         CreateMap<OptionAnswersStatisticDb, OptionAnswersStatistic>();
+        
         CreateMap<QuestionAnswersStatisticDb, QuestionAnswersStatistic>();
+        
         CreateMap<SurveyAnswersStatisticDb, SurveyAnswersStatistic>();
     }
 }

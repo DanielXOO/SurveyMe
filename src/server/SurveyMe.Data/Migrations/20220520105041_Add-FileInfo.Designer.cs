@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyMe.Data;
 
@@ -11,9 +12,10 @@ using SurveyMe.Data;
 namespace SurveyMe.Data.Migrations
 {
     [DbContext(typeof(SurveyMeDbContext))]
-    partial class SurveyMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220520105041_Add-FileInfo")]
+    partial class AddFileInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,11 +115,17 @@ namespace SurveyMe.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("FileAnswerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FileId");
+
+                    b.HasIndex("FileAnswerId")
+                        .IsUnique();
 
                     b.ToTable("FileInfo");
                 });
@@ -241,13 +249,6 @@ namespace SurveyMe.Data.Migrations
                 {
                     b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
 
-                    b.Property<Guid>("FileInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("FileInfoId")
-                        .IsUnique()
-                        .HasFilter("[FileInfoId] IS NOT NULL");
-
                     b.HasDiscriminator().HasValue(3);
                 });
 
@@ -353,6 +354,17 @@ namespace SurveyMe.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SurveyMe.DomainModels.Files.FileInfo", b =>
+                {
+                    b.HasOne("SurveyMe.DomainModels.Answers.FileAnswer", "FileAnswer")
+                        .WithOne("FileInfo")
+                        .HasForeignKey("SurveyMe.DomainModels.Files.FileInfo", "FileAnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileAnswer");
+                });
+
             modelBuilder.Entity("SurveyMe.DomainModels.Questions.Question", b =>
                 {
                     b.HasOne("SurveyMe.DomainModels.Surveys.Survey", "Survey")
@@ -386,26 +398,9 @@ namespace SurveyMe.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Answers.FileAnswer", b =>
-                {
-                    b.HasOne("SurveyMe.DomainModels.Files.FileInfo", "FileInfo")
-                        .WithOne("FileAnswer")
-                        .HasForeignKey("SurveyMe.DomainModels.Answers.FileAnswer", "FileInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FileInfo");
-                });
-
             modelBuilder.Entity("SurveyMe.DomainModels.Answers.SurveyAnswer", b =>
                 {
                     b.Navigation("QuestionsAnswers");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.Files.FileInfo", b =>
-                {
-                    b.Navigation("FileAnswer")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SurveyMe.DomainModels.Questions.Question", b =>
@@ -432,6 +427,12 @@ namespace SurveyMe.Data.Migrations
             modelBuilder.Entity("SurveyMe.DomainModels.Answers.CheckboxAnswer", b =>
                 {
                     b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.FileAnswer", b =>
+                {
+                    b.Navigation("FileInfo")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

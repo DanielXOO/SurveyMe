@@ -39,7 +39,7 @@ public class FilesController : Controller
             throw new BadRequestException("No such file type");
         }
 
-        var file = new StreamPart(fileStream, fileModel.FileName, mime, fileModel.Name);
+        var file = new StreamPart(fileStream, fileModel.FileName, mime);
         
         var fileInfo = await _fileService.UploadAsync(file);
         

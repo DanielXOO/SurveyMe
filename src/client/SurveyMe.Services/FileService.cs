@@ -16,9 +16,9 @@ public sealed class FileService : IFileService
     }
 
 
-    public async Task<FileInfo> UploadAsync(StreamPart file)
+    public async Task<FileInfo> UploadAsync(StreamPart stream)
     {
-        var fileInfo = await _fileApi.UploadAsync(file);
+        var fileInfo = await _fileApi.UploadAsync(stream);
 
         return fileInfo;
     }

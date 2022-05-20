@@ -2,7 +2,7 @@
 
 public class FileInfoViewModel
 {
-    public Guid Id { get; set; }
+    public Guid FileId { get; set; }
 
     public string ContentType { get; set; }
 

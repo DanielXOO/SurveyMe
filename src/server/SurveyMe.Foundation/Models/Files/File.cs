@@ -1,5 +1,5 @@
 using System.IO;
-using SurveyMe.DomainModels.Answers;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Foundation.Models.Files;
 
@@ -7,5 +7,5 @@ public class File
 {
     public Stream Data { get; set; }
 
-    public FileAnswer Info { get; set; }
+    public FileInfo Info { get; set; }
 }

@@ -101,9 +101,9 @@
                 processData: false,
                 data: file,
                 success: function (response) {
-                    const data = response.json();
-                    filesInfo.set(data.id, data);
-                    $(e.target).parent().append(`<input class="file-id" type="hidden" id="${data.id}">`)
+                    const data = response;
+                    filesInfo.set(data.fileId, data);
+                    $(e.target).parent().append(`<input class="file-id" type="hidden" id="${data.fileId}">`)
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -138,6 +138,8 @@
                                          questionAnswer.optionIds.push(id);
                                     }
                                 });
+                                if (questionAnswer.optionIds.length === 0)
+                                    return;
                                 break;
                             case 'radio':
                                 questionAnswer = {
@@ -152,6 +154,8 @@
                                         questionAnswer.optionId = id;
                                     }
                                 });
+                                if (questionAnswer.optionId === "")
+                                    return;
                                 break;
                             case 'text':
                                 questionAnswer = {
@@ -164,14 +168,18 @@
                                 const id = $(questionCard).find('.file-id').attr('id');
                                 const file = filesInfo.get(id);
                                 
+                                if (file === undefined)
+                                    return;
+                                
                                 questionAnswer = {
                                     questionType: type,
                                     questionId: $(this).attr('id'),
                                     file: {
-                                        fileId: file.id,
+                                        fileId: id,
                                         contentType: file.contentType,
-                                        name: file.name
-                                    }
+                                        name: file.name,
+                                    },
+                                    fileInfoId: id
                                 };
                                 break;
                             case 'rate':

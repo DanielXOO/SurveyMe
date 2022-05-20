@@ -78,9 +78,12 @@ public class AnswerViewJsonConverter : JsonConverter<BaseAnswerViewModel>
                     case "scaleAnswer":
                         ((ScaleAnswerViewModel) answer).ScaleAnswer = reader.GetDouble();
                         break;
-                    case "fileId":
+                    case "file":
                         ((FileAnswerViewModel) answer).File =
                             JsonSerializer.Deserialize<FileInfoViewModel>(ref reader, options);
+                        break;
+                    case "fileInfoId":
+                        ((FileAnswerViewModel) answer).FileInfoId = Guid.Parse(reader.GetString());
                         break;
                     case "optionIds":
                         ((CheckboxAnswerViewModel) answer).OptionIds =

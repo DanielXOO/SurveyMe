@@ -1,8 +1,8 @@
-﻿namespace SurveyMe.WebApplication.Models.Requests.Files;
+﻿namespace SurveyMe.WebApplication.Models.Responses.Files;
 
-public class FileInfoRequestModel
+public class FileInfoResponseModel
 {
-    public Guid Id { get; set; }
+    public Guid FileId { get; set; }
 
     public string ContentType { get; set; }
 

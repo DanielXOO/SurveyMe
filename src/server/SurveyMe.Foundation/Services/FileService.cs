@@ -8,6 +8,7 @@ using SurveyMe.Common.Exceptions;
 using SurveyMe.Foundation.Models.Configurations;
 using File = SurveyMe.Foundation.Models.Files.File;
 
+
 namespace SurveyMe.Foundation.Services;
 
 public class FileService : IFileService
@@ -26,7 +27,7 @@ public class FileService : IFileService
     public async Task UploadAsync(File file)
     {
         var fileExtension = Path.GetExtension(file.Info.Name);
-        var fullPath = $"{_configuration.Value.BasePath}/{file.Info.Id}{fileExtension}";
+        var fullPath = $"{_configuration.Value.BasePath}/{file.Info.FileId}{fileExtension}";
 
         if (!Directory.Exists(_configuration.Value.BasePath))
         {
@@ -51,7 +52,7 @@ public class FileService : IFileService
         }
             
         var fileExtension = Path.GetExtension(file.Name);
-        var fullPath = $"{_configuration.Value.BasePath}/{file.Id}{fileExtension}";
+        var fullPath = $"{_configuration.Value.BasePath}/{file.FileId}{fileExtension}";
         var streamWrite = new FileStream(fullPath, FileMode.Open);
 
         var fileModel = new File
