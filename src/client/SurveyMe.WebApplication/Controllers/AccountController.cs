@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SurveyMe.Data.Abstracts;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SurveyMe.DomainModels.Request.Users;
+using SurveyMe.Services.Abstracts;
+using SurveyMe.WebApplication.Models.ViewModels.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly IAccountApi _accountApi;
+    private readonly IAccountService _accountService;
+    private readonly IMapper _mapper;
     
-    public AccountController(IAccountApi accountApi)
+    public AccountController(IAccountService accountService, IMapper mapper)
     {
-        _accountApi = accountApi;
+        _accountService = accountService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -22,7 +26,12 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(UserLoginRequestModel user)
     {
-        var token = await _accountApi.Login(user);
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
+        
+        var token = await _accountService.LoginAsync(user);
         
         Response.Cookies.Append("X-Access-Token", token,
             new CookieOptions 
@@ -32,5 +41,25 @@ public class AccountController : Controller
             });
         
         return RedirectToAction("Index", "Surveys");
+    }
+
+    public IActionResult Registration()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Registration(UserRegistrationViewModel user)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
+        
+        var userRequest = _mapper.Map<UserRegistrationRequestModel>(user);
+        
+        await _accountService.RegistrationAsync(userRequest);
+        
+        return RedirectToAction("Login", "Account");
     }
 }

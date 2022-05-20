@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Refit;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Services.Abstracts;
-using File = SurveyMe.DomainModels.Common.File;
-using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
 
 namespace SurveyMe.WebApplication.Controllers;
 

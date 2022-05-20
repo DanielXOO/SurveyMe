@@ -2,7 +2,6 @@
 using SurveyMe.Data.Abstracts;
 using SurveyMe.Services.Abstracts;
 using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
-using File = SurveyMe.DomainModels.Common.File;
 
 namespace SurveyMe.Services;
 

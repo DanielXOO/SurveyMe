@@ -59,6 +59,7 @@ builder.Services.AddTransient<AuthHeaderHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

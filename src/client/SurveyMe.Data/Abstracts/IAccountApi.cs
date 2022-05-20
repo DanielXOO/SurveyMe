@@ -6,8 +6,8 @@ namespace SurveyMe.Data.Abstracts;
 public interface IAccountApi
 {
     [Post("/account/login")]
-    Task<string> Login([Body]UserLoginRequestModel user);
+    Task<string> LoginAsync([Body]UserLoginRequestModel user);
 
     [Post("/account/registration")]
-    Task Registration([Body]UserRegistrationRequestModel userModel);
+    Task RegistrationAsync([Body]UserRegistrationRequestModel userModel);
 }
