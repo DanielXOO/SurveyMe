@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using Refit;
 using SurveyMe.Common.Exceptions;
@@ -50,9 +51,16 @@ public sealed class ErrorsHandleMiddleware
         catch (ApiException ex)
         {
             _logger.LogCritical(ex, "Api error");
+
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                context.Response.Redirect("/Account/Login");
+                
+                return;
+            }
             
             var error = HandleErrorAsync(ex, (int)ex.StatusCode);
-            await SendErrorResponse(context, error);
+            
         }
         catch (Exception ex)
         {

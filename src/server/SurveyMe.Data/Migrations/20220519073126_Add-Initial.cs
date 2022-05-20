@@ -1,26 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SurveyMe.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class AddInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "FileInfo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileInfo", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -78,8 +66,7 @@ namespace SurveyMe.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastChangeDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -119,7 +106,7 @@ namespace SurveyMe.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SurveyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SurveyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,8 +115,7 @@ namespace SurveyMe.Data.Migrations
                         name: "FK_SurveyAnswer_Survey_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Survey",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SurveyAnswer_Users_UserId",
                         column: x => x.UserId,
@@ -157,97 +143,73 @@ namespace SurveyMe.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuestionAnswer",
+                name: "BaseAnswer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuestionType = table.Column<int>(type: "int", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SurveyAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TextAnswer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RateAnswer = table.Column<double>(type: "float", nullable: false),
-                    ScaleAnswer = table.Column<double>(type: "float", nullable: false),
-                    FileAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Rate = table.Column<double>(type: "float", nullable: true),
+                    Scale = table.Column<double>(type: "float", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestionAnswer", x => x.Id);
+                    table.PrimaryKey("PK_BaseAnswer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuestionAnswer_SurveyAnswer_SurveyAnswerId",
+                        name: "FK_BaseAnswer_Question_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Question",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BaseAnswer_SurveyAnswer_SurveyAnswerId",
                         column: x => x.SurveyAnswerId,
                         principalTable: "SurveyAnswer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileAnswer",
+                name: "OptionAnswer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FileInfoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuestionAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CheckboxAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FileAnswer", x => x.Id);
+                    table.PrimaryKey("PK_OptionAnswer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FileAnswer_FileInfo_FileInfoId",
-                        column: x => x.FileInfoId,
-                        principalTable: "FileInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FileAnswer_QuestionAnswer_QuestionAnswerId",
-                        column: x => x.QuestionAnswerId,
-                        principalTable: "QuestionAnswer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "QuestionAnswerOption",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuestionAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuestionOptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QuestionAnswerOption", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QuestionAnswerOption_QuestionAnswer_QuestionAnswerId",
-                        column: x => x.QuestionAnswerId,
-                        principalTable: "QuestionAnswer",
+                        name: "FK_OptionAnswer_BaseAnswer_CheckboxAnswerId",
+                        column: x => x.CheckboxAnswerId,
+                        principalTable: "BaseAnswer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileAnswer_FileInfoId",
-                table: "FileAnswer",
-                column: "FileInfoId");
+                name: "IX_BaseAnswer_QuestionId",
+                table: "BaseAnswer",
+                column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileAnswer_QuestionAnswerId",
-                table: "FileAnswer",
-                column: "QuestionAnswerId",
-                unique: true);
+                name: "IX_BaseAnswer_SurveyAnswerId",
+                table: "BaseAnswer",
+                column: "SurveyAnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OptionAnswer_CheckboxAnswerId",
+                table: "OptionAnswer",
+                column: "CheckboxAnswerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Question_SurveyId",
                 table: "Question",
                 column: "SurveyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuestionAnswer_SurveyAnswerId",
-                table: "QuestionAnswer",
-                column: "SurveyAnswerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuestionAnswerOption_QuestionAnswerId",
-                table: "QuestionAnswerOption",
-                column: "QuestionAnswerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionOption_QuestionId",
@@ -278,10 +240,7 @@ namespace SurveyMe.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FileAnswer");
-
-            migrationBuilder.DropTable(
-                name: "QuestionAnswerOption");
+                name: "OptionAnswer");
 
             migrationBuilder.DropTable(
                 name: "QuestionOption");
@@ -290,16 +249,13 @@ namespace SurveyMe.Data.Migrations
                 name: "RoleUser");
 
             migrationBuilder.DropTable(
-                name: "FileInfo");
-
-            migrationBuilder.DropTable(
-                name: "QuestionAnswer");
-
-            migrationBuilder.DropTable(
-                name: "Question");
+                name: "BaseAnswer");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Question");
 
             migrationBuilder.DropTable(
                 name: "SurveyAnswer");

@@ -1,4 +1,4 @@
-namespace SurveyMe.Foundation.Models;
+namespace SurveyMe.Foundation.Models.Configurations;
 
 public sealed class FileServiceConfiguration
 {

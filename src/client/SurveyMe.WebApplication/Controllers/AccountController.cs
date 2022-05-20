@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Data.Abstracts;
 using SurveyMe.DomainModels.Request.Users;
 
@@ -8,8 +7,8 @@ namespace SurveyMe.WebApplication.Controllers;
 public class AccountController : Controller
 {
     private readonly IAccountApi _accountApi;
-
-    public AccountController( IAccountApi accountApi, JwtBearerHandler handler)
+    
+    public AccountController(IAccountApi accountApi)
     {
         _accountApi = accountApi;
     }
@@ -17,13 +16,21 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login()
     {
-
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Login(UserLoginRequestModel user)
     {
-        return Ok();
+        var token = await _accountApi.Login(user);
+        
+        Response.Cookies.Append("X-Access-Token", token,
+            new CookieOptions 
+            { 
+                HttpOnly = true, 
+                SameSite = SameSiteMode.Strict 
+            });
+        
+        return RedirectToAction("Index", "Surveys");
     }
 }

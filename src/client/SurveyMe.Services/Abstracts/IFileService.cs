@@ -1,11 +1,12 @@
-﻿using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
+﻿using Refit;
+using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
 using File = SurveyMe.DomainModels.Common.File;
 
 namespace SurveyMe.Services.Abstracts;
 
 public interface IFileService
 {
-    Task<FileInfo> UploadAsync(File fileModel);
+    Task<FileInfo> UploadAsync(StreamPart file);
 
     Task<File> LoadAsync(Guid id);
 }

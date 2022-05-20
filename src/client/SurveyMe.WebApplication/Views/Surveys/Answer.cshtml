@@ -93,19 +93,24 @@
         async (e) => {
             const file = new FormData();
             file.append('fileModel', $(e.target).prop('files')[0])
-            await fetch('@Url.ActionLink("Upload", "Files")',
-            {
-                method: 'POST',
-                body: file
-            }).then(async (response) =>{
-                if (response.status > 399){
-                    alert(`Error ${response.status}`);
-                }
-                else {
-                    const data = await response.json();
+            
+            $.ajax({
+                type: "POST",
+                url: `@Url.ActionLink("Upload", "Files")`,
+                contentType: false,
+                processData: false,
+                data: file,
+                success: function (response) {
+                    const data = response.json();
                     filesInfo.set(data.id, data);
                     $(e.target).parent().append(`<input class="file-id" type="hidden" id="${data.id}">`)
-                }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+               }
             });
         });
     
@@ -113,7 +118,7 @@
             async () => {
                 const answer = {
                     surveyId: '@Model.Id',
-                    questions : $('.question-card').map(function (){
+                    questionsAnswers : $('.question-card').map(function (){
                         const type = $(this).find('.question-type').val();   
                         const questionCard = this;
                         let value;
@@ -206,7 +211,7 @@
                     url: `@Url.ActionLink("Answer", "Surveys", new {id = string.Empty})`,
                     data: JSON.stringify(answer),
                     success: function (response) {
-                        alert(response.responseText);
+                        document.location = '@Url.Action("Index")';
                     },
                     failure: function (response) {
                         alert(response.responseText);

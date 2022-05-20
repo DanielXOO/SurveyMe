@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Refit;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Services.Abstracts;
 using File = SurveyMe.DomainModels.Common.File;
@@ -30,16 +31,6 @@ public class FilesController : Controller
         
         var fileStream = fileModel.OpenReadStream();
 
-        var file = new File
-        {
-            Data = fileStream,
-            Info = new FileInfo
-            {
-                Id = Guid.NewGuid(),
-                Name = fileModel.FileName
-            }
-        };
-
         var getContentResult = _fileExtensionContentTypeProvider
             .TryGetContentType(fileModel.FileName, out var mime);
 
@@ -47,15 +38,15 @@ public class FilesController : Controller
         {
             throw new BadRequestException("No such file type");
         }
-            
-        file.Info.ContentType = mime;
 
-        await _fileService.UploadAsync(file);
+        var file = new StreamPart(fileStream, fileModel.FileName, mime, fileModel.Name);
         
-        return Ok(file.Info);
+        var fileInfo = await _fileService.UploadAsync(file);
+        
+        return Ok(fileInfo);
     }
     
-    [HttpGet("{id:guid}")]
+    /*[HttpGet("{id:guid}")]
     public async Task<IActionResult> Load(Guid id)
     {
         var file = await _fileService.LoadAsync(id);
@@ -66,5 +57,5 @@ public class FilesController : Controller
         }
         
         return File(file.Data, file.Info.ContentType, file.Info.Name);
-    }
+    }*/
 }

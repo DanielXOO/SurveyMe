@@ -17,5 +17,5 @@ public sealed class Question
 
     public ICollection<QuestionOption> Options { get; set; }
     
-    public ICollection<QuestionAnswer> Answers { get; set; }
+    public ICollection<BaseAnswer> Answers { get; set; }
 }

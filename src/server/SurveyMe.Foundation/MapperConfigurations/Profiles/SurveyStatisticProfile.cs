@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Statistics;
 using SurveyAnswersStatisticDb = SurveyMe.Data.Models.SurveyAnswersStatistic;
 using QuestionAnswersStatisticDb = SurveyMe.Data.Models.QuestionAnswersStatistic;
 using OptionAnswersStatisticDb = SurveyMe.Data.Models.OptionAnswersStatistic;

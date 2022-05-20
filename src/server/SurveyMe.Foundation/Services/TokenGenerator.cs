@@ -5,7 +5,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SurveyMe.DomainModels.Users;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Configurations;
 using SurveyMe.Foundation.Services.Abstracts;
 
 namespace SurveyMe.Foundation.Services;

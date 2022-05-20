@@ -1,10 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SurveyMe.Data;
-using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Answers;
 using SurveyMe.DomainModels.Users;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Statistics;
 using SurveyMe.Foundation.Services.Abstracts;
 
 namespace SurveyMe.Foundation.Services;
@@ -33,19 +34,37 @@ public class SurveySurveyAnswersService : ISurveyAnswersService
         answer.User = author;
         answer.UserId = author.Id;
 
+        
+        
         await _unitOfWork.Answers.CreateAsync(answer);
     }
 
     public async Task<SurveyAnswersStatistic> GetStatisticByIdAsync(Guid surveyId)
     {
         var survey = await _unitOfWork.Surveys.GetByIdAsync(surveyId);
-        
-        //TODO: Get all answers for questions ids
-        var surveyStatisticDb = await _unitOfWork.Answers.GetSurveyStatistic(survey);
-        
-        //TODO: match them
-        var surveyStatistic = _mapper.Map<SurveyAnswersStatistic>(surveyStatisticDb);
+        var surveyAnswers = _unitOfWork.Answers.GetBySurveyId(surveyId);
 
-        return surveyStatistic;
+        var questionAnswers = surveyAnswers
+            .SelectMany(surveyAnswer => surveyAnswer.QuestionsAnswers);
+        
+        var questionsStatistics =  survey.Questions.GroupJoin(questionAnswers,
+            question => question.Id,
+            answer => answer.QuestionId,
+            (question, _) => new QuestionAnswersStatistic
+            {
+                QuestionTitle = question.Title,
+                QuestionType = question.Type,
+                AnswersCount = questionAnswers
+                    .Count(answer => answer.QuestionId == question.Id)
+            });
+        
+        var surveyStatistics = new SurveyAnswersStatistic
+        {
+            SurveyTitle = survey.Name,
+            AnswersCount = surveyAnswers.Count(),
+            QuestionAnswersStatistic = questionsStatistics.ToArray()
+        };
+        
+        return surveyStatistics;
     }
 }

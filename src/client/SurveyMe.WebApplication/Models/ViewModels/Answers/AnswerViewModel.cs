@@ -4,6 +4,6 @@ namespace SurveyMe.WebApplication.Models.ViewModels.Answers
     {
         public Guid SurveyId { get; set; }
         
-        public ICollection<BaseAnswerViewModel> Questions { get; set; }
+        public ICollection<BaseAnswerViewModel> QuestionsAnswers { get; set; }
     }
 }

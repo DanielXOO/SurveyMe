@@ -1,6 +1,6 @@
 ﻿namespace SurveyMe.WebApplication.Models.Requests.Files;
 
-public class FileInfoRequestModel
+public class FileInfoResponseModel
 {
     public Guid Id { get; set; }
 

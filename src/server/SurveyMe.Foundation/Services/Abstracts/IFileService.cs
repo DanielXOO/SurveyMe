@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Files;
 
 namespace SurveyMe.Foundation.Services.Abstracts;
 

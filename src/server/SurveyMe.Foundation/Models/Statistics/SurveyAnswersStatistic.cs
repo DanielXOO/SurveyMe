@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SurveyMe.Foundation.Models;
+namespace SurveyMe.Foundation.Models.Statistics;
 
 public sealed class SurveyAnswersStatistic
 {

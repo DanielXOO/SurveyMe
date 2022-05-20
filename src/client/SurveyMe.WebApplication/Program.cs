@@ -1,12 +1,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.StaticFiles;
 using Refit;
 using SurveyMe.Data.Abstracts;
 using SurveyMe.Services;
 using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Extensions;
+using SurveyMe.WebApplication.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,8 @@ builder.Services.AddRefitClient<IAccountApi>()
     {
         configuration.BaseAddress = baseApiAddress;
     });
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRefitClient<IUserApi>()
     .ConfigureHttpClient(configuration =>
@@ -47,13 +51,15 @@ builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = baseApiAddress;
-    });
+    })
+    .AddHttpMessageHandler<AuthHeaderHandler>();;
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-
+builder.Services.AddTransient<AuthHeaderHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 

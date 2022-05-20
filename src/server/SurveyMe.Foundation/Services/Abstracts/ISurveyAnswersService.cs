@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Answers;
 using SurveyMe.DomainModels.Users;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Statistics;
 
 namespace SurveyMe.Foundation.Services.Abstracts;
 

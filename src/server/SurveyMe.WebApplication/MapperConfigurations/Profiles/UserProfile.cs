@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SurveyMe.DomainModels.Users;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Users;
 using SurveyMe.WebApplication.Models.Requests.Users;
 using SurveyMe.WebApplication.Models.Responses.Users;
 

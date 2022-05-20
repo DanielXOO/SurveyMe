@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Core;
-using SurveyMe.Data.Models;
 using SurveyMe.Data.Repositories.Abstracts;
-using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Answers;
 
 namespace SurveyMe.Data.Repositories;
 
@@ -21,56 +20,17 @@ public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerReposito
         return answers;
     }
 
-    //TODO: Id survey (join)
-    public async Task<SurveyAnswersStatistic> GetSurveyStatistic(Survey survey)
+    public IEnumerable<SurveyAnswer> GetBySurveyId(Guid surveyId)
     {
-        var surveyStatistic = new SurveyAnswersStatistic
-        {
-            AnswersCount = await Data.CountAsync(answer => answer.SurveyId == survey.Id),
-            SurveyTitle = survey.Name,
-            QuestionAnswersStatistic = new List<QuestionAnswersStatistic>()
-        };
+        var answers = GetAnswersQuery().Where(answer => answer.SurveyId == surveyId);
 
-        foreach (var surveyQuestion in survey.Questions)
-        {
-            var questionAnswers = Data.Include(answer => answer.QuestionAnswers)
-                .SelectMany(answer => answer.QuestionAnswers
-                    .Where(questionAnswer => questionAnswer.QuestionId == surveyQuestion.Id));
-
-            var questionAnswersStatistic = new QuestionAnswersStatistic
-            {
-                QuestionTitle = surveyQuestion.Title,
-                AnswersCount = await questionAnswers.CountAsync(),
-                QuestionType = surveyQuestion.Type
-            };
-
-            switch (surveyQuestion.Type)
-            {
-                /*case QuestionType.Radio or QuestionType.Checkbox:
-                    questionAnswersStatistic.OptionAnswersStatistic = surveyQuestion.Options
-                        .Select(option => new OptionAnswersStatistic
-                        {
-                            OptionText = option.Text,
-                            AnswersCount = questionAnswers.SelectMany(questions => questions.Options)
-                                .Count(optionAnswer => optionAnswer.QuestionOptionId == option.Id)
-                        }).ToList();
-                    break;
-                case QuestionType.Rate:
-                    questionAnswersStatistic.AverageRate = questionAnswers
-                        .Average(questionAnswer => questionAnswer.RateAnswer);
-                    break;*/
-            }
-            surveyStatistic.QuestionAnswersStatistic.Add(questionAnswersStatistic);
-        }
-
-        return surveyStatistic;
+        return answers;
     }
 
-
+    
     private IQueryable<SurveyAnswer> GetAnswersQuery()
     {
         return Data
-            .Include(answer => answer.QuestionAnswers)
-            .ThenInclude(answer => answer.Options);
+            .Include(answer => answer.QuestionsAnswers);
     }
 }

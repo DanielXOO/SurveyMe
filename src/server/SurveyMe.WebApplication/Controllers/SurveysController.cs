@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Extensions;
+using SurveyMe.DomainModels.Answers;
 using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Surveys;
 using SurveyMe.Foundation.Services.Abstracts;
@@ -18,17 +20,17 @@ namespace SurveyMe.WebApplication.Controllers;
 /// Controller for surveys and answers
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public sealed class SurveysController : Controller
 {
     private readonly ISurveyService _surveyService;
     private readonly IUserService _userService;
-    private readonly IMapper _mapper;
     private readonly ISurveyAnswersService _surveyAnswersService;
-    
-    
-    public SurveysController(ISurveyService surveyService, IUserService userService, IMapper mapper,
-        ISurveyAnswersService surveyAnswersService)
+    private readonly IMapper _mapper;
+
+
+    public SurveysController(ISurveyService surveyService, IUserService userService, IMapper mapper, ISurveyAnswersService surveyAnswersService)
     {
         _surveyService = surveyService;
         _userService = userService;
@@ -65,11 +67,8 @@ public sealed class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> AddSurvey([FromBody] SurveyRequestModel surveyModel)
     {
-        
-        //TODO: Add auth and uncomment
-        //var authorId = User.GetUserId();
-        //TODO: Change guid
-        var author = await _userService.GetUserByIdAsync(Guid.NewGuid());
+        var authorId = User.GetUserId();
+        var author = await _userService.GetUserByIdAsync(authorId);
 
         if (!ModelState.IsValid)
         {
@@ -178,11 +177,10 @@ public sealed class SurveysController : Controller
         
         var authorId = User.GetUserId();
         var author = await _userService.GetUserByIdAsync(authorId);
-        
-        //var answer = await CreateFromAnswerRequestModel(surveyAnswerRequestModel);
 
-        //pass authorId
-        //await _surveyAnswersService.AddAnswerAsync(answer, author);
+        var answer = _mapper.Map<SurveyAnswer>(surveyAnswerRequestModel);
+        
+        await _surveyAnswersService.AddAnswerAsync(answer, author);
         
         return Ok();
     }

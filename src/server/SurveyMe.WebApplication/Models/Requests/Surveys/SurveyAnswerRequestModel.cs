@@ -6,5 +6,5 @@ public sealed class SurveyAnswerRequestModel
 {
     public Guid SurveyId { get; set; }
         
-    public ICollection<BaseAnswerRequestModel> Questions { get; set; }
+    public ICollection<BaseAnswerRequestModel> QuestionsAnswers { get; set; }
 }

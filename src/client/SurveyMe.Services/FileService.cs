@@ -1,4 +1,5 @@
-﻿using SurveyMe.Data.Abstracts;
+﻿using Refit;
+using SurveyMe.Data.Abstracts;
 using SurveyMe.Services.Abstracts;
 using FileInfo = SurveyMe.DomainModels.Common.FileInfo;
 using File = SurveyMe.DomainModels.Common.File;
@@ -15,9 +16,9 @@ public sealed class FileService : IFileService
     }
 
 
-    public async Task<FileInfo> UploadAsync(File fileModel)
+    public async Task<FileInfo> UploadAsync(StreamPart file)
     {
-        var fileInfo = await _fileApi.UploadAsync(fileModel);
+        var fileInfo = await _fileApi.UploadAsync(file);
 
         return fileInfo;
     }

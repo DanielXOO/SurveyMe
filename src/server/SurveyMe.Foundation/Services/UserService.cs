@@ -7,7 +7,7 @@ using SurveyMe.Common.Extensions;
 using SurveyMe.Common.Pagination;
 using SurveyMe.Data;
 using SurveyMe.DomainModels.Users;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Users;
 using SurveyMe.Foundation.Services.Abstracts;
 
 namespace SurveyMe.Foundation.Services;

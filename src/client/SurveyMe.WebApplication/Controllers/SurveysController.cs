@@ -42,7 +42,7 @@ public class SurveysController : Controller
                 Url.Action(nameof(Answer), "Surveys", 
                     new { id = surveyWithLinksResponseModel.Id});
             surveyWithLinksResponseModel.ResultLink = 
-                Url.Action(nameof(SurveyStatistic), "Surveys",
+                Url.Action(nameof(SurveyStatistics), "Surveys",
                     new { id = surveyWithLinksResponseModel.Id});;
         }
         
@@ -152,7 +152,7 @@ public class SurveysController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> SurveyStatistic(Guid id)
+    public async Task<IActionResult> SurveyStatistics(Guid id)
     {
         var statistic = await _surveyService.GetSurveyStatisticAsync(id);
         

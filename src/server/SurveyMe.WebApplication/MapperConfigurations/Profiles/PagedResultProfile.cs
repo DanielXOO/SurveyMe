@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SurveyMe.Common.Pagination;
 using SurveyMe.DomainModels.Surveys;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Users;
 using SurveyMe.WebApplication.Models.Responses.Pages;
 using SurveyMe.WebApplication.Models.Responses.Surveys;
 using SurveyMe.WebApplication.Models.Responses.Users;

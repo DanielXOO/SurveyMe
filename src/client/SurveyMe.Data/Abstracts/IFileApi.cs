@@ -7,9 +7,10 @@ namespace SurveyMe.Data.Abstracts;
 [Headers("Authorization: Bearer")]
 public interface IFileApi
 {
+    [Multipart]
     [Post("/files")]
-    Task<FileInfo> UploadAsync([Body]File fileModel);
-
+    Task<FileInfo> UploadAsync([AliasAs("file")]StreamPart file);
+    
     [Get("/files/{id}")]
     Task<File> LoadAsync(Guid id);
 }

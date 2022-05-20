@@ -48,8 +48,6 @@ public sealed class SurveyRepository : Repository<Survey>, ISurveyRepository
         return survey;
     }
 
-        
-
     private IQueryable<Survey> GetSurveysQuery()
     {
         return Data.Include(survey => survey.Questions)

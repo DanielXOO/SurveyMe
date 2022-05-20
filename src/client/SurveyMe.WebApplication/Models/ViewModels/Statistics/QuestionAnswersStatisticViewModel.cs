@@ -9,10 +9,4 @@ public sealed class QuestionAnswersStatisticViewModel
     public QuestionType QuestionType { get; set; }
     
     public int AnswersCount { get; set; }
-
-    public double AverageRate { get; set; }
-
-    public double AverageScale { get; set; }
-
-    public ICollection<OptionAnswersStatisticViewModel> OptionAnswersStatistic { get; set; }
 }
