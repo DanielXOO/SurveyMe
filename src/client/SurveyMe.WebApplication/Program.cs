@@ -1,6 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.StaticFiles;
 using Refit;
 using SurveyMe.Data.Abstracts;
@@ -12,7 +15,8 @@ using SurveyMe.WebApplication.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMvc().AddJsonOptions(options =>
+builder.Services.AddMvc()
+    .AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     options.JsonSerializerOptions.Converters.Add(new AnswerViewJsonConverter());
@@ -32,13 +36,15 @@ builder.Services.AddRefitClient<IUserApi>()
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = baseApiAddress;
-    });
+    })
+    .AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddRefitClient<IFileApi>()
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = baseApiAddress;
-    });
+    })
+    .AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
     {
@@ -52,9 +58,9 @@ builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
     {
         configuration.BaseAddress = baseApiAddress;
     })
-    .AddHttpMessageHandler<AuthHeaderHandler>();;
+    .AddHttpMessageHandler<AuthHeaderHandler>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 builder.Services.AddTransient<AuthHeaderHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -76,6 +82,21 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.Use(async (context, next) =>
+{
+    var hasToken = context.Request.Cookies.TryGetValue("X-Access-Token", out var token);
+    if (hasToken)
+    {
+        context.Request.Headers.Add("Authorization", "Bearer " + token);
+        var handler = new JwtSecurityTokenHandler();
+        var securityToken = handler.ReadToken(token) as JwtSecurityToken;
+        var principal = new ClaimsPrincipal(new ClaimsIdentity(securityToken.Claims, CookieAuthenticationDefaults.AuthenticationScheme));
+
+        await context.SignInAsync(principal);
+    }
+    await next();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

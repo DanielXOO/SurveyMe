@@ -12,12 +12,15 @@ public class AuthHeaderHandler : DelegatingHandler
         _accessor = accessor;
     }
     
+    
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         _accessor.HttpContext.Request.Cookies.TryGetValue("X-Access-Token", out var token);
         
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+
+        return response;
     }
 }

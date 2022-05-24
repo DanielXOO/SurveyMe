@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using SurveyMe.DomainModels.Common
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,30 +18,21 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
                 
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                    @*@if (User.Identity.IsAuthenticated)
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-
                         @if (User.IsInRole(RoleNames.Admin))
                         {
-                            
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
+                            </li>
                         }
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Surveys" asp-action="Index">Surveys</a>
-                        </li>
-                    }*@
+                    }
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Surveys" asp-action="Index">Surveys</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
-                    </li>
                 </ul>
 
-                @*@if (!User.Identity.IsAuthenticated)
+                @if (!User.Identity.IsAuthenticated)
                 {
                     <div class="btn-group">
                         <button onclick="document.location = '@Url.Action("Login", "Account")'" 
@@ -59,7 +51,7 @@
                             class="btn btn-light">
                         SignOut
                     </button>
-                }*@
+                }
             </div>
         </div>
     </nav>

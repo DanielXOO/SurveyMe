@@ -32,21 +32,21 @@ public sealed class ErrorsHandleMiddleware
             _logger.LogCritical(ex, "Bad request error");
             
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
-            await SendErrorResponse(context, error);
+            await SaveErrorResponse(context, error);
         }
         catch (NotFoundException ex)
         {
             _logger.LogCritical(ex, "Not found error");
             
             var error = HandleErrorAsync(ex, StatusCodes.Status404NotFound);
-            await SendErrorResponse(context, error);
+            await SaveErrorResponse(context, error);
         }
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
             
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
-            await SendErrorResponse(context, error);
+            await SaveErrorResponse(context, error);
         }
         catch (ApiException ex)
         {
@@ -55,19 +55,18 @@ public sealed class ErrorsHandleMiddleware
             if (ex.StatusCode == HttpStatusCode.Unauthorized)
             {
                 context.Response.Redirect("/Account/Login");
-                
-                return;
             }
             
             var error = HandleErrorAsync(ex, (int)ex.StatusCode);
-            
+
+           // await SaveErrorResponse(context, error);
         }
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "Server error");
 
             var error = HandleErrorAsync(ex, StatusCodes.Status500InternalServerError);
-            await SendErrorResponse(context, error);
+            await SaveErrorResponse(context, error);
         }
     }
 
@@ -99,7 +98,7 @@ public sealed class ErrorsHandleMiddleware
     /// </summary>
     /// <param name="context"></param>
     /// <param name="errorResponse"></param>
-    private static async Task SendErrorResponse(HttpContext context, BaseErrorResponse errorResponse)
+    private static async Task SaveErrorResponse(HttpContext context, BaseErrorResponse errorResponse)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = errorResponse.StatusCode;

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Exceptions;
+using SurveyMe.DomainModels.Roles;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.Requests.Queries;
@@ -15,6 +17,7 @@ namespace SurveyMe.WebApplication.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = RoleNames.Admin)]
 public sealed class UsersController : Controller
 {
     private readonly IUserService _userService;

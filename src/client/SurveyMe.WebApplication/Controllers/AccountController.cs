@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.Services.Abstracts;
@@ -59,6 +62,13 @@ public class AccountController : Controller
         var userRequest = _mapper.Map<UserRegistrationRequestModel>(user);
         
         await _accountService.RegistrationAsync(userRequest);
+        
+        return RedirectToAction("Login", "Account");
+    }
+
+    public IActionResult SignOut()
+    {
+        Response.Cookies.Delete("X-Access-Token");
         
         return RedirectToAction("Login", "Account");
     }

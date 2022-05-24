@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using SurveyMe.Common.Exceptions;
@@ -18,6 +19,7 @@ namespace SurveyMe.WebApplication.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class FilesController : Controller
 {
     private readonly IFileService _fileService;

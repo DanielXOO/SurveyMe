@@ -30,7 +30,12 @@ public sealed class AccountService : IAccountService
 
     public async Task<string> SignInAsync(string username, string password)
     {
-        var user = await _unitOfWork.Users.GetByNameAsync(username); 
+        var user = await _unitOfWork.Users.GetByNameAsync(username);
+
+        if (user == null)
+        {
+            throw new BadRequestException("Wrong username or password");
+        }
         
         var isCorrectPassword = await _userManager.CheckPasswordAsync(user, password);
 
@@ -49,6 +54,7 @@ public sealed class AccountService : IAccountService
         user.CreationTime = _systemClock.UtcNow;
         var result = await _userManager.CreateAsync(user, password);
         await _userManager.AddToRoleAsync(user, RoleNames.User);
+        
         return ConvertToServiceResult(result);
     }
 

@@ -34,13 +34,10 @@ public sealed class AccountController : Controller
         {
             throw new BadRequestException("Invalid data");
         }
+
+        var token = await _accountService.SignInAsync(user.Login, user.Password);
         
-        var response = new
-        {
-            access_token = await _accountService.SignInAsync(user.Login, user.Password)
-        };
-        
-        return Ok(response.access_token);
+        return Ok(token);
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,8 +59,6 @@ public sealed class AccountController : Controller
             throw new BadRequestException("Registration error");
         }
 
-        
-        
         return Ok();
     }
 }

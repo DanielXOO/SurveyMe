@@ -111,9 +111,9 @@ builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<ISurveyAnswersService, SurveySurveyAnswersService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
+builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 builder.Services.AddSingleton<ISystemClock, SystemClock>();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
-builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
 var app = builder.Build();
 

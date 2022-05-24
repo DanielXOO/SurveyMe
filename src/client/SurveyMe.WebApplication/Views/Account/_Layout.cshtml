@@ -1,5 +1,4 @@
-﻿@using SurveyMe.DomainModels.Common
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,52 +10,10 @@
 <body>
 <header>
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
-        <div class="container-md">
-            <a class="navbar-brand">SurveyMe</a>
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @*<li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>*@
-
-                        @if (User.IsInRole(RoleNames.Admin))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
-                            </li>
-                        }
-
-                        @*<li class="nav-item">
-                            <a class="nav-link" asp-controller="Surveys" asp-action="Index">Surveys</a>
-                        </li>*@
-                    }
-                </ul>
-                @*@if (!User.Identity.IsAuthenticated)
-                {
-                    <div class="btn-group">
-                        <button onclick="document.location = '@Url.Action("Login", "Account")'" 
-                                class="btn btn-light">
-                            Sign In
-                        </button>
-                        <button onclick="document.location = '@Url.Action("Registration", "Account")'" 
-                                class="btn btn-primary">
-                            Sign Up
-                        </button>
-                    </div>
-                }
-                else
-                {
-                    <button onclick="document.location = '@Url.Action("SignOut", "Account")'" 
-                            class="btn btn-light">
-                        SignOut
-                    </button>
-                }*@
+            <div class="container-md">
+                <a class="navbar-brand">SurveyMe</a>
             </div>
-        </div>
-    </nav>
+        </nav>
 </header>
 <main>
     @RenderBody()
