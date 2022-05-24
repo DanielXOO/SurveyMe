@@ -12,6 +12,7 @@ using SurveyMe.WebApplication.Models.ViewModels.Surveys;
 
 namespace SurveyMe.WebApplication.Controllers;
 
+[Microsoft.AspNetCore.Authorization.Authorize]
 public class SurveysController : Controller
 {
     private readonly ISurveyService _surveyService;
@@ -60,7 +61,12 @@ public class SurveysController : Controller
     {
         if (surveyModel == null)
         {
-            throw new BadRequestException("Survey add error");
+            return BadRequest("Survey add error");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Survey add error");
         }
         
         var surveyRequest = _mapper.Map<SurveyRequestModel>(surveyModel);
@@ -89,7 +95,7 @@ public class SurveysController : Controller
     {
         if (surveyModel == null)
         {
-            throw new BadRequestException("Survey edit error");
+            return BadRequest("Survey edit error");
         }
         
         var surveyRequest = _mapper.Map<SurveyRequestModel>(surveyModel);
@@ -114,12 +120,12 @@ public class SurveysController : Controller
     {
         if (surveyModel == null)
         {
-            throw new BadRequestException("Survey delete error");
+            return BadRequest("Survey delete error");
         }
         
         await _surveyService.DeleteSurveyAsync(surveyModel.Id);
 
-        return Redirect(surveyModel.ReturnUrl);
+        return RedirectToAction(nameof(Index));
     }
     
     [HttpGet("[action]/{id:guid}")]
@@ -142,7 +148,7 @@ public class SurveysController : Controller
     {
         if (answerViewModel == null)
         {
-            throw new BadRequestException("Answering error");
+            return BadRequest("Answering error");
         }
 
         var answer = _mapper.Map<SurveyAnswerRequestModel>(answerViewModel);

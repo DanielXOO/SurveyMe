@@ -1,5 +1,8 @@
 ﻿using System.Net;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.WebUtilities;
 using Refit;
 using SurveyMe.Common.Exceptions;
@@ -32,41 +35,45 @@ public sealed class ErrorsHandleMiddleware
             _logger.LogCritical(ex, "Bad request error");
             
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
-            await SaveErrorResponse(context, error);
+            context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
         catch (NotFoundException ex)
         {
             _logger.LogCritical(ex, "Not found error");
             
             var error = HandleErrorAsync(ex, StatusCodes.Status404NotFound);
-            await SaveErrorResponse(context, error);
+            context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
             
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
-            await SaveErrorResponse(context, error);
+            context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
         catch (ApiException ex)
         {
             _logger.LogCritical(ex, "Api error");
 
-            if (ex.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                context.Response.Redirect("/Account/Login");
-            }
-            
             var error = HandleErrorAsync(ex, (int)ex.StatusCode);
+            error.Message = ex.Content;
 
-           // await SaveErrorResponse(context, error);
+            switch (ex.StatusCode)
+            {
+                case HttpStatusCode.Unauthorized:
+                    context.Response.Redirect("/Account/Login");
+                    break;
+                default:
+                    context.Response.Redirect($"/Errors?code={(int)ex.StatusCode}");
+                    break;
+            }
         }
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "Server error");
-
             var error = HandleErrorAsync(ex, StatusCodes.Status500InternalServerError);
-            await SaveErrorResponse(context, error);
+            
+            context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
     }
 
@@ -91,19 +98,5 @@ public sealed class ErrorsHandleMiddleware
         }
         
         return errorResponse;
-    }
-
-    /// <summary>
-    /// Send server response with info about exception
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="errorResponse"></param>
-    private static async Task SaveErrorResponse(HttpContext context, BaseErrorResponse errorResponse)
-    {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = errorResponse.StatusCode;
-        var jsonResponse = JsonSerializer.Serialize(errorResponse);
-        
-        await context.Response.WriteAsync(jsonResponse);
     }
 }

@@ -3,8 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SurveyMe.Data;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.Common.Exceptions;
 using SurveyMe.Foundation.Models.Configurations;
 using File = SurveyMe.Foundation.Models.Files.File;
 

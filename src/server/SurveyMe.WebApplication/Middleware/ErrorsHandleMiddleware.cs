@@ -1,6 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.WebUtilities;
-using SurveyMe.Common.Exceptions;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 
 namespace SurveyMe.WebApplication.Middleware;
@@ -87,9 +89,14 @@ public sealed class ErrorsHandleMiddleware
     /// <param name="errorResponse"></param>
     private static async Task SendErrorResponse(HttpContext context, BaseErrorResponse errorResponse)
     {
+        var options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+        };
+        
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = errorResponse.StatusCode;
-        var jsonResponse = JsonSerializer.Serialize(errorResponse);
+        var jsonResponse = JsonSerializer.Serialize(errorResponse, options);
         
         await context.Response.WriteAsync(jsonResponse);
     }

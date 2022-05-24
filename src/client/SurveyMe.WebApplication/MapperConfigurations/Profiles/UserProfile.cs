@@ -9,6 +9,8 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
+        CreateMap<UserRegistrationViewModel, UserRegistrationRequestModel>();
+        
         CreateMap<UserWithSurveysCountResponseModel, UserWithSurveysCountViewModel>();
         
         CreateMap<UserDeleteOrEditResponseModel, UserDeleteOrEditViewModel>();

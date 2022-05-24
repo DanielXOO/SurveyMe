@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels.Answers;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.Requests.Files;
 using SurveyMe.WebApplication.Models.Responses.Files;
 using File = SurveyMe.Foundation.Models.Files.File;
 using FileInfo = SurveyMe.DomainModels.Files.FileInfo;

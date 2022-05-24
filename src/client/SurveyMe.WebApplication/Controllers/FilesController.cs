@@ -6,6 +6,7 @@ using SurveyMe.Services.Abstracts;
 
 namespace SurveyMe.WebApplication.Controllers;
 
+[Microsoft.AspNetCore.Authorization.Authorize]
 public class FilesController : Controller
 {
     private readonly IFileService _fileService;

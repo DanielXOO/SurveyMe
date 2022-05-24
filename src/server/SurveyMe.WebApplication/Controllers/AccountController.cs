@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SurveyMe.Common.Exceptions;
 using SurveyMe.DomainModels.Users;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.Requests.Users;
@@ -56,7 +56,7 @@ public sealed class AccountController : Controller
 
         if (!result.IsSuccessful)
         {
-            throw new BadRequestException("Registration error");
+            throw new BadRequestException(string.Join('\n', result.ErrorMessages));
         }
 
         return Ok();

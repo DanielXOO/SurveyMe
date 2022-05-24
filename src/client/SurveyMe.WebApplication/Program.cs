@@ -77,7 +77,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 app.UseCustomExceptionHandler();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -91,7 +90,9 @@ app.Use(async (context, next) =>
         context.Request.Headers.Add("Authorization", "Bearer " + token);
         var handler = new JwtSecurityTokenHandler();
         var securityToken = handler.ReadToken(token) as JwtSecurityToken;
-        var principal = new ClaimsPrincipal(new ClaimsIdentity(securityToken.Claims, CookieAuthenticationDefaults.AuthenticationScheme));
+        var identity = new ClaimsIdentity(securityToken.Claims, 
+            CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
 
         await context.SignInAsync(principal);
     }

@@ -1,10 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Text.Json;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Refit;
 using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.Services.Abstracts;
+using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.ViewModels.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
@@ -33,15 +33,24 @@ public class AccountController : Controller
         {
             return View();
         }
-        
-        var token = await _accountService.LoginAsync(user);
-        
-        Response.Cookies.Append("X-Access-Token", token,
-            new CookieOptions 
-            { 
-                HttpOnly = true, 
-                SameSite = SameSiteMode.Strict 
-            });
+
+        try
+        {
+            var token = await _accountService.LoginAsync(user);
+            Response.Cookies.Append("X-Access-Token", token,
+                new CookieOptions 
+                { 
+                    HttpOnly = true, 
+                    SameSite = SameSiteMode.Strict 
+                });
+        }
+        catch (ApiException ex)
+        {
+            var errors = JsonSerializer.Deserialize<BaseErrorResponse>(ex.Content);
+            ModelState.AddModelError(string.Empty, errors.Details);
+            
+            return View();
+        }
         
         return RedirectToAction("Index", "Surveys");
     }
@@ -60,15 +69,28 @@ public class AccountController : Controller
         }
         
         var userRequest = _mapper.Map<UserRegistrationRequestModel>(user);
-        
-        await _accountService.RegistrationAsync(userRequest);
+
+        try
+        {
+            await _accountService.RegistrationAsync(userRequest);
+        }
+        catch (ApiException ex)
+        {
+            var errors = JsonSerializer.Deserialize<BaseErrorResponse>(ex.Content);
+            ModelState.AddModelError(string.Empty, errors.Details);
+            
+            return View();
+        }
         
         return RedirectToAction("Login", "Account");
     }
 
     public IActionResult SignOut()
     {
-        Response.Cookies.Delete("X-Access-Token");
+        if (User.Identity.IsAuthenticated)
+        {
+            Response.Cookies.Delete("X-Access-Token");
+        }
         
         return RedirectToAction("Login", "Account");
     }

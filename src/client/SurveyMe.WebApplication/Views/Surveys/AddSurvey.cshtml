@@ -33,22 +33,21 @@
                     }).get()
                 };
                 
-                await fetch(`@Url.Action("AddSurvey")`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json; charset=utf-8',
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    },
-                    body: JSON.stringify(survey)
-                }).then(response =>{
-                    if (response.status > 399){
-                        alert();
-                    }
-                    else
-                    {
+                $.ajax({
+                    type: "POST",
+                    url: `@Url.Action("AddSurvey")`,
+                    contentType: 'application/json;charset=UTF-8',
+                    accept: 'application/json; charset=utf-8',
+                    data: JSON.stringify(survey),
+                    success: function () {
                         window.location = `@Url.Action("Index", "Surveys")`;
-                    }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
                 });
             }
         );

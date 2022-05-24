@@ -1,0 +1,26 @@
+﻿@using SurveyMe.DomainModels.Common
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/style.css" runat="server" asp-append-version="true">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" runat="server" asp-append-version="true">
+    <script src="~/lib/jquery/jquery.js"></script>
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+        <div class="container-md">
+            <a class="navbar-brand">SurveyMe</a>
+        </div>
+    </nav>
+</header>
+<main>
+    @RenderBody()
+</main>
+@await RenderSectionAsync("Scripts", false)
+</body>
+</html>

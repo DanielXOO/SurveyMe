@@ -6,7 +6,7 @@
       asp-action="DeleteUserConfirm" asp-route-Id="@Model.Id"
       class="attention-form">
     <input type="submit" class="submit-button" value="Delete" />
-    <input type="button" class="discard-button" value="Cancel" />
+    <input type="button"  onclick="location.href = '@Url.Action("Index")'" class="discard-button" value="Cancel"/>
 </form>
 
 <div class="errors" asp-validation-summary="All"></div>

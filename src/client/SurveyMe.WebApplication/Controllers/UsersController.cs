@@ -9,6 +9,7 @@ using SurveyMe.WebApplication.Models.ViewModels.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
 
+[Microsoft.AspNetCore.Authorization.Authorize]
 public class UsersController : Controller
 {
     private readonly IUserService _userService;
@@ -48,7 +49,7 @@ public class UsersController : Controller
     {
         await _userService.DeleteUserAsync(user.Id);
 
-        return Redirect(user.ReturnUrl);
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpGet]

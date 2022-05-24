@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Users;
 
 namespace SurveyMe.Data.Stores;
@@ -177,6 +178,8 @@ public sealed class UserStore : IUserPasswordStore<User>, IUserRoleStore<User>
         {
             throw new ArgumentNullException(nameof(user));
         }
+
+        user.Roles ??= new List<Role>();
 
         var role = await _unitOfWork.Roles.GetByNameAsync(roleName);
         user.Roles.Add(role);
