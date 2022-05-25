@@ -37,7 +37,7 @@ public class AccountController : Controller
         try
         {
             var token = await _accountService.LoginAsync(user);
-            Response.Cookies.Append("X-Access-Token", token,
+            Response.Cookies.Append("X-Access-Token", token.AccessToken,
                 new CookieOptions 
                 { 
                     HttpOnly = true, 

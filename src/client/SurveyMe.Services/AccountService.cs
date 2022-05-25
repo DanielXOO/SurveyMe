@@ -1,4 +1,5 @@
 ﻿using SurveyMe.Data.Abstracts;
+using SurveyMe.DomainModels.Authentication;
 using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.Services.Abstracts;
 
@@ -15,7 +16,7 @@ public class AccountService : IAccountService
     }
 
     
-    public async Task<string> LoginAsync(UserLoginRequestModel user)
+    public async Task<JwtToken> LoginAsync(UserLoginRequestModel user)
     {
         var token = await _accountApi.LoginAsync(user);
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SurveyMe.Common.Time;
 using SurveyMe.Data;
+using SurveyMe.DomainModels.Authentication;
 using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Users;
 using SurveyMe.Foundation.Exceptions;
@@ -28,7 +29,7 @@ public sealed class AccountService : IAccountService
     }
 
 
-    public async Task<string> SignInAsync(string username, string password)
+    public async Task<JwtToken> SignInAsync(string username, string password)
     {
         var user = await _unitOfWork.Users.GetByNameAsync(username);
 
@@ -44,8 +45,13 @@ public sealed class AccountService : IAccountService
             throw new BadRequestException("Wrong username or password");
         }
 
-        var token = _tokenGenerator.GenerateToken(user);
+        var accessToken = _tokenGenerator.GenerateToken(user);
 
+        var token = new JwtToken
+        {
+            AccessToken = accessToken
+        };
+        
         return token;
     }
 

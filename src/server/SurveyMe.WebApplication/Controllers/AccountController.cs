@@ -37,6 +37,13 @@ public sealed class AccountController : Controller
 
         var token = await _accountService.SignInAsync(user.Login, user.Password);
         
+        Response.Cookies.Append("X-Access-Token", token.AccessToken,
+            new CookieOptions 
+            { 
+                HttpOnly = true, 
+                SameSite = SameSiteMode.Strict 
+            });
+        
         return Ok(token);
     }
     

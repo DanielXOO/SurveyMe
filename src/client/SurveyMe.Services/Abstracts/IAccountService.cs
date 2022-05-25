@@ -1,10 +1,11 @@
-﻿using SurveyMe.DomainModels.Request.Users;
+﻿using SurveyMe.DomainModels.Authentication;
+using SurveyMe.DomainModels.Request.Users;
 
 namespace SurveyMe.Services.Abstracts;
 
 public interface IAccountService
 {
-    Task<string> LoginAsync(UserLoginRequestModel user);
+    Task<JwtToken> LoginAsync(UserLoginRequestModel user);
 
     Task RegistrationAsync(UserRegistrationRequestModel userModel);
 }
