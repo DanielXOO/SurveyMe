@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.StaticFiles;
 using Refit;
+using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data.Abstracts;
 using SurveyMe.Services;
 using SurveyMe.Services.Abstracts;
@@ -14,6 +15,12 @@ using SurveyMe.WebApplication.Extensions;
 using SurveyMe.WebApplication.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureLogging(logBuilder =>
+{
+    logBuilder.AddLogger();
+    logBuilder.AddFile(builder.Configuration.GetSection("Serilog:FileLogging"));
+});
 
 builder.Services.AddMvc()
     .AddJsonOptions(options =>
