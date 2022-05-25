@@ -94,7 +94,6 @@ app.Use(async (context, next) =>
     var hasToken = context.Request.Cookies.TryGetValue("X-Access-Token", out var token);
     if (hasToken)
     {
-        context.Request.Headers.Add("Authorization", "Bearer " + token);
         var handler = new JwtSecurityTokenHandler();
         var securityToken = handler.ReadToken(token) as JwtSecurityToken;
         var identity = new ClaimsIdentity(securityToken.Claims, 
