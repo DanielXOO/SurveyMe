@@ -47,6 +47,15 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+        In = ParameterLocation.Cookie,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    
     var filePath = Path.Combine(AppContext.BaseDirectory, "SurveyMe.WebApplication.xml");
     options.IncludeXmlComments(filePath);
 });

@@ -13,12 +13,10 @@ namespace SurveyMe.Foundation.Services;
 public class SurveySurveyAnswersService : ISurveyAnswersService
 {
     private readonly ISurveyMeUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
     public SurveySurveyAnswersService(ISurveyMeUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
 
 
