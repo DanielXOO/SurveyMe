@@ -82,14 +82,7 @@ public sealed class UsersController : Controller
             throw new ForbidException("You can't delete yourself");
         }
 
-        var result = await _userService.DeleteUsersAsync(user);
-
-        if (!result.IsSuccessful)
-        {
-            var errorMessage = string.Join(' ', result.ErrorMessages);
-
-            throw new BadRequestException(errorMessage);
-        }
+        await _userService.DeleteUsersAsync(user);
 
         return Ok();
     }
@@ -108,12 +101,7 @@ public sealed class UsersController : Controller
         var user = await _userService.GetUserByIdAsync(userEditRequestModel.Id);
 
         user.DisplayName = userEditRequestModel.DisplayName;
-        var result = await _userService.UpdateAsync(user);
-
-        if (!result.IsSuccessful)
-        {
-            throw new BadRequestException("Edit error");
-        }
+        await _userService.UpdateAsync(user);
 
         return Ok();
     }

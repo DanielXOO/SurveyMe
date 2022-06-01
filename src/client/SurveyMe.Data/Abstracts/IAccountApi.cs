@@ -6,8 +6,9 @@ namespace SurveyMe.Data.Abstracts;
 
 public interface IAccountApi
 {
-    [Post("/account/login")]
-    Task<JwtToken> LoginAsync([Body]UserLoginRequestModel user);
+    [Headers("Content-Type: application/x-www-form-urlencoded")]
+    [Post("/connect/token")]
+    Task<JwtToken> LoginAsync([Body(BodySerializationMethod.UrlEncoded)]AuthenticationRequestModel user);
 
     [Post("/account/registration")]
     Task RegistrationAsync([Body]UserRegistrationRequestModel userModel);

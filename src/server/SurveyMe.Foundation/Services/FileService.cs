@@ -41,26 +41,4 @@ public class FileService : IFileService
             
         await _unitOfWork.Files.CreateAsync(file.Info);
     }
-
-    public async Task<File> LoadAsync(Guid id)
-    {
-        var file = await _unitOfWork.Files.GetByIdAsync(id);
-
-        if (file == null)
-        {
-            throw new NotFoundException("File do not exist");
-        }
-            
-        var fileExtension = Path.GetExtension(file.Name);
-        var fullPath = $"{_configuration.Value.BasePath}/{file.FileId}{fileExtension}";
-        var streamWrite = new FileStream(fullPath, FileMode.Open);
-
-        var fileModel = new File
-        {
-            Data = streamWrite,
-            Info = file
-        };
-
-        return fileModel;
-    }
 }

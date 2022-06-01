@@ -16,7 +16,7 @@ public class AccountService : IAccountService
     }
 
     
-    public async Task<JwtToken> LoginAsync(UserLoginRequestModel user)
+    public async Task<JwtToken> LoginAsync(AuthenticationRequestModel user)
     {
         var token = await _accountApi.LoginAsync(user);
 

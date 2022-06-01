@@ -11,9 +11,9 @@ public interface IUserService
     Task<PagedResult<UserWithSurveysCount>> GetUsersAsync(int currentPage, int pageSize,
         SortOrder order, string searchRequest);
 
-    Task<ServiceResult> DeleteUsersAsync(User user);
+    Task DeleteUsersAsync(User user);
 
     Task<User> GetUserByIdAsync(Guid id);
 
-    Task<ServiceResult> UpdateAsync(User user);
+    Task UpdateAsync(User user);
 }

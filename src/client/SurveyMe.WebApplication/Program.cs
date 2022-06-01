@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Refit;
 using SurveyMe.Common.Microsoft.Logging;
@@ -34,7 +35,7 @@ var baseApiAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress
 builder.Services.AddRefitClient<IAccountApi>()
     .ConfigureHttpClient(configuration =>
     {
-        configuration.BaseAddress = baseApiAddress;
+        configuration.BaseAddress = new Uri("https://localhost:7179");
     });
 
 builder.Services.AddHttpContextAccessor();
@@ -67,7 +68,6 @@ builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 builder.Services.AddTransient<AuthHeaderHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -76,6 +76,10 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
+
 
 var app = builder.Build();
 
@@ -102,6 +106,7 @@ app.Use(async (context, next) =>
 
         await context.SignInAsync(principal);
     }
+    
     await next();
 });
 

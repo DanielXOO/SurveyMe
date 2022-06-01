@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Authentication.Api.Models.Roles;
+using Authentication.Api.Models.Users;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SurveyMe.Common.Time;
-using SurveyMe.DomainModels.Roles;
-using SurveyMe.DomainModels.Users;
 
-namespace SurveyMe.Data;
+namespace Authentication.Api.Data;
 
 public static class DbInitializer
 {
-    public static async Task Initialize(SurveyMeDbContext context,
-        UserManager<User> userManager, RoleManager<Role> roleManager,
-        ISystemClock systemClock)
+    public static async Task Initialize(AuthenticationDbContext context,
+        UserManager<User> userManager, RoleManager<Role> roleManager)
     {
         await context.Database.MigrateAsync();
 
@@ -25,69 +23,20 @@ public static class DbInitializer
             },
             new InitUser
             {
-                DisplayName = "User1",
+                DisplayName = "User",
                 Password = "User1234",
                 RoleNames = new[] {RoleNames.User},
-                UserName = "User1"
-            },
-            new InitUser
-            {
-                DisplayName = "User2",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User2"
-            },
-            new InitUser
-            {
-                DisplayName = "User3",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User4"
-            },
-            new InitUser
-            {
-                DisplayName = "User5",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User5"
-            },
-            new InitUser
-            {
-                DisplayName = "User6",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User6"
-            },
-            new InitUser
-            {
-                DisplayName = "User7",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User7"
-            },
-            new InitUser
-            {
-                DisplayName = "User8",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User8"
-            },
-            new InitUser
-            {
-                DisplayName = "User9",
-                Password = "User1234",
-                RoleNames = new[] {RoleNames.User},
-                UserName = "User9"
+                UserName = "User"
             }
         };
 
         await AddOrUpdateRolesAsync(users, roleManager);
-        await AddOrUpdateUsersAsync(users, userManager, systemClock);
+        await AddOrUpdateUsersAsync(users, userManager);
     }
 
 
     private static async Task AddOrUpdateUsersAsync(IEnumerable<InitUser> users,
-        UserManager<User> userManager, ISystemClock systemClock)
+        UserManager<User> userManager)
     {
         foreach (var user in users)
         {
@@ -98,8 +47,7 @@ public static class DbInitializer
                 {
                     DisplayName = user.DisplayName,
                     UserName = user.UserName,
-                    Roles = new List<Role>(),
-                    CreationTime = systemClock.UtcNow
+                    Roles = new List<Role>()
                 };
                 await userManager.CreateAsync(newUser, user.Password);
 
@@ -141,7 +89,6 @@ public static class DbInitializer
             }
         }
     }
-
 
     private class InitUser
     {

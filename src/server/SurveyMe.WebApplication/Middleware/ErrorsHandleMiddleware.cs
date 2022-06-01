@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.WebUtilities;
+using Refit;
 using SurveyMe.Foundation.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 
@@ -51,6 +52,13 @@ public sealed class ErrorsHandleMiddleware
         catch (ForbidException ex)
         {
             _logger.LogCritical(ex, "User has not access");
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
+            await SendErrorResponse(context, error);
+        }
+        catch (ApiException ex)
+        {
+            _logger.LogCritical(ex, "Api exception");
 
             var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
             await SendErrorResponse(context, error);

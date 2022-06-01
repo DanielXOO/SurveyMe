@@ -10,13 +10,14 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<UserRegistrationViewModel, UserRegistrationRequestModel>();
-        
+
         CreateMap<UserWithSurveysCountResponseModel, UserWithSurveysCountViewModel>();
-        
+
         CreateMap<UserDeleteOrEditResponseModel, UserDeleteOrEditViewModel>();
-        
+
         CreateMap<UserDeleteOrEditViewModel, UserDeleteOrEditRequestModel>();
-        
-        CreateMap<UserLoginViewModel, UserLoginRequestModel>();
+
+        CreateMap<UserLoginViewModel, AuthenticationRequestModel>()
+            .ForMember(dest => dest.UserName, conf => conf.MapFrom(src => src.Login));
     }
 }

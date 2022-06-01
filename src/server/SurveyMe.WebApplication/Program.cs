@@ -1,5 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +13,6 @@ using Microsoft.OpenApi.Models;
 using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data;
 using SurveyMe.Data.Stores;
-using SurveyMe.Common.Time;
 using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Users;
 using SurveyMe.Foundation.MapperConfigurations.Profiles;
@@ -16,6 +21,8 @@ using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
 using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Extensions;
+using ISystemClock = SurveyMe.Common.Time.ISystemClock;
+using SystemClock = SurveyMe.Common.Time.SystemClock;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,46 +98,26 @@ builder.Services.AddAutoMapper(configuration =>
     configuration.AddProfile<SurveyStatisticProfile>();
 });
 
-
-builder.Services.AddIdentityCore<User>(options =>
-    {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 8;
-    })
-    .AddUserStore<UserStore>()
-    .AddRoles<Role>()
-    .AddRoleStore<RoleStore>();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var configuration = builder.Configuration
-            .GetSection("JwtTokenGeneratorService").Get<TokenGeneratorConfiguration>();
-        
-        //TODO: Change Audience and Issuer and enable validation
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidIssuer = configuration.Issuer,
-            ValidateAudience = false,
-            ValidAudience = configuration.Audience,
-            ValidateLifetime = true,
-            IssuerSigningKey = configuration.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true
-        };
-        
-        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.Authority = "https://localhost:7179";
+        options.Audience = "SurveyMeApi";
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiScope", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "SurveyMeApi");
+    });
+});
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<ISurveyAnswersService, SurveySurveyAnswersService>();
 builder.Services.AddScoped<IFileService, FileService>();
@@ -151,15 +138,24 @@ if (app.Environment.IsDevelopment())
     app.UseCustomExceptionHandler();
 }
 
-await app.Services.CreateDbIfNotExists();
-
 app.UseHttpsRedirection();
 
 app.UseRouting();
 
+/*
+TODO: Check that token comes
+app.Use(async (context, next) =>
+{
+    var token = context.Request.Headers.Authorization;
+    
+    await next.Invoke();
+});
+*/
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers()
+    .RequireAuthorization("ApiScope");
 
 app.Run();

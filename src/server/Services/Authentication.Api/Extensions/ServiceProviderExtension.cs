@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SurveyMe.Common.Time;
-using SurveyMe.Data;
-using SurveyMe.DomainModels.Roles;
-using SurveyMe.DomainModels.Users;
-using ILogger = SurveyMe.Common.Logging.Abstracts.ILogger;
+﻿using Authentication.Api.Models.Roles;
+using Authentication.Api.Models.Users;
+using Microsoft.AspNetCore.Identity;
+using AuthenticationDbContext = Authentication.Api.Data.AuthenticationDbContext;
+using DbInitializer = Authentication.Api.Data.DbInitializer;
+using ILogger = Authentication.Api.Logging.Abstracts.ILogger;
 
-namespace SurveyMe.WebApplication.Extensions;
+namespace Authentication.Api.Extensions;
 
 public static class ServiceProviderExtension
 {
@@ -17,12 +17,11 @@ public static class ServiceProviderExtension
             var logger = services.GetRequiredService<ILogger>();
             try
             {
-                var context = services.GetRequiredService<SurveyMeDbContext>();
+                var context = services.GetRequiredService<AuthenticationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var roleManager = services.GetRequiredService<RoleManager<Role>>();
-                var systemClock = services.GetService<ISystemClock>();
 
-                await DbInitializer.Initialize(context, userManager, roleManager, systemClock);
+                await DbInitializer.Initialize(context, userManager, roleManager);
             }
             catch (Exception ex)
             {

@@ -15,13 +15,11 @@ namespace SurveyMe.Foundation.Services;
 public sealed class UserService : IUserService
 {
     private readonly ISurveyMeUnitOfWork _unitOfWork;
-    private readonly UserManager<User> _userManager;
 
 
-    public UserService(ISurveyMeUnitOfWork unitOfWork, UserManager<User> userManager)
+    public UserService(ISurveyMeUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _userManager = userManager;
     }
 
 
@@ -52,30 +50,13 @@ public sealed class UserService : IUserService
         return usersPagedWithSurveysCount;
     }
 
-    public async Task<ServiceResult> DeleteUsersAsync(User user)
-    {
-        var result = await _userManager.DeleteAsync(user);
-
-        return ConvertToServiceResult(result);
+    public async Task DeleteUsersAsync(User user)
+    { 
+        await _unitOfWork.Users.DeleteAsync(user);
     }
 
-    public async Task<ServiceResult> UpdateAsync(User user)
+    public async Task UpdateAsync(User user)
     {
-        var result = await _userManager.UpdateAsync(user);
-
-        return ConvertToServiceResult(result);
-    }
-
-
-    private static ServiceResult ConvertToServiceResult(IdentityResult result)
-    {
-        if (!result.Succeeded)
-        {
-            var errors = result.Errors.Select(error => error.Description).ToArray();
-
-            return ServiceResult.CreateFailed(errors);
-        }
-
-        return ServiceResult.CreateSuccessful();
+        await _unitOfWork.Users.UpdateAsync(user);
     }
 }

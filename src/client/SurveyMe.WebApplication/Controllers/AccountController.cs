@@ -27,13 +27,15 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(UserLoginRequestModel user)
+    public async Task<IActionResult> Login(UserLoginViewModel userView)
     {
         if (!ModelState.IsValid)
         {
             return View();
         }
 
+        var user = _mapper.Map<AuthenticationRequestModel>(userView);
+        
         try
         {
             var token = await _accountService.LoginAsync(user);
@@ -60,7 +62,7 @@ public class AccountController : Controller
         return View();
     }
 
-    [HttpPost]
+    /*[HttpPost]
     public async Task<IActionResult> Registration(UserRegistrationViewModel user)
     {
         if (!ModelState.IsValid)
@@ -83,7 +85,7 @@ public class AccountController : Controller
         }
         
         return RedirectToAction("Login", "Account");
-    }
+    }*/
 
     public IActionResult SignOut()
     {

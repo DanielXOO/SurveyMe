@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using SurveyMe.DomainModels.Users;
-using SurveyMe.Foundation.Exceptions;
-using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.Requests.Users;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SurveyMe.WebApplication.Controllers;
 
@@ -15,8 +9,7 @@ namespace SurveyMe.WebApplication.Controllers;
 [Route("api/[controller]/[action]")]
 public sealed class AccountController : Controller
 {
-    private readonly IAccountService _accountService;
-    private readonly IMapper _mapper;
+    /*private readonly IMapper _mapper;
 
 
     public AccountController(IAccountService accountService, IMapper mapper)
@@ -35,16 +28,12 @@ public sealed class AccountController : Controller
             throw new BadRequestException("Invalid data");
         }
 
-        var token = await _accountService.SignInAsync(user.Login, user.Password);
+        await _accountService.SignInAsync(user.Login, user.Password);
+
+        var test =  await HttpContext.GetTokenAsync("access_token");
         
-        Response.Cookies.Append("X-Access-Token", token.AccessToken,
-            new CookieOptions 
-            { 
-                HttpOnly = true, 
-                SameSite = SameSiteMode.Strict 
-            });
         
-        return Ok(token);
+        return Ok();
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,5 +56,5 @@ public sealed class AccountController : Controller
         }
 
         return Ok();
-    }
+    }*/
 }

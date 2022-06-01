@@ -5,7 +5,7 @@ namespace SurveyMe.Services.Abstracts;
 
 public interface IAccountService
 {
-    Task<JwtToken> LoginAsync(UserLoginRequestModel user);
+    Task<JwtToken> LoginAsync(AuthenticationRequestModel user);
 
     Task RegistrationAsync(UserRegistrationRequestModel userModel);
 }
