@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -98,22 +99,14 @@ builder.Services.AddAutoMapper(configuration =>
     configuration.AddProfile<SurveyStatisticProfile>();
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+    .AddIdentityServerAuthentication(options =>
     {
-        options.RequireHttpsMetadata = false;
         options.Authority = "https://localhost:7179";
-        options.Audience = "SurveyMeApi";
+        options.RequireHttpsMetadata = false;
+        options.ApiName = "SurveyMeApi";
+        options.ApiSecret = "api_secret";
     });
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ApiScope", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "SurveyMeApi");
-    });
-});
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
@@ -142,20 +135,9 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-/*
-TODO: Check that token comes
-app.Use(async (context, next) =>
-{
-    var token = context.Request.Headers.Authorization;
-    
-    await next.Invoke();
-});
-*/
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers()
-    .RequireAuthorization("ApiScope");
+app.MapControllers();
 
 app.Run();

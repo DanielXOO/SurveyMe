@@ -39,10 +39,11 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddIdentityServer()
+    .AddInMemoryIdentityResources(Config.Resources)
     .AddInMemoryClients(Config.Clients)
     .AddInMemoryApiResources(Config.ApiResources)
-    .AddDeveloperSigningCredential()
     .AddInMemoryApiScopes(Config.ApiScopes)
+    .AddDeveloperSigningCredential()
     .AddAspNetIdentity<User>();
 
 builder.Services.AddAuthentication("Bearer")
