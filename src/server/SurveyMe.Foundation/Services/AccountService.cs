@@ -59,6 +59,12 @@ public sealed class AccountService : IAccountService
     {
         user.CreationTime = _systemClock.UtcNow;
         var result = await _userManager.CreateAsync(user, password);
+
+        if (!result.Succeeded)
+        {
+            return ConvertToServiceResult(result);
+        }
+        
         await _userManager.AddToRoleAsync(user, RoleNames.User);
         
         return ConvertToServiceResult(result);

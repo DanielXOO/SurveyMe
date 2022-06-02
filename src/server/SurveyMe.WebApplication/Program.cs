@@ -1,4 +1,6 @@
+using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,7 @@ using SurveyMe.Foundation.MapperConfigurations.Profiles;
 using SurveyMe.Foundation.Models.Configurations;
 using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
+using SurveyMe.Foundation.Validators;
 using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Extensions;
 
@@ -32,6 +35,8 @@ builder.Services.AddControllers().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     o.JsonSerializerOptions.Converters.Add(new AnswerJsonConverter());
+    o.JsonSerializerOptions.Encoder = JavaScriptEncoder
+        .Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic);
 });
 builder.Services.AddSwaggerGen(options =>
 {
@@ -94,12 +99,13 @@ builder.Services.AddAutoMapper(configuration =>
 
 builder.Services.AddIdentityCore<User>(options =>
     {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
         options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
     })
+    .AddPasswordValidator<PasswordValidator>()
     .AddUserStore<UserStore>()
     .AddRoles<Role>()
     .AddRoleStore<RoleStore>();
