@@ -1,6 +1,6 @@
 ﻿using SurveyMe.Common.Pagination;
 
-namespace SurveyMe.DomainModels.Response;
+namespace SurveyMe.DomainModels.Response.Paggination;
 
 public class PageResponseModel<T>
 {

@@ -1,4 +1,6 @@
-﻿namespace SurveyMe.DomainModels.Response;
+﻿using SurveyMe.DomainModels.Response.Questions;
+
+namespace SurveyMe.DomainModels.Response.Surveys;
 
 public sealed class SurveyResponseModel
 {

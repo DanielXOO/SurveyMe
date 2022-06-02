@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.DomainModels.Response;
+﻿namespace SurveyMe.DomainModels.Response.Answers;
 
 public sealed class OptionAnswersStatisticResponseModel
 {

@@ -18,4 +18,7 @@ public sealed class AuthenticationRequestModel
 
     [JsonPropertyName("scope")]
     public string Scope { get; set; } = "SurveyMeApi";
+    
+    [JsonPropertyName("client_secret")]
+    public string ClientSecret { get; set; } = "client_secret";
 }

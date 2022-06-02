@@ -1,6 +1,8 @@
 ﻿using SurveyMe.DomainModels.Request.Queries;
 using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.DomainModels.Response;
+using SurveyMe.DomainModels.Response.Paggination;
+using SurveyMe.DomainModels.Response.Users;
 
 namespace SurveyMe.Services.Abstracts;
 

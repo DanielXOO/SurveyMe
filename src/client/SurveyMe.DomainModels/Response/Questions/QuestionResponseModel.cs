@@ -1,6 +1,6 @@
 ﻿using SurveyMe.DomainModels.Common;
 
-namespace SurveyMe.DomainModels.Response;
+namespace SurveyMe.DomainModels.Response.Questions;
 
 public sealed class QuestionResponseModel
 {

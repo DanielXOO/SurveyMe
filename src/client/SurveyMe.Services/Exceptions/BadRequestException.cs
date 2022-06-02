@@ -1,4 +1,4 @@
-﻿namespace SurveyMe.Common.Exceptions;
+﻿namespace SurveyMe.Services.Exceptions;
 
 public sealed class BadRequestException : Exception
 {

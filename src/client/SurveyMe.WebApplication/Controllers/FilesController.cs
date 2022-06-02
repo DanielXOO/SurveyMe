@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Refit;
-using SurveyMe.Common.Exceptions;
 using SurveyMe.Services.Abstracts;
+using SurveyMe.Services.Exceptions;
 
 namespace SurveyMe.WebApplication.Controllers;
 

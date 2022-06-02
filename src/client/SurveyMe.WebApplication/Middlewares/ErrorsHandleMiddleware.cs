@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.WebUtilities;
 using Refit;
-using SurveyMe.Common.Exceptions;
+using SurveyMe.Services.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 
 namespace SurveyMe.WebApplication.Middlewares;

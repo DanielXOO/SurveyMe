@@ -2,6 +2,8 @@
 using SurveyMe.DomainModels.Request.Answers;
 using SurveyMe.DomainModels.Request.Questions;
 using SurveyMe.DomainModels.Response;
+using SurveyMe.DomainModels.Response.Answers;
+using SurveyMe.DomainModels.Response.Questions;
 using SurveyMe.WebApplication.Models.ViewModels.Answers;
 using SurveyMe.WebApplication.Models.ViewModels.Questions;
 using SurveyMe.WebApplication.Models.ViewModels.Statistics;
