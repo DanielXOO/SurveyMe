@@ -32,7 +32,9 @@ public sealed class AccountController : Controller
     {
         if (!ModelState.IsValid)
         {
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            
+            throw new BadRequestException(string.Join('\n', errors));
         }
 
         var token = await _accountService.SignInAsync(user.Login, user.Password);
@@ -54,7 +56,9 @@ public sealed class AccountController : Controller
     {
         if (!ModelState.IsValid)
         {
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            
+            throw new BadRequestException(string.Join('\n', errors));
         }
 
         var user = _mapper.Map<User>(userModel);

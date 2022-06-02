@@ -72,7 +72,9 @@ public sealed class SurveysController : Controller
 
         if (!ModelState.IsValid)
         {
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            
+            throw new BadRequestException(string.Join('\n', errors));
         }
 
         var survey = _mapper.Map<Survey>(surveyModel);
@@ -172,7 +174,9 @@ public sealed class SurveysController : Controller
         
         if (!ModelState.IsValid)
         {
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            
+            throw new BadRequestException(string.Join('\n', errors));
         }
         
         var authorId = User.GetUserId();

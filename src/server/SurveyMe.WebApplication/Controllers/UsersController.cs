@@ -86,7 +86,7 @@ public sealed class UsersController : Controller
 
         if (!result.IsSuccessful)
         {
-            var errorMessage = string.Join(' ', result.ErrorMessages);
+            var errorMessage = string.Join('\n', result.ErrorMessages);
 
             throw new BadRequestException(errorMessage);
         }
