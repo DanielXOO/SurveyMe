@@ -5,6 +5,7 @@ using Authentication.Api.Extensions;
 using Authentication.Api.Logging;
 using Authentication.Api.Models.Roles;
 using Authentication.Api.Models.Users;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,18 +36,17 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddSignInManager()
     .AddUserStore<UserStore>()
     .AddRoles<Role>()
-    .AddRoleStore<RoleStore>()
-    .AddDefaultTokenProviders();
+    .AddRoleStore<RoleStore>();
 
 builder.Services.AddIdentityServer()
-    .AddInMemoryIdentityResources(Config.Resources)
-    .AddInMemoryClients(Config.Clients)
-    .AddInMemoryApiResources(Config.ApiResources)
-    .AddInMemoryApiScopes(Config.ApiScopes)
+    .AddInMemoryIdentityResources(Configurations.Resources)
+    .AddInMemoryClients(Configurations.Clients)
+    .AddInMemoryApiResources(Configurations.ApiResources)
+    .AddInMemoryApiScopes(Configurations.ApiScopes)
     .AddDeveloperSigningCredential()
     .AddAspNetIdentity<User>();
 
-builder.Services.AddAuthentication("Bearer")
+builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
     .AddIdentityServerAuthentication(options =>
     {
         options.Authority = "https://localhost:7179";

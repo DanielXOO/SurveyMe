@@ -3,7 +3,7 @@ using IdentityServer4.Models;
 
 namespace Authentication.Api.Configurations;
 
-public static class Config
+public static class Configurations
 {
     public static IEnumerable<IdentityResource> Resources =>
         new List<IdentityResource>
@@ -26,7 +26,7 @@ public static class Config
             new()
             {
                 ClientId = "client",
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                AllowedGrantTypes = GrantTypes.ClientCredentials,
                 AllowedScopes =
                 {
                     "SurveyMeApi"
@@ -34,7 +34,8 @@ public static class Config
                 ClientSecrets =
                 {
                     new Secret("client_secret".Sha256())
-                }
+                },
+                AllowOfflineAccess = true
             }
         };
 
