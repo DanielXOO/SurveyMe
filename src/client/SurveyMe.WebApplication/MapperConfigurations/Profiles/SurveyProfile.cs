@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using SurveyMe.DomainModels.Request.Answers;
 using SurveyMe.DomainModels.Request.Surveys;
-using SurveyMe.DomainModels.Response;
 using SurveyMe.DomainModels.Response.Answers;
 using SurveyMe.DomainModels.Response.Surveys;
 using SurveyMe.WebApplication.Models.ViewModels.Answers;

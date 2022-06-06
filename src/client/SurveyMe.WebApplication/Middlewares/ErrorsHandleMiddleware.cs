@@ -1,8 +1,4 @@
 ﻿using System.Net;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Unicode;
 using Microsoft.AspNetCore.WebUtilities;
 using Refit;
 using SurveyMe.Services.Exceptions;
@@ -33,21 +29,26 @@ public sealed class ErrorsHandleMiddleware
         catch (BadRequestException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
             context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
         catch (NotFoundException ex)
         {
             _logger.LogCritical(ex, "Not found error");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status404NotFound);
             context.Response.Redirect($"/Errors?code={error.StatusCode}");
+        }
+        catch (UnauthorizedException ex)
+        {
+            _logger.LogCritical(ex, "User do not have access");
+            context.Response.Redirect($"/Account/Login");
         }
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogCritical(ex, "Bad request error");
-            
+
             var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
             context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
@@ -55,16 +56,16 @@ public sealed class ErrorsHandleMiddleware
         {
             _logger.LogCritical(ex, "Api error");
 
-            var error = HandleErrorAsync(ex, (int)ex.StatusCode);
+            var error = HandleErrorAsync(ex, (int) ex.StatusCode);
             error.Message = ex.Content;
 
             switch (ex.StatusCode)
             {
                 case HttpStatusCode.Unauthorized:
-                    context.Response.Redirect("/Account/Login");
+                    context.Response.Redirect($"/Account/Login");
                     break;
                 default:
-                    context.Response.Redirect($"/Errors?code={(int)ex.StatusCode}");
+                    context.Response.Redirect($"/Errors?code={(int) ex.StatusCode}");
                     break;
             }
         }
@@ -72,7 +73,7 @@ public sealed class ErrorsHandleMiddleware
         {
             _logger.LogCritical(ex, "Server error");
             var error = HandleErrorAsync(ex, StatusCodes.Status500InternalServerError);
-            
+
             context.Response.Redirect($"/Errors?code={error.StatusCode}");
         }
     }

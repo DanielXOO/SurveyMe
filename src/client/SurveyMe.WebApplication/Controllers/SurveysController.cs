@@ -25,7 +25,6 @@ public class SurveysController : Controller
     }
 
 
-    [HttpGet]
     public async Task<IActionResult> Index(GetPageRequest request, int page = 1)
     {
         var pageResponse = await _surveyService.GetSurveysAsync(request, page);

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SurveyMe.DomainModels.Request.Users;
+namespace SurveyMe.DomainModels.Request.Authentication;
 
 public sealed class AuthenticationRequestModel
 {
@@ -11,14 +11,14 @@ public sealed class AuthenticationRequestModel
     public string Password { get; set; }
 
     [JsonPropertyName("client_id")]
-    public string ClientId { get; set; } = "client";
+    public string ClientId { get; set; }
 
     [JsonPropertyName("grant_type")]
-    public string GrantType { get; set; } = "password";
+    public string GrantType { get; set; }
 
     [JsonPropertyName("scope")]
-    public string Scope { get; set; } = "SurveyMeApi";
+    public string Scope { get; set; }
     
     [JsonPropertyName("client_secret")]
-    public string ClientSecret { get; set; } = "client_secret";
+    public string ClientSecret { get; set; }
 }

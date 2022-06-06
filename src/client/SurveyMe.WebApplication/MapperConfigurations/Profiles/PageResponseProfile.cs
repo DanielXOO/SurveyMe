@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SurveyMe.DomainModels.Response;
 using SurveyMe.DomainModels.Response.Paggination;
 using SurveyMe.DomainModels.Response.Surveys;
 using SurveyMe.DomainModels.Response.Users;

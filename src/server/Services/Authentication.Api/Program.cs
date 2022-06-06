@@ -1,3 +1,4 @@
+using Authentication.Api.Common;
 using Authentication.Api.Configurations;
 using Authentication.Api.Data;
 using Authentication.Api.Data.Stores;
@@ -5,6 +6,8 @@ using Authentication.Api.Extensions;
 using Authentication.Api.Logging;
 using Authentication.Api.Models.Roles;
 using Authentication.Api.Models.Users;
+using Authentication.Api.Services;
+using Authentication.Api.Services.Abstracts;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +27,14 @@ builder.Services.AddDbContext<AuthenticationDbContext>(options
         .GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IAuthenticationUnitOfWork, AuthenticationUnitOfWork>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddSingleton<ISystemClock, SystemClock>();
+
+builder.Services.AddAutoMapper(configuration =>
+{
+    configuration.AddMaps(typeof(Program).Assembly);
+});
+
 
 builder.Services.AddIdentityCore<User>(options =>
     {

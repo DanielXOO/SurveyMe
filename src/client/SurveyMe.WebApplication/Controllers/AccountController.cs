@@ -1,11 +1,11 @@
-﻿using System.Text.Json;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
 using SurveyMe.DomainModels.Request.Users;
 using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Models.Errors;
 using SurveyMe.WebApplication.Models.ViewModels.Users;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SurveyMe.WebApplication.Controllers;
 
@@ -34,22 +34,15 @@ public class AccountController : Controller
             return View();
         }
 
-        var user = _mapper.Map<AuthenticationRequestModel>(userView);
+        var user = _mapper.Map<UserLoginRequestModel>(userView);
         
         try
         {
-            var token = await _accountService.LoginAsync(user);
-            Response.Cookies.Append("X-Access-Token", token.AccessToken,
-                new CookieOptions 
-                { 
-                    HttpOnly = true, 
-                    SameSite = SameSiteMode.Strict 
-                });
+            await _accountService.LoginAsync(user);
         }
-        catch (ApiException ex)
+        catch
         {
-            var errors = JsonSerializer.Deserialize<BaseErrorResponse>(ex.Content);
-            ModelState.AddModelError(string.Empty, errors.Details);
+            ModelState.AddModelError(string.Empty, "Invalid username or password");
             
             return View();
         }
@@ -62,7 +55,7 @@ public class AccountController : Controller
         return View();
     }
 
-    /*[HttpPost]
+    [HttpPost]
     public async Task<IActionResult> Registration(UserRegistrationViewModel user)
     {
         if (!ModelState.IsValid)
@@ -85,14 +78,12 @@ public class AccountController : Controller
         }
         
         return RedirectToAction("Login", "Account");
-    }*/
+    }
 
     public IActionResult SignOut()
     {
-        if (User.Identity.IsAuthenticated)
-        {
-            Response.Cookies.Delete("X-Access-Token");
-        }
+        Response.Cookies.Delete("X-Access-Token");
+        Response.Cookies.Delete("X-Refresh-Token");
         
         return RedirectToAction("Login", "Account");
     }

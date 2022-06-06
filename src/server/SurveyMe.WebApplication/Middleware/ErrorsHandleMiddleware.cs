@@ -56,13 +56,6 @@ public sealed class ErrorsHandleMiddleware
             var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
             await SendErrorResponse(context, error);
         }
-        catch (ApiException ex)
-        {
-            _logger.LogCritical(ex, "Api exception");
-
-            var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
-            await SendErrorResponse(context, error);
-        }
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "Server error");

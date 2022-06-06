@@ -1,4 +1,6 @@
-﻿using IdentityModel;
+﻿using System.Security.Claims;
+using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace Authentication.Api.Configurations;
@@ -26,16 +28,19 @@ public static class Configurations
             new()
             {
                 ClientId = "client",
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 AllowedScopes =
                 {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
                     "SurveyMeApi"
                 },
                 ClientSecrets =
                 {
                     new Secret("client_secret".Sha256())
                 },
-                AllowOfflineAccess = true
+                AllowOfflineAccess = true,
+                AccessTokenLifetime = 1
             }
         };
 
@@ -48,7 +53,10 @@ public static class Configurations
                 {
                     new Secret("api_secret".Sha256())
                 },
-                Scopes = { "SurveyMeApi" }
+                Scopes =
+                {
+                    "SurveyMeApi"
+                }
             }
         };
 }

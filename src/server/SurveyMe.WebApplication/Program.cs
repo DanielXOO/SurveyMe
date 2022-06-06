@@ -106,7 +106,7 @@ builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.Authenti
         options.RequireHttpsMetadata = false;
         options.ApiName = "SurveyMeApi";
         options.ApiSecret = "api_secret";
-        options.JwtValidationClockSkew = TimeSpan.FromSeconds(5);
+        options.JwtValidationClockSkew = TimeSpan.FromSeconds(1);
     });
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();

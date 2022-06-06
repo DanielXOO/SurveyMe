@@ -1,14 +1,11 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Refit;
 using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data.Abstracts;
+using SurveyMe.DomainModels.Request.Authentication;
 using SurveyMe.Services;
 using SurveyMe.Services.Abstracts;
 using SurveyMe.WebApplication.Converters;
@@ -23,6 +20,8 @@ builder.Host.ConfigureLogging(logBuilder =>
     logBuilder.AddFile(builder.Configuration.GetSection("Serilog:FileLogging"));
 });
 
+builder.Services.Configure<IdentityServerConfiguration>(builder.Configuration.GetSection("IdentityServer"));
+
 builder.Services.AddMvc()
     .AddJsonOptions(options =>
 {
@@ -36,7 +35,8 @@ builder.Services.AddRefitClient<IAccountApi>()
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = new Uri("https://localhost:7179");
-    });
+    })
+    .AddHttpMessageHandler<SignInHandler>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -69,6 +69,7 @@ builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddTransient<AuthHeaderHandler>();
+builder.Services.AddTransient<SignInHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
@@ -87,28 +88,12 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+
 app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.Use(async (context, next) =>
-{
-    var hasToken = context.Request.Cookies.TryGetValue("X-Access-Token", out var token);
-    if (hasToken)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var securityToken = handler.ReadToken(token) as JwtSecurityToken;
-        var identity = new ClaimsIdentity(securityToken.Claims, 
-            CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
-
-        await context.SignInAsync(principal);
-    }
-    
-    await next();
-});
 
 app.UseAuthentication();
 app.UseAuthorization();

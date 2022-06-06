@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using SurveyMe.DomainModels.Request.Users;
-using SurveyMe.DomainModels.Response;
 using SurveyMe.DomainModels.Response.Users;
 using SurveyMe.WebApplication.Models.ViewModels.Users;
 
@@ -18,7 +17,6 @@ public class UserProfile : Profile
 
         CreateMap<UserDeleteOrEditViewModel, UserDeleteOrEditRequestModel>();
 
-        CreateMap<UserLoginViewModel, AuthenticationRequestModel>()
-            .ForMember(dest => dest.UserName, conf => conf.MapFrom(src => src.Login));
+        CreateMap<UserLoginViewModel, UserLoginRequestModel>();
     }
 }

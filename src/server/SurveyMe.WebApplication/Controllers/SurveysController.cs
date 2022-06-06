@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyMe.Common.Extensions;
@@ -67,7 +68,7 @@ public sealed class SurveysController : Controller
     [HttpPost]
     public async Task<IActionResult> AddSurvey([FromBody] SurveyRequestModel surveyModel)
     {
-        var authorId = User.GetUserId();
+        var authorId = Guid.Parse(HttpContext.User.GetSubjectId());
         var author = await _userService.GetUserByIdAsync(authorId);
 
         if (!ModelState.IsValid)
@@ -102,7 +103,7 @@ public sealed class SurveysController : Controller
     {
         var survey = await _surveyService.GetSurveyByIdAsync(id);
         
-        var userId = User.GetUserId();
+        var userId = Guid.Parse(HttpContext.User.GetSubjectId());
         var user = await _userService.GetUserByIdAsync(userId);
         var isAdmin = user.Roles.Select(role => role.Name).Contains(RoleNames.Admin);
         
@@ -130,7 +131,7 @@ public sealed class SurveysController : Controller
         
         var survey = await _surveyService.GetSurveyByIdAsync(id);
 
-        var userId = User.GetUserId();
+        var userId = Guid.Parse(HttpContext.User.GetSubjectId());
 
         if (userId != survey.AuthorId)
         {
@@ -175,7 +176,7 @@ public sealed class SurveysController : Controller
             throw new BadRequestException("Invalid data");
         }
         
-        var authorId = User.GetUserId();
+        var authorId = Guid.Parse(HttpContext.User.GetSubjectId());
         var author = await _userService.GetUserByIdAsync(authorId);
 
         var answer = _mapper.Map<SurveyAnswer>(surveyAnswerRequestModel);
