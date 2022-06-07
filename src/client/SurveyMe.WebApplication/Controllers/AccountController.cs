@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
 using SurveyMe.DomainModels.Request.Users;
@@ -40,7 +41,7 @@ public class AccountController : Controller
         {
             await _accountService.LoginAsync(user);
         }
-        catch
+        catch(Exception ex)
         {
             ModelState.AddModelError(string.Empty, "Invalid username or password");
             
@@ -82,8 +83,8 @@ public class AccountController : Controller
 
     public IActionResult SignOut()
     {
-        Response.Cookies.Delete("X-Access-Token");
-        Response.Cookies.Delete("X-Refresh-Token");
+        HttpContext.Response.Cookies.Delete("X-Access-Token");
+        HttpContext.Response.Cookies.Delete("X-Refresh-Token");
         
         return RedirectToAction("Login", "Account");
     }

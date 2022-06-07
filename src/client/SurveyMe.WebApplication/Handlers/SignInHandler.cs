@@ -66,7 +66,6 @@ public class SignInHandler : DelegatingHandler
             { 
                 HttpOnly = true, 
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddSeconds(5)
             });
             
         _accessor.HttpContext.Response.Cookies.Append("X-Refresh-Token", token.RefreshToken,

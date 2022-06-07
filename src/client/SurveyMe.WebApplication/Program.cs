@@ -64,7 +64,7 @@ builder.Services.AddRefitClient<ISurveyApi>(new RefitSettings()
     })
     .ConfigureHttpClient(configuration =>
     {
-        configuration.BaseAddress = baseApiAddress;
+        configuration.BaseAddress = new Uri("https://localhost:7017/api");
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
