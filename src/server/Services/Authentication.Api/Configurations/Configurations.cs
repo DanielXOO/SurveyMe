@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using IdentityModel;
+﻿using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -39,8 +38,7 @@ public static class Configurations
                 {
                     new Secret("client_secret".Sha256())
                 },
-                AllowOfflineAccess = true,
-                AccessTokenLifetime = 1
+                AllowOfflineAccess = true
             }
         };
 

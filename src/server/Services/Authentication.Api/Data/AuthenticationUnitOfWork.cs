@@ -1,4 +1,5 @@
-﻿using Authentication.Api.Data.Core;
+﻿using Authentication.Api.Data.Abstracts;
+using Authentication.Api.Data.Core;
 using Authentication.Api.Data.Repositories;
 using Authentication.Api.Data.Repositories.Abstracts;
 using Authentication.Api.Models.Roles;

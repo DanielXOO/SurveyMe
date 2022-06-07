@@ -1,4 +1,4 @@
-﻿using Authentication.Api.Data.Abstracts;
+﻿using Authentication.Api.Data.Core.Abstracts;
 using Authentication.Api.Models.Users;
 
 namespace Authentication.Api.Data.Repositories.Abstracts;

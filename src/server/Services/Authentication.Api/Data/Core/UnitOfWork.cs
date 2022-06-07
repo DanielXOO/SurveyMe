@@ -1,4 +1,4 @@
-﻿using Authentication.Api.Data.Abstracts;
+﻿using Authentication.Api.Data.Core.Abstracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Api.Data.Core;

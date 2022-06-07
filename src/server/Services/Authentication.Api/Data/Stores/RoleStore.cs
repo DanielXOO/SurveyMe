@@ -1,4 +1,5 @@
-﻿using Authentication.Api.Models.Roles;
+﻿using Authentication.Api.Data.Abstracts;
+using Authentication.Api.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 
 namespace Authentication.Api.Data.Stores;

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyMe.Foundation", "Surv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Api", "Services\Authentication.Api\Authentication.Api.csproj", "{649EE3E5-FAF7-4D3A-BE1E-8CFA5FB9FE20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Api", "Services\Surveys.Api\Surveys.Api.csproj", "{C5B58CF1-6A2C-4366-8053-01BAFDC89E71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{649EE3E5-FAF7-4D3A-BE1E-8CFA5FB9FE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{649EE3E5-FAF7-4D3A-BE1E-8CFA5FB9FE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{649EE3E5-FAF7-4D3A-BE1E-8CFA5FB9FE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5B58CF1-6A2C-4366-8053-01BAFDC89E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5B58CF1-6A2C-4366-8053-01BAFDC89E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5B58CF1-6A2C-4366-8053-01BAFDC89E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5B58CF1-6A2C-4366-8053-01BAFDC89E71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

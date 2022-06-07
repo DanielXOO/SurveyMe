@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using SurveyMe.Common.Extensions;
 using SurveyMe.Common.Pagination;
 using SurveyMe.Data;

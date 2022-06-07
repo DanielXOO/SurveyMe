@@ -1,21 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Text.Json.Serialization;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data;
-using SurveyMe.Data.Stores;
-using SurveyMe.DomainModels.Roles;
-using SurveyMe.DomainModels.Users;
 using SurveyMe.Foundation.MapperConfigurations.Profiles;
 using SurveyMe.Foundation.Models.Configurations;
 using SurveyMe.Foundation.Services;
@@ -116,7 +105,6 @@ builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<ISurveyAnswersService, SurveySurveyAnswersService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
-builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 builder.Services.AddSingleton<ISystemClock, SystemClock>();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 

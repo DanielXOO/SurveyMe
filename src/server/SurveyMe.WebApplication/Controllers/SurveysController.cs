@@ -2,7 +2,6 @@
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyMe.Common.Extensions;
 using SurveyMe.DomainModels.Answers;
 using SurveyMe.DomainModels.Roles;
 using SurveyMe.DomainModels.Surveys;

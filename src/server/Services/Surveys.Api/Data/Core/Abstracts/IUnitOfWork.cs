@@ -1,4 +1,4 @@
-﻿namespace Authentication.Api.Data.Abstracts;
+﻿namespace Surveys.Api.Data.Core.Abstracts;
 
 public interface IUnitOfWork
 {

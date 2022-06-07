@@ -1,5 +1,5 @@
-﻿using Authentication.Api.Common;
-using Authentication.Api.Data;
+﻿using Authentication.Api.Common.Time;
+using Authentication.Api.Data.Abstracts;
 using Authentication.Api.Models.Roles;
 using Authentication.Api.Models.Users;
 using Authentication.Api.Services.Abstracts;

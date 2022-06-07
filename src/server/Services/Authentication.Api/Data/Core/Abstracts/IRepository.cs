@@ -1,4 +1,4 @@
-﻿namespace Authentication.Api.Data.Abstracts;
+﻿namespace Authentication.Api.Data.Core.Abstracts;
 
 public interface IRepository<T>
 {

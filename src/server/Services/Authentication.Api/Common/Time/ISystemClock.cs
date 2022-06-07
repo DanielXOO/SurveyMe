@@ -1,4 +1,4 @@
-﻿namespace Authentication.Api.Common;
+﻿namespace Authentication.Api.Common.Time;
 
 public interface ISystemClock
 {

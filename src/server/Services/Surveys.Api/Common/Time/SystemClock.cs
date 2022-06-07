@@ -1,4 +1,4 @@
-﻿namespace Authentication.Api.Common;
+﻿namespace Surveys.Api.Common.Time;
 
 public class SystemClock : ISystemClock
 {
