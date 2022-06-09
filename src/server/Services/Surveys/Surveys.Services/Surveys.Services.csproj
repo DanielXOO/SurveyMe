@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Surveys.Data\Surveys.Data.csproj" />
+      <ProjectReference Include="..\Surveys.Data.EFCore\Surveys.Data.EFCore.csproj" />
       <ProjectReference Include="..\Surveys.Models\Surveys.Models.csproj" />
     </ItemGroup>
 

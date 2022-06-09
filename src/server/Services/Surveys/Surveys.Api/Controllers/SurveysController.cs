@@ -2,10 +2,10 @@
 using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Surveys.Api.Models.Request.Queries;
 using Surveys.Api.Models.Request.Surveys;
 using Surveys.Api.Models.Response.Errors;
 using Surveys.Api.Models.Response.Pages;
-using Surveys.Api.Models.Response.Queries;
 using Surveys.Api.Models.Response.Surveys;
 using Surveys.Common.Exceptions;
 using Surveys.Models.Surveys;
@@ -14,7 +14,7 @@ using Surveys.Services.Abstracts;
 namespace Surveys.Api.Controllers;
 
 /// <summary>
-/// Controller for surveys and answers
+/// Controller for surveys
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]

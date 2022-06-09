@@ -20,8 +20,4 @@
       <ProjectReference Include="..\Surveys.Models\Surveys.Models.csproj" />
       <ProjectReference Include="..\Surveys.Services\Surveys.Services.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Common" />
-    </ItemGroup>
 </Project>

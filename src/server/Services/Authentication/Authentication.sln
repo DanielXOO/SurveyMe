@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Api", "Authe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Common", "Authentication.Common\Authentication.Common.csproj", "{49765F3C-6EDD-4F6E-B992-54FBD151BD4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Data", "Authentication.Data\Authentication.Data.csproj", "{5F136E60-D14F-419F-8486-9D3CBF951A81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Data.EFCore", "Authentication.Data.EFCore\Authentication.Data.EFCore.csproj", "{5F136E60-D14F-419F-8486-9D3CBF951A81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Models", "Authentication.Models\Authentication.Models.csproj", "{7DBD5995-17F7-4534-A041-EF1EEA3A2127}"
 EndProject

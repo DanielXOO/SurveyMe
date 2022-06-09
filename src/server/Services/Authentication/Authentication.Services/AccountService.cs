@@ -10,16 +10,11 @@ namespace Authentication.Services;
 public sealed class AccountService : IAccountService
 {
     private readonly UserManager<User> _userManager;
-    private readonly ISystemClock _systemClock;
-    private readonly IAuthenticationUnitOfWork _unitOfWork;
 
 
-    public AccountService(UserManager<User> userManager, ISystemClock systemClock, 
-        IAuthenticationUnitOfWork unitOfWork)
+    public AccountService(UserManager<User> userManager)
     {
         _userManager = userManager;
-        _systemClock = systemClock;
-        _unitOfWork = unitOfWork;
     }
 
 

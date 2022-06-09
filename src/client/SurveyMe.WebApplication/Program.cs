@@ -29,6 +29,8 @@ builder.Services.AddMvc()
     options.JsonSerializerOptions.Converters.Add(new AnswerViewJsonConverter());
 });
 
+builder.Services.AddHttpContextAccessor();
+
 var baseApiAddress = new Uri(builder.Configuration["ApiConfiguration:BaseAddress"]);
 
 builder.Services.AddRefitClient<IAccountApi>()
@@ -38,12 +40,17 @@ builder.Services.AddRefitClient<IAccountApi>()
     })
     .AddHttpMessageHandler<SignInHandler>();
 
-builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddRefitClient<IUserApi>()
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = baseApiAddress;
+    })
+    .AddHttpMessageHandler<AuthHeaderHandler>();
+
+builder.Services.AddRefitClient<IAnswersApi>()
+    .ConfigureHttpClient(configuration =>
+    {
+        configuration.BaseAddress = new Uri("https://localhost:7119/api");
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 

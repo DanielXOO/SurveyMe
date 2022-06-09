@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Api", "Surveys.Api\Surveys.Api.csproj", "{03351B87-8BC6-42DA-8963-B9CD12F39BF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Data", "Surveys.Data\Surveys.Data.csproj", "{05DCA594-B743-4348-931A-938592E30B3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Data.EFCore", "Surveys.Data.EFCore\Surveys.Data.EFCore.csproj", "{05DCA594-B743-4348-931A-938592E30B3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Services", "Surveys.Services\Surveys.Services.csproj", "{E66F5AD0-5FEB-4379-989B-1BC9CE421E22}"
 EndProject
