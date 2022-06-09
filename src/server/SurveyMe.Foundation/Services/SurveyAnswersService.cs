@@ -31,8 +31,6 @@ public class SurveySurveyAnswersService : ISurveyAnswersService
     {
         answer.User = author;
         answer.UserId = author.Id;
-
-        
         
         await _unitOfWork.Answers.CreateAsync(answer);
     }

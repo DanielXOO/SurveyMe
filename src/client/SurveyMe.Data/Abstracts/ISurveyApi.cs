@@ -26,9 +26,6 @@ public interface ISurveyApi
     [Delete("/surveys/{id}")]
     Task DeleteSurveyAsync(Guid id);
 
-    [Post("/surveys/{surveyId}/answers")]
-    Task AnswerAsync([Body]SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId);
-
     [Get("/surveys/{surveyId}/statistics")]
     Task<SurveyAnswersStatisticResponseModel> GetSurveyStatisticAsync(Guid surveyId);
 }

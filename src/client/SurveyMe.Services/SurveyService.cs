@@ -12,11 +12,13 @@ namespace SurveyMe.Services;
 public class SurveyService : ISurveyService
 {
     private readonly ISurveyApi _surveyApi;
+    private readonly IAnswersApi _answersApi;
     
 
-    public SurveyService(ISurveyApi surveyApi)
+    public SurveyService(ISurveyApi surveyApi, IAnswersApi answersApi)
     {
         _surveyApi = surveyApi;
+        _answersApi = answersApi;
     }
     
     
@@ -51,7 +53,7 @@ public class SurveyService : ISurveyService
 
     public async Task AnswerAsync(SurveyAnswerRequestModel surveyAnswerRequestModel, Guid surveyId)
     {
-        await _surveyApi.AnswerAsync(surveyAnswerRequestModel, surveyId);
+        await _answersApi.AnswerAsync(surveyAnswerRequestModel, surveyId);
     }
 
     public async Task<SurveyAnswersStatisticResponseModel> GetSurveyStatisticAsync(Guid surveyId)
