@@ -3,13 +3,13 @@ using Answers.Api.Models.Request.Surveys;
 using Answers.Api.Models.Response.Answers;
 using Answers.Api.Models.Response.Errors;
 using Answers.Api.Models.Response.Pages;
-using Answers.Common.Exceptions;
 using Answers.Models.Answers;
 using Answers.Services.Abstracts;
 using AutoMapper;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Common.Exceptions;
 
 namespace Answers.Api.Controllers;
 

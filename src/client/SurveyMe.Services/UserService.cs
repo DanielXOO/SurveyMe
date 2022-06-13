@@ -10,7 +10,9 @@ namespace SurveyMe.Services;
 public sealed class UserService : IUserService
 {
     private readonly IUserApi _userApi;
+    
     private const string ServiceBasePath = "/users";
+    
     
     public UserService(IUserApi userApi)
     {

@@ -2,12 +2,12 @@
 using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Common.Exceptions;
 using Surveys.Api.Models.Request.Queries;
 using Surveys.Api.Models.Request.Surveys;
 using Surveys.Api.Models.Response.Errors;
 using Surveys.Api.Models.Response.Pages;
 using Surveys.Api.Models.Response.Surveys;
-using Surveys.Common.Exceptions;
 using Surveys.Models.Surveys;
 using Surveys.Services.Abstracts;
 
@@ -36,12 +36,14 @@ public sealed class SurveysController : Controller
     [HttpGet]
     public async Task<IActionResult> GetSurveysPage([FromQuery] GetPageRequest request)
     {
-        //TODO: check null request
+        if (request == null)
+        {
+            throw new BadRequestException("Request is empty");
+        }
         
         var surveys = await _surveyService
             .GetSurveysAsync(request.Page, request.PageSize, request.SortOrder, request.NameSearchTerm);
         
-        //TODO: Check where i use NameSearchTerm
         var pageResponse = new PageResponseModel<SurveyResponseModel>
         {
             NameSearchTerm = request.NameSearchTerm,
@@ -67,8 +69,12 @@ public sealed class SurveysController : Controller
 
         if (!ModelState.IsValid)
         {
-            //TODO:Add dictionary with messages
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.ToDictionary(
+                error => error.Key,
+                error => error.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+            );
+            
+            throw new BadRequestException("Invalid data", errors);
         }
 
         var survey = _mapper.Map<Survey>(surveyModel);
@@ -90,7 +96,7 @@ public sealed class SurveysController : Controller
         return Ok(surveyResponseModel);
     }
     
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [HttpDelete("{id:guid}")]
@@ -100,10 +106,10 @@ public sealed class SurveysController : Controller
         
         await _surveyService.DeleteSurveyAsync(survey);
         
-        return Ok();
+        return NoContent();
     }
 
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseErrorResponse))]
@@ -120,17 +126,16 @@ public sealed class SurveysController : Controller
 
         var userId = Guid.Parse(HttpContext.User.GetSubjectId());
 
-        //TODO: Add condition for check admin
-        if (userId != survey.AuthorId)
+        var isAdmin = HttpContext.User.IsInRole("ADMIN");
+        if (userId != survey.AuthorId && !isAdmin)
         {
             throw new ForbidException("Action denied");
         }
-        
+
         _mapper.Map(surveyModel, survey);
 
         await _surveyService.UpdateSurveyAsync(survey);
 
-        //TODO: 204 and 
-        return Ok();
+        return NoContent();
     }
 }

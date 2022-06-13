@@ -3,7 +3,7 @@ using Authentication.Users;
 using Microsoft.AspNetCore.Identity;
 using AuthenticationDbContext = Authentication.Data.AuthenticationDbContext;
 using DbInitializer = Authentication.Data.DbInitializer;
-using ILogger = Authentication.Logging.Abstracts.ILogger;
+using ILogger = SurveyMe.Common.Logging.Abstracts.ILogger;
 
 namespace Authentication.Api.Extensions;
 

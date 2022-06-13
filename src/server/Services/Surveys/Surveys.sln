@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Services", "Surveys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Models", "Surveys.Models\Surveys.Models.csproj", "{17C91A21-E02D-4AEA-A225-F7EF5EB0842E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveys.Common", "Surveys.Common\Surveys.Common.csproj", "{BF9A2064-876C-4728-AFE7-956F5480F609}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{17C91A21-E02D-4AEA-A225-F7EF5EB0842E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17C91A21-E02D-4AEA-A225-F7EF5EB0842E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17C91A21-E02D-4AEA-A225-F7EF5EB0842E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF9A2064-876C-4728-AFE7-956F5480F609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF9A2064-876C-4728-AFE7-956F5480F609}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF9A2064-876C-4728-AFE7-956F5480F609}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF9A2064-876C-4728-AFE7-956F5480F609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

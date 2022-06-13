@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using SurveyMe.Common.Pagination;
 using Surveys.Api.Models.Response.Pages;
 using Surveys.Api.Models.Response.Surveys;
-using Surveys.Common.Pagination;
 using Surveys.Models.Surveys;
 
 namespace Surveys.Api.MapperConfiguration.Profiles;

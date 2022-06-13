@@ -9,6 +9,7 @@ public sealed class FileService : IFileService
 {
     private readonly IFileApi _fileApi;
 
+    
     public FileService(IFileApi fileApi)
     {
         _fileApi = fileApi;

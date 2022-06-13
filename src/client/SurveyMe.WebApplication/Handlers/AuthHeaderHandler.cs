@@ -33,7 +33,7 @@ public class AuthHeaderHandler : DelegatingHandler
 
         var response = await base.SendAsync(request, cancellationToken);
 
-        if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+        if (response.StatusCode is HttpStatusCode.Unauthorized)
         {
             _accessor.HttpContext.Request.Cookies
                 .TryGetValue("X-Refresh-Token", out var refreshToken);

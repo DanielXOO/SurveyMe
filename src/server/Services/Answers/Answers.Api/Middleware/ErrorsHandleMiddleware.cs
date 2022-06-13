@@ -2,8 +2,8 @@
 using System.Text.Json;
 using System.Text.Unicode;
 using Answers.Api.Models.Response.Errors;
-using Answers.Common.Exceptions;
 using Microsoft.AspNetCore.WebUtilities;
+using SurveyMe.Common.Exceptions;
 
 namespace Answers.Api.Middleware;
 

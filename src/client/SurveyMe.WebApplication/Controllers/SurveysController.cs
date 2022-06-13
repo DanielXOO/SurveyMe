@@ -5,10 +5,12 @@ using SurveyMe.DomainModels.Request.Queries;
 using SurveyMe.DomainModels.Request.Surveys;
 using SurveyMe.Services.Abstracts;
 using SurveyMe.Services.Exceptions;
+using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Models.ViewModels.Answers;
 using SurveyMe.WebApplication.Models.ViewModels.Pages;
 using SurveyMe.WebApplication.Models.ViewModels.Statistics;
 using SurveyMe.WebApplication.Models.ViewModels.Surveys;
+using System.Text.Json;
 
 namespace SurveyMe.WebApplication.Controllers;
 
@@ -151,6 +153,13 @@ public class SurveysController : Controller
         }
 
         var answer = _mapper.Map<SurveyAnswerRequestModel>(answerViewModel);
+
+        var options = new JsonSerializerOptions() { 
+             Converters = { new AnswerRequestJsonConverter() }
+        };
+
+        var json = JsonSerializer.Serialize(answer, options);
+
         await _surveyService.AnswerAsync(answer, answer.SurveyId);
         
         return Ok();

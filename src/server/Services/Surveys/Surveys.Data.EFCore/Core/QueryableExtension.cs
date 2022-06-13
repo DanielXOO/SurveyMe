@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Surveys.Common.Pagination;
+using SurveyMe.Common.Pagination;
 
 namespace Surveys.Data.Core;
 

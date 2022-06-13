@@ -12,7 +12,8 @@
     "Answers.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7119;http://localhost:5119",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

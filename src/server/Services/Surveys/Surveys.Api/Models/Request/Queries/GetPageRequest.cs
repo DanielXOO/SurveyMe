@@ -1,4 +1,4 @@
-﻿using Surveys.Common.Pagination;
+﻿using SurveyMe.Common.Pagination;
 
 namespace Surveys.Api.Models.Request.Queries;
 

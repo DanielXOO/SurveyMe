@@ -1,10 +1,10 @@
 ﻿using Authentication.Api.Models.Request.Users;
 using Authentication.Api.Models.Response.Errors;
-using Authentication.Exceptions;
 using Authentication.Services.Abstracts;
 using Authentication.Users;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SurveyMe.Common.Exceptions;
 
 namespace Authentication.Api.Controllers;
 

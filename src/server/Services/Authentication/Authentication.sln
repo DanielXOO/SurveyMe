@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Api", "Authentication.Api\Authentication.Api.csproj", "{D5AFFBEB-70EE-4E40-9D6F-FB129BAB3CDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Common", "Authentication.Common\Authentication.Common.csproj", "{49765F3C-6EDD-4F6E-B992-54FBD151BD4E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Data.EFCore", "Authentication.Data.EFCore\Authentication.Data.EFCore.csproj", "{5F136E60-D14F-419F-8486-9D3CBF951A81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Models", "Authentication.Models\Authentication.Models.csproj", "{7DBD5995-17F7-4534-A041-EF1EEA3A2127}"
@@ -20,10 +18,6 @@ Global
 		{D5AFFBEB-70EE-4E40-9D6F-FB129BAB3CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5AFFBEB-70EE-4E40-9D6F-FB129BAB3CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5AFFBEB-70EE-4E40-9D6F-FB129BAB3CDC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49765F3C-6EDD-4F6E-B992-54FBD151BD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49765F3C-6EDD-4F6E-B992-54FBD151BD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49765F3C-6EDD-4F6E-B992-54FBD151BD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49765F3C-6EDD-4F6E-B992-54FBD151BD4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F136E60-D14F-419F-8486-9D3CBF951A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F136E60-D14F-419F-8486-9D3CBF951A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F136E60-D14F-419F-8486-9D3CBF951A81}.Release|Any CPU.ActiveCfg = Release|Any CPU

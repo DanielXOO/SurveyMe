@@ -5,21 +5,34 @@ using Answers.Data;
 using Answers.Data.Abstracts;
 using Answers.Services;
 using Answers.Services.Abstracts;
+using Answers.Services.Consumers;
 using IdentityServer4.AccessTokenValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using SurveyMe.Common.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureLogging(logBuilder =>
+{
+    logBuilder.AddLogger();
+    logBuilder.AddFile(builder.Configuration.GetSection("Serilog:FileLogging"));
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AnswersDbContext>(options
     => options.UseSqlServer(builder.Configuration
         .GetConnectionString("DefaultConnection")));
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers().AddJsonOptions(o =>
-{
-    o.JsonSerializerOptions.Converters.Add(new AnswerJsonConverter());
-    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.Converters.Add(new AnswerJsonConverter());
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 builder.Services.AddAutoMapper(configuration =>
 {
@@ -27,9 +40,24 @@ builder.Services.AddAutoMapper(configuration =>
 });
 
 builder.Services.AddScoped<IAnswersService, AnswersService>();
+builder.Services.AddScoped<ISurveysService, SurveysService>();
 builder.Services.AddScoped<IAnswersUnitOfWork, AnswersUnitOfWork>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<SurveysConsumer>();
+    x.UsingRabbitMq((context, config) =>
+    {
+        config.Host("localhost", "/", configuration =>
+        {
+            configuration.Username("guest");
+            configuration.Password("guest");
+        });
+        config.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
     .AddIdentityServerAuthentication(options =>
@@ -42,6 +70,12 @@ builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.Authenti
     });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 await app.Services.CreateDbIfNotExists();
 

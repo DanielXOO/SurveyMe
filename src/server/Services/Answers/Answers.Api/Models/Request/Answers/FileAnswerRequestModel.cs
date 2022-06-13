@@ -3,5 +3,4 @@
 public class FileAnswerRequestModel : BaseAnswerRequestModel
 {
     public Guid FileInfoId { get; set; }
-
 }

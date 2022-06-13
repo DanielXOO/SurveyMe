@@ -9,8 +9,6 @@ public abstract class BaseQuestionAnswer
     public QuestionType QuestionType { get; set; }
 
     public Guid QuestionId { get; set; }
-
-    public Question Question { get; set; }
     
     public SurveyAnswer SurveyAnswer { get; set; }
     

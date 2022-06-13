@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Answers.Api", "Answers.Api\Answers.Api.csproj", "{B0964D31-2AC9-4114-9997-569B595F055C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Answers.Common", "Answers.Common\Answers.Common.csproj", "{8CEAD6A2-BD4B-4A5C-B0E6-AA494F44C09E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Answers.Data.EFCore", "Answers.Data.EFCore\Answers.Data.EFCore.csproj", "{81AB8556-CE12-44E5-869B-364A1EE3A116}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Answers.Models", "Answers.Models\Answers.Models.csproj", "{693242A9-39EC-4735-816A-33CA871088A6}"
@@ -20,10 +18,6 @@ Global
 		{B0964D31-2AC9-4114-9997-569B595F055C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0964D31-2AC9-4114-9997-569B595F055C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0964D31-2AC9-4114-9997-569B595F055C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CEAD6A2-BD4B-4A5C-B0E6-AA494F44C09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CEAD6A2-BD4B-4A5C-B0E6-AA494F44C09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CEAD6A2-BD4B-4A5C-B0E6-AA494F44C09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CEAD6A2-BD4B-4A5C-B0E6-AA494F44C09E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81AB8556-CE12-44E5-869B-364A1EE3A116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81AB8556-CE12-44E5-869B-364A1EE3A116}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81AB8556-CE12-44E5-869B-364A1EE3A116}.Release|Any CPU.ActiveCfg = Release|Any CPU

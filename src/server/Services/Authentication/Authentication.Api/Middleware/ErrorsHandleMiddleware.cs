@@ -2,8 +2,8 @@
 using System.Text.Json;
 using System.Text.Unicode;
 using Authentication.Api.Models.Response.Errors;
-using Authentication.Exceptions;
 using Microsoft.AspNetCore.WebUtilities;
+using SurveyMe.Common.Exceptions;
 
 namespace Authentication.Api.Middleware;
 

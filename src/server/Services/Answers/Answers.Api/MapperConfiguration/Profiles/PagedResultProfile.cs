@@ -1,8 +1,8 @@
 ﻿using Answers.Api.Models.Response.Answers;
 using Answers.Api.Models.Response.Pages;
-using Answers.Common.Pagination;
 using Answers.Models.Answers;
 using AutoMapper;
+using SurveyMe.Common.Pagination;
 
 namespace Answers.Api.MapperConfiguration.Profiles;
 

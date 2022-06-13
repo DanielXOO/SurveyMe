@@ -26,20 +26,6 @@ public sealed class AnswerRequestJsonConverter : JsonConverter<BaseAnswerRequest
         {
             writer.WritePropertyName("fileInfoId");
             writer.WriteStringValue(fileAnswer.FileInfoId);
-            
-            writer.WritePropertyName("file");
-            writer.WriteStartObject();
-            
-            writer.WritePropertyName("fileId");
-            writer.WriteStringValue(fileAnswer.File.FileId);
-            
-            writer.WritePropertyName("name");
-            writer.WriteStringValue(fileAnswer.File.Name);
-            
-            writer.WritePropertyName("contentType");
-            writer.WriteStringValue(fileAnswer.File.ContentType);
-            
-            writer.WriteEndObject();
         }
         else if (value is CheckboxAnswerRequestModel checkboxAnswer)
         {

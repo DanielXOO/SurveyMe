@@ -1,7 +1,7 @@
-using Answers.Common.Pagination;
 using Answers.Data.Abstracts;
 using Answers.Models.Answers;
 using Answers.Services.Abstracts;
+using SurveyMe.Common.Pagination;
 
 namespace Answers.Services;
 
@@ -32,7 +32,7 @@ public class AnswersService : IAnswersService
     public async Task<PagedResult<SurveyAnswer>> GetSurveyAnswersAsync(int currentPage, int pageSize, Guid surveyId)
     {
         var result = await _unitOfWork.Answers
-            .GetSurveyAnswersAsync(pageSize, currentPage, surveyId);
+            .GetSurveyAnswersAsync(currentPage, pageSize, surveyId);
 
         return result;
     }

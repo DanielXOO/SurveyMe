@@ -1,4 +1,4 @@
-﻿using Surveys.Common.Pagination;
+﻿using SurveyMe.Common.Pagination;
 using Surveys.Models.Surveys;
 
 namespace Surveys.Services.Abstracts;

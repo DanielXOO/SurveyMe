@@ -3,15 +3,15 @@ using Authentication.Api.Extensions;
 using Authentication.Data;
 using Authentication.Data.Abstracts;
 using Authentication.Data.Stores;
-using Authentication.Logging;
 using Authentication.Roles;
 using Authentication.Services;
 using Authentication.Services.Abstracts;
-using Authentication.Time;
 using Authentication.Users;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SurveyMe.Common.Logging;
+using SurveyMe.Common.Time;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,9 @@ builder.Host.ConfigureLogging(logBuilder =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AuthenticationDbContext>(options
     => options.UseSqlServer(builder.Configuration
@@ -65,6 +68,12 @@ builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.Authenti
     });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 await app.Services.CreateDbIfNotExists();
 

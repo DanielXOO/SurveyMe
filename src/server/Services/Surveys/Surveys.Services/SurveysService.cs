@@ -1,7 +1,10 @@
-﻿using Surveys.Common.Exceptions;
-using Surveys.Common.Pagination;
-using Surveys.Common.Time;
+﻿using AutoMapper;
+using MassTransit;
+using SurveyMe.Common.Exceptions;
+using SurveyMe.Common.Pagination;
+using SurveyMe.Common.Time;
 using Surveys.Data.Abstracts;
+using Surveys.Models.Queue;
 using Surveys.Models.Surveys;
 using Surveys.Services.Abstracts;
 
@@ -10,13 +13,20 @@ namespace Surveys.Services;
 public class SurveysService : ISurveysService
 {
     private readonly ISurveysUnitOfWork _unitOfWork;
+    
     private readonly ISystemClock _systemClock;
+    
+    private readonly IBus _bus;
 
+    private readonly IMapper _mapper;
 
-    public SurveysService(ISurveysUnitOfWork unitOfWork, ISystemClock systemClock)
+    
+    public SurveysService(ISurveysUnitOfWork unitOfWork, ISystemClock systemClock, IBus bus, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _systemClock = systemClock;
+        _bus = bus;
+        _mapper = mapper;
     }
 
 
@@ -32,6 +42,12 @@ public class SurveysService : ISurveysService
     public async Task DeleteSurveyAsync(Survey survey)
     {
         await _unitOfWork.Surveys.DeleteAsync(survey);
+        
+        var surveyQueue = _mapper.Map<SurveyQueueModel>(survey);
+        
+        surveyQueue.EventType = EventType.Delete;
+
+        await _bus.Publish(surveyQueue);
     }
 
     public async Task<Survey> GetSurveyByIdAsync(Guid id)
@@ -51,11 +67,23 @@ public class SurveysService : ISurveysService
         survey.AuthorId = authorId;
         survey.LastChangeDate = _systemClock.UtcNow;
         await _unitOfWork.Surveys.CreateAsync(survey);
+
+        var surveyQueue = _mapper.Map<SurveyQueueModel>(survey);
+
+        surveyQueue.EventType = EventType.Create;
+        
+        await _bus.Publish(surveyQueue);
     }
 
     public async Task UpdateSurveyAsync(Survey survey)
     {
         survey.LastChangeDate = _systemClock.UtcNow;
         await _unitOfWork.Surveys.UpdateAsync(survey);
+        
+        var surveyQueue = _mapper.Map<SurveyQueueModel>(survey);
+        
+        surveyQueue.EventType = EventType.Update;
+        
+        await _bus.Publish(survey);
     }
 }

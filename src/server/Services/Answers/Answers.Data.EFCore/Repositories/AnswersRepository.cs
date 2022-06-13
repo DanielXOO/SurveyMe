@@ -1,8 +1,8 @@
-using Answers.Common.Pagination;
 using Answers.Data.Core;
 using Answers.Data.Repositories.Abstracts;
 using Answers.Models.Answers;
 using Microsoft.EntityFrameworkCore;
+using SurveyMe.Common.Pagination;
 
 namespace Answers.Data.Repositories;
 

@@ -11,4 +11,13 @@
       <ProjectReference Include="..\Answers.Models\Answers.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.0" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>

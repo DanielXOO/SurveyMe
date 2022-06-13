@@ -6,4 +6,6 @@ namespace Answers.Data.Abstracts;
 public interface IAnswersUnitOfWork : IUnitOfWork
 {
     public IAnswersRepository Answers { get; }
+
+    public ISurveyRepository Surveys { get; }
 }

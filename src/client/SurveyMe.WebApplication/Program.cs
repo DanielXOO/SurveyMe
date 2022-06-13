@@ -47,7 +47,14 @@ builder.Services.AddRefitClient<IUserApi>()
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
-builder.Services.AddRefitClient<IAnswersApi>()
+builder.Services.AddRefitClient<IAnswersApi>(new RefitSettings()
+{
+    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions
+    {
+        Converters = { new AnswerRequestJsonConverter(), new JsonStringEnumConverter() },
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    })
+})
     .ConfigureHttpClient(configuration =>
     {
         configuration.BaseAddress = new Uri("https://localhost:7119/api");

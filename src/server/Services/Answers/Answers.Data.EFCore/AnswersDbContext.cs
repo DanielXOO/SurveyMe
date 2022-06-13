@@ -1,5 +1,7 @@
 ﻿using Answers.Models.Answers;
+using Answers.Models.Options;
 using Answers.Models.Questions;
+using Answers.Models.Surveys;
 using Microsoft.EntityFrameworkCore;
 
 namespace Answers.Data;
@@ -49,5 +51,35 @@ public class AnswersDbContext : DbContext
         modelBuilder.Entity<ScaleQuestionAnswer>();
         
         modelBuilder.Entity<OptionQuestionAnswer>();
+        
+        modelBuilder.Entity<Survey>(b =>
+        {
+            b.Property(e => e.Name)
+                .IsRequired();
+            
+            b.HasMany(e => e.Questions)
+                .WithOne(e => e.Survey)
+                .HasForeignKey(e => e.SurveyId);
+
+            b.HasMany(e => e.Answers)
+                .WithOne(e => e.Survey)
+                .HasForeignKey(e => e.SurveyId);
+        });
+        
+        modelBuilder.Entity<Question>(b =>
+        {
+            b.Property(e => e.Title)
+                .IsRequired();
+
+            b.HasMany(e => e.Options)
+                .WithOne(e => e.Question)
+                .HasForeignKey(e => e.QuestionId);
+        });
+        
+        modelBuilder.Entity<Option>(b =>
+        {
+            b.Property(e => e.Text)
+                .IsRequired();
+        });
     }
 }
