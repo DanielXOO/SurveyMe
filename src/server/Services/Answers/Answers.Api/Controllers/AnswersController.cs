@@ -42,7 +42,12 @@ public sealed class AnswersController : Controller
         
         if (!ModelState.IsValid)
         {
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.ToDictionary(
+                error => error.Key,
+                error => error.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+            );
+            
+            throw new BadRequestException("Invalid data", errors);
         }
         
         var authorId = Guid.Parse(HttpContext.User.GetSubjectId());
