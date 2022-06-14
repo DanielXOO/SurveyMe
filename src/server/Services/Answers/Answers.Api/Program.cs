@@ -5,6 +5,7 @@ using Answers.Data;
 using Answers.Data.Abstracts;
 using Answers.Services;
 using Answers.Services.Abstracts;
+using Answers.Services.AutoMapper.Profiles;
 using Answers.Services.Consumers;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
@@ -48,15 +49,22 @@ builder.Services.AddControllers();
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<SurveysConsumer>();
+    
     x.UsingRabbitMq((context, config) =>
     {
-        config.Host("localhost", "/", configuration =>
+        config.Host("localhost", "/", cfg =>
         {
-            configuration.Username("guest");
-            configuration.Password("guest");
+            cfg.Username("guest");
+            cfg.Password("guest");
         });
+        
         config.ConfigureEndpoints(context);
     });
+});
+
+builder.Services.AddAutoMapper(configuration =>
+{
+    configuration.AddProfile(new QueueModelsProfile());
 });
 
 builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)

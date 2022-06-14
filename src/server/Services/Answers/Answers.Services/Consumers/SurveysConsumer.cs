@@ -1,9 +1,9 @@
 using Answers.Models.Surveys;
 using Answers.Services.Abstracts;
-using Answers.Services.Models.Queue;
 using AutoMapper;
 using MassTransit;
 using SurveyMe.Common.Logging.Abstracts;
+using SurveyMe.QueueModels;
 
 namespace Answers.Services.Consumers;
 
@@ -36,7 +36,6 @@ public sealed class SurveysConsumer : IConsumer<SurveyQueueModel>
 
     private async Task HandleEventAsync(SurveyQueueModel surveyQueue)
     {
-        //TODO: Add Profile
         var survey = _mapper.Map<Survey>(surveyQueue);
         
         switch (surveyQueue.EventType)

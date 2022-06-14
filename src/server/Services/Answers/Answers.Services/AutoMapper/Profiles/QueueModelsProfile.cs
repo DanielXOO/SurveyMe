@@ -1,8 +1,8 @@
 using Answers.Models.Options;
 using Answers.Models.Questions;
 using Answers.Models.Surveys;
-using Answers.Services.Models.Queue;
 using AutoMapper;
+using SurveyMe.QueueModels;
 
 namespace Answers.Services.AutoMapper.Profiles;
 

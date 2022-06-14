@@ -3,8 +3,8 @@ using MassTransit;
 using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Pagination;
 using SurveyMe.Common.Time;
+using SurveyMe.QueueModels;
 using Surveys.Data.Abstracts;
-using Surveys.Models.Queue;
 using Surveys.Models.Surveys;
 using Surveys.Services.Abstracts;
 
@@ -83,7 +83,5 @@ public class SurveysService : ISurveysService
         var surveyQueue = _mapper.Map<SurveyQueueModel>(survey);
         
         surveyQueue.EventType = EventType.Update;
-        
-        await _bus.Publish(survey);
     }
 }

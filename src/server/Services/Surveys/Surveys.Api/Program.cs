@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using SurveyMe.Common.Logging;
 using SurveyMe.Common.Time;
 using Surveys.Api.Extensions;
-using Surveys.Api.MapperConfiguration.Profiles;
 using Surveys.Data;
 using Surveys.Data.Abstracts;
 using Surveys.Services;
@@ -43,6 +42,7 @@ builder.Services.AddMassTransit(x =>
             h.Username("guest");
             h.Password("guest");
         });
+
         cfg.ConfigureEndpoints(context);
     });
 });
