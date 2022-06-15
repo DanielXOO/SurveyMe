@@ -28,7 +28,12 @@ public class AuthenticationController : Controller
     {
         if (!ModelState.IsValid)
         {
-            throw new BadRequestException("Invalid data");
+            var errors = ModelState.ToDictionary(
+                error => error.Key,
+                error => error.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+            );
+            
+            throw new BadRequestException("Invalid data", errors);
         }
 
         var user = _mapper.Map<User>(userModel);
@@ -37,7 +42,12 @@ public class AuthenticationController : Controller
 
         if (!result.IsSuccessful)
         {
-            throw new BadRequestException(string.Join('\n', result.ErrorMessages));
+            var error = new Dictionary<string, string[]>
+            {
+                { "Error", result.ErrorMessages.ToArray() }
+            };
+            
+            throw new BadRequestException("Registration error", error);
         }
 
         return Ok();

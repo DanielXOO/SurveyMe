@@ -8,7 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Surveys.Common\Surveys.Common.csproj" />
       <ProjectReference Include="..\Surveys.Models\Surveys.Models.csproj" />
     </ItemGroup>
 

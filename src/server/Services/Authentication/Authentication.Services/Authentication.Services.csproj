@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Authentication.Common\Authentication.Common.csproj" />
       <ProjectReference Include="..\Authentication.Data.EFCore\Authentication.Data.EFCore.csproj" />
       <ProjectReference Include="..\Authentication.Models\Authentication.Models.csproj" />
     </ItemGroup>

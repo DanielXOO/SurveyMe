@@ -1,5 +1,6 @@
 using Authentication.Api.Configurations;
 using Authentication.Api.Extensions;
+using Authentication.Api.Validators;
 using Authentication.Data;
 using Authentication.Data.Abstracts;
 using Authentication.Data.Stores;
@@ -42,12 +43,13 @@ builder.Services.AddAutoMapper(configuration =>
 
 builder.Services.AddIdentityCore<User>(options =>
     {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredLength = 8;
     })
+    .AddPasswordValidator<PasswordValidator>()
     .AddSignInManager()
     .AddUserStore<UserStore>()
     .AddRoles<Role>()
