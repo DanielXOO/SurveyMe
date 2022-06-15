@@ -1,30 +1,36 @@
 using Microsoft.EntityFrameworkCore;
 using SurveyMe.Data.Core;
 using SurveyMe.Data.Repositories.Abstracts;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Answers;
 
-namespace SurveyMe.Data.Repositories
+namespace SurveyMe.Data.Repositories;
+
+public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerRepository
 {
-    public sealed class AnswerRepository : Repository<SurveyAnswer>, IAnswerRepository
+    public AnswerRepository(DbContext context) : base(context)
     {
-        public AnswerRepository(DbContext context) : base(context)
-        {
-        }
+    }
 
 
-        public async Task<SurveyAnswer> GetByIdAsync(Guid id)
-        {
-            var answers = await GetAnswersQuery()
-                .FirstOrDefaultAsync(answer => answer.Id == id);
+    public async Task<SurveyAnswer> GetByIdAsync(Guid id)
+    {
+        var answers = await GetAnswersQuery()
+            .FirstOrDefaultAsync(answer => answer.Id == id);
 
-            return answers;
-        }
+        return answers;
+    }
 
+    public IEnumerable<SurveyAnswer> GetBySurveyId(Guid surveyId)
+    {
+        var answers = GetAnswersQuery().Where(answer => answer.SurveyId == surveyId);
 
-        private IQueryable<SurveyAnswer> GetAnswersQuery()
-        {
-            return Data
-                .Include(answer => answer.QuestionAnswers);
-        }
+        return answers;
+    }
+
+    
+    private IQueryable<SurveyAnswer> GetAnswersQuery()
+    {
+        return Data
+            .Include(answer => answer.QuestionsAnswers);
     }
 }

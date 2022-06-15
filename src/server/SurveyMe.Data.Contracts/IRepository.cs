@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SurveyMe.Repositories
+namespace SurveyMe.Data.Contracts;
+
+public interface IRepository<T>
 {
-    public interface IRepository<T>
-    {
-        Task CreateAsync(T item);
+    Task CreateAsync(T item);
 
-        Task<T> FindByIdAsync(params object[] keyValues);
+    Task<T> FindByIdAsync(params object[] keyValues);
 
-        Task<IReadOnlyCollection<T>> GetAllAsync();
+    Task<IReadOnlyCollection<T>> GetAllAsync();
 
-        Task UpdateAsync(T item);
+    Task UpdateAsync(T item);
 
-        Task DeleteAsync(T item);
-    }
+    Task DeleteAsync(T item);
 }

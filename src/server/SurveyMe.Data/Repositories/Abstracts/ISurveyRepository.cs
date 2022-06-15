@@ -1,14 +1,13 @@
 ﻿using SurveyMe.Common.Pagination;
-using SurveyMe.DomainModels;
-using SurveyMe.Repositories;
+using SurveyMe.Data.Contracts;
+using SurveyMe.DomainModels.Surveys;
 
-namespace SurveyMe.Data.Repositories.Abstracts
+namespace SurveyMe.Data.Repositories.Abstracts;
+
+public interface ISurveyRepository : IRepository<Survey>
 {
-    public interface ISurveyRepository : IRepository<Survey>
-    {
-        Task<PagedResult<Survey>> GetSurveysAsync(int pageSize, int currentPage,
-            string searchRequest, SortOrder sortOrder);
+    Task<PagedResult<Survey>> GetSurveysAsync(int pageSize, int currentPage,
+        string searchRequest, SortOrder sortOrder);
 
-        Task<Survey> GetByIdAsync(Guid id);
-    }
+    Task<Survey> GetByIdAsync(Guid id);
 }

@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>SurveyMe.Surveys.Foundation</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,7 +15,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="MapperConfigurations\Profiles" />
+	  <PackageReference Include="AutoMapper" Version="11.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="SurveyMe.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+	    <HintPath>..\SurveyMe.WebApplication\bin\Debug\net6.0\SurveyMe.Common.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

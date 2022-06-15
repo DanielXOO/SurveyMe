@@ -1,13 +1,9 @@
-using System;
 using System.Threading.Tasks;
-using SurveyMe.Foundation.Models;
+using SurveyMe.Foundation.Models.Files;
 
-namespace SurveyMe.Foundation.Services.Abstracts
+namespace SurveyMe.Foundation.Services.Abstracts;
+
+public interface IFileService
 {
-    public interface IFileService
-    {
-        Task UploadAsync(File file);
-
-        Task<File> LoadAsync(Guid id);
-    }
+    Task UploadAsync(File file);
 }

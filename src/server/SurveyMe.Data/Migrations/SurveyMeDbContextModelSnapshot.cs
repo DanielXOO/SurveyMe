@@ -37,31 +37,75 @@ namespace SurveyMe.Data.Migrations
                     b.ToTable("RoleUser");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.FileAnswer", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.BaseAnswer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FileInfoId")
+                    b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("QuestionAnswerId")
+                    b.Property<int>("QuestionType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SurveyAnswerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FileInfoId");
+                    b.HasIndex("QuestionId");
 
-                    b.HasIndex("QuestionAnswerId")
-                        .IsUnique();
+                    b.HasIndex("SurveyAnswerId");
 
-                    b.ToTable("FileAnswer");
+                    b.ToTable("BaseAnswer");
+
+                    b.HasDiscriminator<int>("QuestionType");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.FileInfo", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.OptionAnswer", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CheckboxAnswerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckboxAnswerId");
+
+                    b.ToTable("OptionAnswer");
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.SurveyAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SurveyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SurveyAnswer");
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Files.FileInfo", b =>
+                {
+                    b.Property<Guid>("FileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -73,12 +117,12 @@ namespace SurveyMe.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("FileId");
 
                     b.ToTable("FileInfo");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Question", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Questions.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,58 +145,7 @@ namespace SurveyMe.Data.Migrations
                     b.ToTable("Question");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionAnswer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FileAnswerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("QuestionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("RateAnswer")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ScaleAnswer")
-                        .HasColumnType("float");
-
-                    b.Property<Guid>("SurveyAnswerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TextAnswer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SurveyAnswerId");
-
-                    b.ToTable("QuestionAnswer");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionAnswerOption", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("QuestionAnswerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("QuestionOptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionAnswerId");
-
-                    b.ToTable("QuestionAnswerOption");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionOption", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Questions.QuestionOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,7 +165,7 @@ namespace SurveyMe.Data.Migrations
                     b.ToTable("QuestionOption");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Role", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Roles.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -187,7 +180,7 @@ namespace SurveyMe.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Survey", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Surveys.Survey", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,28 +204,7 @@ namespace SurveyMe.Data.Migrations
                     b.ToTable("Survey");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.SurveyAnswer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SurveyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SurveyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SurveyAnswer");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.User", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,43 +230,132 @@ namespace SurveyMe.Data.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.CheckboxAnswer", b =>
+                {
+                    b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.FileAnswer", b =>
+                {
+                    b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
+
+                    b.Property<Guid>("FileInfoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("FileInfoId")
+                        .IsUnique()
+                        .HasFilter("[FileInfoId] IS NOT NULL");
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.RadioAnswer", b =>
+                {
+                    b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
+
+                    b.Property<Guid>("OptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.RateAnswer", b =>
+                {
+                    b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
+
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue(4);
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.ScaleAnswer", b =>
+                {
+                    b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
+
+                    b.Property<double>("Scale")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue(5);
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.TextAnswer", b =>
+                {
+                    b.HasBaseType("SurveyMe.DomainModels.Answers.BaseAnswer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue(0);
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("SurveyMe.DomainModels.Role", null)
+                    b.HasOne("SurveyMe.DomainModels.Roles.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SurveyMe.DomainModels.User", null)
+                    b.HasOne("SurveyMe.DomainModels.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.FileAnswer", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.BaseAnswer", b =>
                 {
-                    b.HasOne("SurveyMe.DomainModels.FileInfo", "FileInfo")
-                        .WithMany()
-                        .HasForeignKey("FileInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("SurveyMe.DomainModels.Questions.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SurveyMe.DomainModels.QuestionAnswer", "QuestionAnswer")
-                        .WithOne("FileAnswer")
-                        .HasForeignKey("SurveyMe.DomainModels.FileAnswer", "QuestionAnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("SurveyMe.DomainModels.Answers.SurveyAnswer", "SurveyAnswer")
+                        .WithMany("QuestionsAnswers")
+                        .HasForeignKey("SurveyAnswerId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("FileInfo");
+                    b.Navigation("Question");
 
-                    b.Navigation("QuestionAnswer");
+                    b.Navigation("SurveyAnswer");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Question", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.OptionAnswer", b =>
                 {
-                    b.HasOne("SurveyMe.DomainModels.Survey", "Survey")
+                    b.HasOne("SurveyMe.DomainModels.Answers.CheckboxAnswer", "CheckboxAnswer")
+                        .WithMany("Options")
+                        .HasForeignKey("CheckboxAnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CheckboxAnswer");
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.SurveyAnswer", b =>
+                {
+                    b.HasOne("SurveyMe.DomainModels.Surveys.Survey", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SurveyMe.DomainModels.Users.User", "User")
+                        .WithMany("Answers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Questions.Question", b =>
+                {
+                    b.HasOne("SurveyMe.DomainModels.Surveys.Survey", "Survey")
                         .WithMany("Questions")
                         .HasForeignKey("SurveyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -303,31 +364,9 @@ namespace SurveyMe.Data.Migrations
                     b.Navigation("Survey");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionAnswer", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Questions.QuestionOption", b =>
                 {
-                    b.HasOne("SurveyMe.DomainModels.SurveyAnswer", "SurveyAnswer")
-                        .WithMany("QuestionAnswers")
-                        .HasForeignKey("SurveyAnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SurveyAnswer");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionAnswerOption", b =>
-                {
-                    b.HasOne("SurveyMe.DomainModels.QuestionAnswer", "QuestionAnswer")
-                        .WithMany("Options")
-                        .HasForeignKey("QuestionAnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("QuestionAnswer");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionOption", b =>
-                {
-                    b.HasOne("SurveyMe.DomainModels.Question", "Question")
+                    b.HasOne("SurveyMe.DomainModels.Questions.Question", "Question")
                         .WithMany("Options")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,9 +375,9 @@ namespace SurveyMe.Data.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Survey", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Surveys.Survey", b =>
                 {
-                    b.HasOne("SurveyMe.DomainModels.User", "Author")
+                    b.HasOne("SurveyMe.DomainModels.Users.User", "Author")
                         .WithMany("Surveys")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -347,55 +386,52 @@ namespace SurveyMe.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.SurveyAnswer", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.FileAnswer", b =>
                 {
-                    b.HasOne("SurveyMe.DomainModels.Survey", "Survey")
-                        .WithMany("Answers")
-                        .HasForeignKey("SurveyId")
+                    b.HasOne("SurveyMe.DomainModels.Files.FileInfo", "FileInfo")
+                        .WithOne("FileAnswer")
+                        .HasForeignKey("SurveyMe.DomainModels.Answers.FileAnswer", "FileInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SurveyMe.DomainModels.User", "User")
-                        .WithMany("Answers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Survey");
-
-                    b.Navigation("User");
+                    b.Navigation("FileInfo");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Question", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.SurveyAnswer", b =>
                 {
-                    b.Navigation("Options");
+                    b.Navigation("QuestionsAnswers");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.QuestionAnswer", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Files.FileInfo", b =>
                 {
                     b.Navigation("FileAnswer")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Questions.Question", b =>
+                {
+                    b.Navigation("Answers");
 
                     b.Navigation("Options");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.Survey", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Surveys.Survey", b =>
                 {
                     b.Navigation("Answers");
 
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("SurveyMe.DomainModels.SurveyAnswer", b =>
-                {
-                    b.Navigation("QuestionAnswers");
-                });
-
-            modelBuilder.Entity("SurveyMe.DomainModels.User", b =>
+            modelBuilder.Entity("SurveyMe.DomainModels.Users.User", b =>
                 {
                     b.Navigation("Answers");
 
                     b.Navigation("Surveys");
+                });
+
+            modelBuilder.Entity("SurveyMe.DomainModels.Answers.CheckboxAnswer", b =>
+                {
+                    b.Navigation("Options");
                 });
 #pragma warning restore 612, 618
         }

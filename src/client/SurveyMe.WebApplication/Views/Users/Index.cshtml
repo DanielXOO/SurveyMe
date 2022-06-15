@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@using SurveyMe.Common.Pagination
+@model SurveyMe.WebApplication.Models.ViewModels.Pages.PageResponseViewModel<SurveyMe.WebApplication.Models.ViewModels.Users.UserWithSurveysCountViewModel>
+
+<div id="user-table">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="input-group">
+            <form class="d-flex" asp-action="Index" asp-route-sortOrder="@Model.SortOrder">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       value="@Model.NameSearchTerm" name="nameSearchTerm">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </form>
+        </div>
+    </nav>
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">
+                @if (Model.SortOrder == SortOrder.Descending)
+                {
+                    <a style="font-size:x-large;">&#8593;</a>
+                    <a asp-controller="Users" asp-action="Index" asp-route-page="@Model.Page.CurrentPage"
+                       asp-route-nameSearchTerm="@Model.NameSearchTerm"
+                       asp-route-sortOrder="@SortOrder.Ascending">
+                        Name
+                    </a>
+                }
+                else
+                {
+                    <a style="font-size:x-large;">&#8595;</a>
+                    <a asp-controller="Users" asp-action="Index" asp-route-page="@Model.Page.CurrentPage"
+                       asp-route-nameSearchTerm="@Model.NameSearchTerm"
+                       asp-route-sortOrder="@SortOrder.Descending">
+                        Name
+                    </a>
+                }
+            </th>
+            <th scope="col">Created</th>
+            <th scope="col">Surveys count</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Page.Items)
+        {
+            <tr>
+                <td>@item.DisplayName</td>
+                <td>@item.CreationTime</td>
+                <td>@item.SurveysCount</td>
+                <td>
+                    <div class="d-flex flex-row">
+                        <button type="button" class="btn btn-primary btn-action m-1"
+                                onclick="document.location='@Url.Action("EditUser", "Users", 
+                                new {
+                                    DisplayName = item.DisplayName, 
+                                    Id = item.Id,
+                                    ReturnUrl = Context.Request.GetEncodedPathAndQuery()
+                                })'">
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger btn-action m-1"
+                            onclick="document.location = '@Url.Action("DeleteUser", 
+                                "Users", new {
+                                Id = item.Id, 
+                                DisplayName = item.DisplayName,
+                                ReturnUrl = Context.Request.GetEncodedPathAndQuery()
+                                })'">
+                        Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="btn-group me-5" id="table-control">
+            @if (Model.Page.HasPrevious)
+            {
+                <button type="button" class="btn btn-outline-primary move-btn" 
+                        onclick="document.location='@Url.Action("Index", "Users", 
+                        new{
+                            NameSearchTerm = Model.NameSearchTerm, 
+                            SortOrder = Model.SortOrder,
+                            Page = Model.Page.CurrentPage - 1
+                        })'">
+                    Prev
+                </button>
+            }
+            @if (Model.Page.HasNext)
+            {
+                <button type="button" class="btn btn-primary move-btn" 
+                        onclick="document.location='@Url.Action("Index", "Users", 
+                        new{
+                            NameSearchTerm = Model.NameSearchTerm, 
+                            SortOrder = Model.SortOrder, 
+                            Page = Model.Page.CurrentPage + 1
+                        })'">
+                    Next
+                </button>
+            }
+        </div>
+    </nav>
+</div>

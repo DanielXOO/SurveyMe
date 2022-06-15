@@ -1,11 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SurveyMe.DomainModels;
-using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.Surveys.Foundation.Exceptions;
-using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.RequestModels;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SurveyMe.WebApplication.Controllers;
 
@@ -16,8 +9,7 @@ namespace SurveyMe.WebApplication.Controllers;
 [Route("api/[controller]/[action]")]
 public sealed class AccountController : Controller
 {
-    private readonly IAccountService _accountService;
-    private readonly IMapper _mapper;
+    /*private readonly IMapper _mapper;
 
 
     public AccountController(IAccountService accountService, IMapper mapper)
@@ -36,13 +28,11 @@ public sealed class AccountController : Controller
             throw new BadRequestException("Invalid data");
         }
 
-        var result = await _accountService.SignInAsync(user.Login, user.Password);
+        await _accountService.SignInAsync(user.Login, user.Password);
 
-        if (!result.IsSuccessful)
-        {
-            throw new BadRequestException("Error SignIn");
-        }
-
+        var test =  await HttpContext.GetTokenAsync("access_token");
+        
+        
         return Ok();
     }
     
@@ -62,19 +52,9 @@ public sealed class AccountController : Controller
 
         if (!result.IsSuccessful)
         {
-            throw new BadRequestException("Registration error");
+            throw new BadRequestException(string.Join('\n', result.ErrorMessages));
         }
 
         return Ok();
-    }
-    
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> LogOut()
-    {
-        await _accountService.SignOutAsync();
-            
-        return Ok(); 
-    }
+    }*/
 }

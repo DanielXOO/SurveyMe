@@ -6,5 +6,7 @@ public class BaseErrorResponse
     
     public string Message { get; set; }
 
-    public string[] Details { get; set; }
+    public string Details { get; set; }
+
+    public BaseErrorResponse InnerError { get; set; }
 }

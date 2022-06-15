@@ -1,5 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Answers;
+using SurveyMe.DomainModels.Questions;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.DomainModels.Surveys;
+using SurveyMe.DomainModels.Users;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
 namespace SurveyMe.Data;
 
@@ -46,7 +51,7 @@ public class SurveyMeDbContext : DbContext
                 .WithOne(e => e.Survey)
                 .IsRequired()
                 .HasForeignKey(e => e.SurveyId);
-
+            
             b.Property(survey => survey.LastChangeDate).IsRequired();
             b.Property(survey => survey.Name).IsRequired();
         });
@@ -56,34 +61,59 @@ public class SurveyMeDbContext : DbContext
             b.HasMany(e => e.Options)
                 .WithOne(e => e.Question)
                 .HasForeignKey(e => e.QuestionId);
-
+            
+            b.HasMany(e => e.Answers)
+                .WithOne(e => e.Question)
+                .OnDelete(DeleteBehavior.NoAction);            
+            
             b.Property(question => question.Title).IsRequired();
         });
 
         modelBuilder.Entity<SurveyAnswer>(b =>
         {
-            b.HasMany(e => e.QuestionAnswers)
+            b.HasMany(e => e.QuestionsAnswers)
                 .WithOne(e => e.SurveyAnswer)
-                .HasForeignKey(e => e.SurveyAnswerId);
-
-            b.HasOne(e => e.Survey)
-                .WithMany(e => e.Answers)
-                .HasForeignKey(e => e.SurveyId);
+                .HasForeignKey(e => e.SurveyAnswerId)
+                .OnDelete(DeleteBehavior.NoAction);
         });
 
-        modelBuilder.Entity<QuestionAnswer>(b =>
+        modelBuilder.Entity<BaseAnswer>(b =>
+        {
+            b.HasDiscriminator(e => e.QuestionType)
+                .HasValue<TextAnswer>(QuestionType.Text)
+                .HasValue<CheckboxAnswer>(QuestionType.Checkbox)
+                .HasValue<RadioAnswer>(QuestionType.Radio)
+                .HasValue<FileAnswer>(QuestionType.File)
+                .HasValue<RateAnswer>(QuestionType.Rate)
+                .HasValue<ScaleAnswer>(QuestionType.Scale);
+        });
+
+        modelBuilder.Entity<TextAnswer>();
+        
+        modelBuilder.Entity<CheckboxAnswer>(b =>
         {
             b.HasMany(e => e.Options)
-                .WithOne(e => e.QuestionAnswer)
-                .HasForeignKey(e => e.QuestionAnswerId);
-
-            b.HasOne(e => e.FileAnswer)
-                .WithOne(e => e.QuestionAnswer)
-                .HasForeignKey<FileAnswer>(e => e.QuestionAnswerId);
+                .WithOne(e => e.CheckboxAnswer)
+                .HasForeignKey(e => e.CheckboxAnswerId);
         });
+        
+        modelBuilder.Entity<RadioAnswer>();
+        
+        modelBuilder.Entity<FileAnswer>();
+        
+        modelBuilder.Entity<RateAnswer>();
+        
+        modelBuilder.Entity<ScaleAnswer>();
+        
+        modelBuilder.Entity<OptionAnswer>();
 
-        modelBuilder.Entity<QuestionAnswerOption>(b => { b.Property(option => option.QuestionOptionId).IsRequired(); });
-
-        modelBuilder.Entity<FileAnswer>(b => { b.HasKey(fileAnswer => fileAnswer.Id); });
+        modelBuilder.Entity<FileInfo>(b =>
+        {
+            b.HasKey(e => e.FileId);
+            
+            b.HasOne(e => e.FileAnswer)
+                .WithOne(e => e.FileInfo)
+                .HasForeignKey<FileAnswer>(e => e.FileInfoId);
+        });
     }
 }

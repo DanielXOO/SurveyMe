@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using SurveyMe.Common.Pagination;
-using SurveyMe.DomainModels;
-using SurveyMe.Foundation.Models;
-using SurveyMe.WebApplication.Models.RequestModels;
-using SurveyMe.WebApplication.Models.ResponseModels;
+using SurveyMe.DomainModels.Users;
+using SurveyMe.Foundation.Models.Users;
+using SurveyMe.WebApplication.Models.Requests.Users;
+using SurveyMe.WebApplication.Models.Responses.Users;
 
 namespace SurveyMe.WebApplication.MapperConfigurations.Profiles;
 
@@ -13,7 +12,7 @@ public sealed class UserProfile : Profile
     {
         CreateMap<UserEditRequestModel, User>();
         
-        CreateMap<UserEditResponseModel, User>();
+        CreateMap<UserEditResponseModel, User>().ReverseMap();
         
         
         CreateMap<UserRegistrationRequestModel, User>()

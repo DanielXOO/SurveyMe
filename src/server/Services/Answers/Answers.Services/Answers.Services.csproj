@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Answers.Data.EFCore\Answers.Data.EFCore.csproj" />
+      <ProjectReference Include="..\Answers.Models\Answers.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.0" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.3" />
+      <PackageReference Include="SurveyMe.QueueModels" Version="1.0.1" />
+    </ItemGroup>
+
+</Project>

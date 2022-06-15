@@ -1,0 +1,55 @@
+﻿<div id="survey-page" class="mt-4">
+    <div class="errors" asp-validation-summary="All"></div>
+    <div id="title-card" class="d-flex justify-center flex-column p-5">
+       <p class="fs-2 text-center">Survey title</p>
+       <div class="text-center">
+          <input class="w-50 mt-3 survey-field input_form" id="survey-name" type="text" placeholder="Title">
+       </div>
+    </div>
+    <div id="questions-container">
+    </div>
+    <div class="d-flex text-center">
+      <input type="button" class="action-button survey-control survey-field m-3" id="add-question" value="Add Question"/>
+      <button id="submit-survey" class="action-button survey-control survey-field m-3 btn-primary" type="button">Submit</button>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/AddOrEditSurvey.js"></script>
+    <script>
+        $(`#submit-survey`).on(`click`,
+            async () => {
+                const survey = {
+                    name: $(`#survey-name`).val(),
+                    questions: $(`.question-card`).map(function () {
+                        return {
+                            title: $(this).find(`.question-title`).val(),
+                            options: $(this).find(`.answer-option`).map(function (){
+                                return $(this).val();
+                            }).get(),
+                            type:questionType[$(this).find(`.type`).val()]
+                        }
+                    }).get()
+                };
+                
+                $.ajax({
+                    type: "POST",
+                    url: `@Url.Action("AddSurvey")`,
+                    contentType: 'application/json;charset=UTF-8',
+                    accept: 'application/json; charset=utf-8',
+                    data: JSON.stringify(survey),
+                    success: function () {
+                        window.location = `@Url.Action("Index", "Surveys")`;
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
+                });
+            }
+        );
+ </script>   
+}

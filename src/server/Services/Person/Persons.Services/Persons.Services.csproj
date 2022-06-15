@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Persons.Data.MongoDb\Persons.Data.MongoDb.csproj" />
+      <ProjectReference Include="..\Persons.Models\Persons.Models.csproj" />
+    </ItemGroup>
+
+</Project>

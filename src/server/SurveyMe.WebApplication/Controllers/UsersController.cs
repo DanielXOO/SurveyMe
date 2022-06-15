@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.Surveys.Foundation.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
-using SurveyMe.WebApplication.Models.Queries;
-using SurveyMe.WebApplication.Models.RequestModels;
-using SurveyMe.WebApplication.Models.ResponseModels;
+using SurveyMe.WebApplication.Models.Requests.Queries;
+using SurveyMe.WebApplication.Models.Requests.Users;
+using SurveyMe.WebApplication.Models.Responses.Pages;
+using SurveyMe.WebApplication.Models.Responses.Users;
 
 namespace SurveyMe.WebApplication.Controllers;
 
@@ -36,6 +37,11 @@ public sealed class UsersController : Controller
     {
         var user = await _userService.GetUserByIdAsync(id);
 
+        if (user == null)
+        {
+            throw new NotFoundException("No such user");
+        }
+        
         var userResponseModel = _mapper.Map<UserEditResponseModel>(user);
         
         return Ok(userResponseModel);
@@ -44,21 +50,21 @@ public sealed class UsersController : Controller
     [ProducesResponseType(StatusCodes.Status200OK, 
         Type = typeof(PageResponseModel<UserWithSurveysCountResponseModel>))]
     [HttpGet]
-    public async Task<IActionResult> GetUsersPage([FromQuery] GetPageQuery query)
+    public async Task<IActionResult> GetUsersPage([FromQuery] GetPageRequest request)
     {
         var users = await _userService
-            .GetUsersAsync(query.Page, query.PageSize, query.SortOrder, query.NameSearchTerm);
+            .GetUsersAsync(request.Page, request.PageSize, request.SortOrder, request.NameSearchTerm);
 
         var pageResponse = new PageResponseModel<UserWithSurveysCountResponseModel>
         {
-            NameSearchTerm = query.NameSearchTerm,
-            SortOrder = query.SortOrder,
+            NameSearchTerm = request.NameSearchTerm,
+            SortOrder = request.SortOrder,
             Page = _mapper.Map<PagedResultResponseModel<UserWithSurveysCountResponseModel>>(users)
         };
 
         if (users.TotalPages < users.CurrentPage && users.TotalPages > 0)
         {
-            return RedirectToAction(nameof(GetUsersPage), query);
+            return RedirectToAction(nameof(GetUsersPage), request);
         }
 
         return Ok(pageResponse);
@@ -73,19 +79,10 @@ public sealed class UsersController : Controller
 
         if (user.UserName == HttpContext.User.Identity?.Name)
         {
-            ModelState.AddModelError(string.Empty, $"You can't delete yourself");
-
-            return BadRequest(ModelState);
+            throw new ForbidException("You can't delete yourself");
         }
 
-        var result = await _userService.DeleteUsersAsync(user);
-
-        if (!result.IsSuccessful)
-        {
-            var errorMessage = string.Join(' ', result.ErrorMessages);
-
-            throw new BadRequestException(errorMessage);
-        }
+        await _userService.DeleteUsersAsync(user);
 
         return Ok();
     }
@@ -96,7 +93,7 @@ public sealed class UsersController : Controller
     [HttpPatch("{id:guid}")]
     public async Task<IActionResult> EditUser(UserEditRequestModel userEditRequestModel, Guid id)
     {
-        if (userEditRequestModel.Id == id)
+        if (userEditRequestModel.Id != id)
         {
             throw new BadRequestException("Id do not match");
         }
@@ -104,12 +101,7 @@ public sealed class UsersController : Controller
         var user = await _userService.GetUserByIdAsync(userEditRequestModel.Id);
 
         user.DisplayName = userEditRequestModel.DisplayName;
-        var result = await _userService.UpdateAsync(user);
-
-        if (!result.IsSuccessful)
-        {
-            throw new BadRequestException("Edit error");
-        }
+        await _userService.UpdateAsync(user);
 
         return Ok();
     }

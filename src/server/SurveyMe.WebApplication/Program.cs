@@ -1,21 +1,18 @@
-using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SurveyMe.Common.Microsoft.Logging;
 using SurveyMe.Data;
-using SurveyMe.Data.Stores;
-using SurveyMe.DomainModels;
-using SurveyMe.Foundation.Models;
-using SurveyMe.Foundation.Services.Account;
-using SurveyMe.Foundation.Services.Answers;
-using SurveyMe.Foundation.Services.Files;
-using SurveyMe.Foundation.Services.Surveys;
-using SurveyMe.Foundation.Services.Users;
-using SurveyMe.Common.Time;
+using SurveyMe.Foundation.MapperConfigurations.Profiles;
+using SurveyMe.Foundation.Models.Configurations;
+using SurveyMe.Foundation.Services;
 using SurveyMe.Foundation.Services.Abstracts;
-using SurveyMe.WebApplication;
+using SurveyMe.WebApplication.Converters;
 using SurveyMe.WebApplication.Extensions;
+using ISystemClock = SurveyMe.Common.Time.ISystemClock;
+using SystemClock = SurveyMe.Common.Time.SystemClock;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,25 +22,59 @@ builder.Host.ConfigureLogging(logBuilder =>
     logBuilder.AddFile(builder.Configuration.GetSection("Serilog:FileLogging"));
 });
 
-var version = builder.Configuration
-    .GetSection("SwaggerConfiguration:ApiVersion").Value;
+var version = builder.Configuration["SwaggerConfiguration:ApiVersion"];
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    o.JsonSerializerOptions.Converters.Add(new AnswerJsonConverter());
+});
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc($"api-v{version}", new OpenApiInfo
     {
         Title = "SurveyMe Api",
-        Version = version
+        Version = version,
+        Contact = new OpenApiContact
+        {
+            Name = "DanielXOO",
+            Email = "dankulinkovich@gmail.com",
+            Url = new Uri("https://github.com/DanielXOO")
+        }
     });
 
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+    
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+    
     var filePath = Path.Combine(AppContext.BaseDirectory, "SurveyMe.WebApplication.xml");
     options.IncludeXmlComments(filePath);
 });
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.Configure<FileServiceConfiguration>(builder.Configuration.GetSection("FileService"));
+builder.Services.Configure<TokenGeneratorConfiguration>(builder.Configuration.GetSection("JwtTokenGeneratorService"));
 
 builder.Services.AddDbContext<SurveyMeDbContext>(options
     => options.UseSqlServer(builder.Configuration
@@ -51,24 +82,25 @@ builder.Services.AddDbContext<SurveyMeDbContext>(options
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(configuration =>
+{
+    configuration.AddMaps(typeof(Program).Assembly);
+    configuration.AddProfile<SurveyStatisticProfile>();
+});
 
-builder.Services.AddIdentity<User, Role>(options =>
+builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+    .AddIdentityServerAuthentication(options =>
     {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 8;
-    })
-    .AddRoleStore<RoleStore>()
-    .AddUserStore<UserStore>()
-    .AddDefaultTokenProviders();
+        options.Authority = "https://localhost:7179";
+        options.RequireHttpsMetadata = false;
+        options.ApiName = "SurveyMeApi";
+        options.ApiSecret = "api_secret";
+        options.JwtValidationClockSkew = TimeSpan.FromSeconds(1);
+    });
 
 builder.Services.AddScoped<ISurveyMeUnitOfWork, SurveyMeUnitOfWork>();
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddScoped<ISurveyAnswersService, SurveySurveyAnswersService>();
 builder.Services.AddScoped<IFileService, FileService>();
@@ -88,9 +120,9 @@ if (app.Environment.IsDevelopment())
     app.UseCustomExceptionHandler();
 }
 
-await app.Services.CreateDbIfNotExists();
-
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

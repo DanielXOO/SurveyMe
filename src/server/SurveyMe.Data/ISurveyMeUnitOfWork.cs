@@ -1,6 +1,5 @@
-﻿using SurveyMe.Data.Repositories;
+﻿using SurveyMe.Data.Contracts;
 using SurveyMe.Data.Repositories.Abstracts;
-using SurveyMe.Repositories;
 
 namespace SurveyMe.Data;
 

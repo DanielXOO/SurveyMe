@@ -1,121 +1,120 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SurveyMe.DomainModels;
+using SurveyMe.DomainModels.Roles;
 
-namespace SurveyMe.Data.Stores
+namespace SurveyMe.Data.Stores;
+
+public sealed class RoleStore : IRoleStore<Role>
 {
-    public sealed class RoleStore : IRoleStore<Role>
+    private readonly ISurveyMeUnitOfWork _unitOfWork;
+
+
+    public RoleStore(ISurveyMeUnitOfWork unitOfWork)
     {
-        private readonly ISurveyMeUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+    }
 
 
-        public RoleStore(ISurveyMeUnitOfWork unitOfWork)
+    public void Dispose()
+    {
+    }
+
+    public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        await _unitOfWork.Roles.CreateAsync(role);
+
+        return IdentityResult.Success;
+    }
+
+    public async Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
         {
-            _unitOfWork = unitOfWork;
+            throw new ArgumentNullException(nameof(role));
         }
 
+        await _unitOfWork.Roles.UpdateAsync(role);
 
-        public void Dispose()
+        return IdentityResult.Success;
+    }
+
+    public Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
         {
+            throw new ArgumentNullException(nameof(role));
         }
 
-        public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
+        return Task.FromResult(role.Id.ToString());
+    }
+
+    public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            await _unitOfWork.Roles.CreateAsync(role);
-
-            return IdentityResult.Success;
+            throw new ArgumentNullException(nameof(role));
         }
 
-        public async Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
+        return Task.FromResult(role.Name);
+    }
+
+    public Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (role == null)
-            {
-                throw new ArgumentNullException(nameof(role));
-            }
-
-            await _unitOfWork.Roles.UpdateAsync(role);
-
-            return IdentityResult.Success;
+            throw new ArgumentNullException(nameof(role));
         }
 
-        public Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
+        role.Name = roleName;
+
+        return Task.CompletedTask;
+    }
+
+    public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
         {
-            throw new NotImplementedException();
+            throw new ArgumentNullException(nameof(role));
         }
 
-        public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(role.Name.ToUpper());
+    }
 
-            if (role == null)
-            {
-                throw new ArgumentNullException(nameof(role));
-            }
+    public Task SetNormalizedRoleNameAsync(Role role, string normalizedName,
+        CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
 
-            return Task.FromResult(role.Id.ToString());
-        }
+    public async Task<Role> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var role = await _unitOfWork.Roles.GetByIdAsync(Guid.Parse(roleId));
 
-        public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
+        return role;
+    }
 
-            if (role == null)
-            {
-                throw new ArgumentNullException(nameof(role));
-            }
+    public async Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var role = await _unitOfWork.Roles.GetByNameAsync(normalizedRoleName);
 
-            return Task.FromResult(role.Name);
-        }
-
-        public Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (role == null)
-            {
-                throw new ArgumentNullException(nameof(role));
-            }
-
-            role.Name = roleName;
-
-            return Task.CompletedTask;
-        }
-
-        public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (role == null)
-            {
-                throw new ArgumentNullException(nameof(role));
-            }
-
-            return Task.FromResult(role.Name.ToUpper());
-        }
-
-        public Task SetNormalizedRoleNameAsync(Role role, string normalizedName,
-            CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task<Role> FindByIdAsync(string roleId, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var role = await _unitOfWork.Roles.GetByIdAsync(Guid.Parse(roleId));
-
-            return role;
-        }
-
-        public async Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var role = await _unitOfWork.Roles.GetByNameAsync(normalizedRoleName);
-
-            return role;
-        }
+        return role;
     }
 }

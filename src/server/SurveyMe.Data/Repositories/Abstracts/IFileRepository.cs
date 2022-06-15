@@ -1,10 +1,9 @@
-using SurveyMe.Repositories;
-using FileInfo = SurveyMe.DomainModels.FileInfo;
+using SurveyMe.Data.Contracts;
+using FileInfo = SurveyMe.DomainModels.Files.FileInfo;
 
-namespace SurveyMe.Data.Repositories.Abstracts
+namespace SurveyMe.Data.Repositories.Abstracts;
+
+public interface IFileRepository : IRepository<FileInfo>
 {
-    public interface IFileRepository : IRepository<FileInfo>
-    {
-        Task<FileInfo> GetByIdAsync(Guid id);
-    }
+    Task<FileInfo> GetByIdAsync(Guid id);
 }

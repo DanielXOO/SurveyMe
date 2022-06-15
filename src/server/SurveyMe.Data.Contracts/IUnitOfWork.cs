@@ -1,11 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace SurveyMe.Data.Contracts;
 
-namespace SurveyMe.Repositories
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        IRepository<T> GetRepository<T>() where T : class;
-        
-        Task SaveChangesAsync();
-    }
+    IRepository<T> GetRepository<T>() where T : class;
 }

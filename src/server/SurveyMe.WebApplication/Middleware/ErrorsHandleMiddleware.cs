@@ -1,6 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.WebUtilities;
-using SurveyMe.Surveys.Foundation.Exceptions;
+using SurveyMe.Foundation.Exceptions;
 using SurveyMe.WebApplication.Models.Errors;
 
 namespace SurveyMe.WebApplication.Middleware;
@@ -25,35 +27,76 @@ public sealed class ErrorsHandleMiddleware
         {
             await _next(context);
         }
+        catch (BadRequestException ex)
+        {
+            _logger.LogCritical(ex, "Bad request error");
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
+            await SendErrorResponse(context, error);
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogCritical(ex, "Not found error");
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status404NotFound);
+            await SendErrorResponse(context, error);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            _logger.LogCritical(ex, "Bad request error");
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status400BadRequest);
+            await SendErrorResponse(context, error);
+        }
+        catch (ForbidException ex)
+        {
+            _logger.LogCritical(ex, "User has not access");
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status403Forbidden);
+            await SendErrorResponse(context, error);
+        }
         catch (Exception ex)
         {
-            _logger.LogCritical(ex, "Something gone wrong");
-            await HandleErrorAsync(context, ex);
+            _logger.LogCritical(ex, "Server error");
+
+            var error = HandleErrorAsync(ex, StatusCodes.Status500InternalServerError);
+            await SendErrorResponse(context, error);
         }
     }
 
 
-    
-    private static async Task HandleErrorAsync(HttpContext context, Exception ex)
+    private static BaseErrorResponse HandleErrorAsync(Exception ex, int statusCode)
     {
+        var errorResponse = new BaseErrorResponse
+        {
+            StatusCode = statusCode,
+            Message =  ReasonPhrases.GetReasonPhrase(statusCode),
+            Details = ex.Message
+        };
+        
+        if (ex.InnerException != null)
+        {
+            errorResponse.InnerError = HandleErrorAsync(ex.InnerException, statusCode);
+        }
+        
+        return errorResponse;
+    }
+
+    /// <summary>
+    /// Send server response with info about exception
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="errorResponse"></param>
+    private static async Task SendErrorResponse(HttpContext context, BaseErrorResponse errorResponse)
+    {
+        var options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+        };
+        
         context.Response.ContentType = "application/json";
-
-        context.Response.StatusCode = ex switch
-        {
-            BadRequestException => StatusCodes.Status400BadRequest,
-            NotFoundException => StatusCodes.Status404NotFound,
-            ArgumentOutOfRangeException => StatusCodes.Status400BadRequest,
-            _ => StatusCodes.Status500InternalServerError
-        };
-
-        var response = new BaseErrorResponse
-        {
-            StatusCode = context.Response.StatusCode,
-            Message = ReasonPhrases.GetReasonPhrase(context.Response.StatusCode),
-            Details = new []{ ex.Message }
-        };
-
-        var jsonResponse = JsonSerializer.Serialize(response);
+        context.Response.StatusCode = errorResponse.StatusCode;
+        var jsonResponse = JsonSerializer.Serialize(errorResponse, options);
         
         await context.Response.WriteAsync(jsonResponse);
     }

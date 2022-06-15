@@ -1,0 +1,132 @@
+@using SurveyMe.DomainModels.Common
+@model SurveyMe.WebApplication.Models.ViewModels.Surveys.SurveyAddOrEditViewModel
+
+<div id="survey-page" class="mt-4">
+    <div class="errors" asp-validation-summary="All"></div>
+    <div id="title-card" class="d-flex justify-center flex-column p-5">
+        <p class="fs-2 text-center">Survey title</p>
+        <div class="text-center">
+            <input class="w-50 mt-3 survey-field input_form" value="@Model.Name" id="survey-name" type="text" placeholder="Title">
+        </div>
+    </div>
+    
+    <div id="questions-container">
+        <script>
+            const survey = JSON.parse('@Json.Serialize(Model)');
+            debugger;
+            const type = ['text', 'radio', 'checkbox'];
+            survey.questions.forEach(question =>{
+                $(`#questions-container`).append(`
+                    <div class="question-card d-flex flex-column a p-5 mt-4">
+                        <div class="text-center">
+                            <input class="w-50 mt-3 survey-field question-title input_form" value="${question.title}" id="survey-name"
+                                type="text" placeholder="Title">
+                        </div>
+                        <div class="question-body mt-3"></div>
+                        <div id="controll" class="mt-3">
+                            <input type="button" class="delete-question survey-field w-25" value="Delete question">
+                        </div>
+                    </div>
+                `);
+                
+                let layout;
+                                
+                switch (question.type) {
+                    case '@QuestionType.Radio':
+                        layout = GenerateOptions(question.options, question.type);
+                        break;
+                    case '@QuestionType.Checkbox':
+                        layout = GenerateOptions(question.options, question.type)
+                        break;
+                    case '@QuestionType.Text':
+                        layout = `
+                            <input type="hidden" class="type" value="text">
+                            `;
+                        break;
+                    case '@QuestionType.File':
+                        layout = `
+                                <input type="hidden" class="type" value="file"> `;
+                        break;
+                    case '@QuestionType.Rate':
+                        layout = `
+                                <input type="hidden" class="type" value="rate"> `;
+                        break;
+                    case '@QuestionType.Scale':
+                        layout = `
+                                <input type="hidden" class="type" value="range"> `;
+                        break;
+                    default:
+                        alert(`No such question type`);
+                }
+                $(`.question-body`).last().html(layout);
+            });
+            
+            function GenerateOptions(options, questionType){
+                let questionCard = `<div class="options">`;
+                
+                options.forEach(answer => {
+                    questionCard += `
+                        <div class="options text-center">
+                        <input type="text" value="${answer}" class="survey-field input_form answer-option mt-2 w-75" 
+                            placeholder="Answer option">
+                        </div>`
+                });
+                
+                questionCard += `
+                    <div id="controll" class="mt-3">
+                        <input type="hidden" class="type" value="${type[questionType]}">
+                        <input type="button" class="action-button survey-control survey-field mt-4 w-25"
+                            id="add-option" value="Add options">
+                    </div>
+                `;
+                
+                return questionCard;
+            }
+        </script>
+    </div>
+    <div class="d-flex text-center">
+          <input type="button" class="action-button survey-control survey-field m-3" id="add-question" value="Add Question"/>
+          <button id="submit-survey" class="action-button survey-control survey-field m-3 btn-primary" type="button">Submit</button>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/AddOrEditSurvey.js"></script>
+    <script>
+            $(`#submit-survey`).on(`click`,
+                async () => {
+                    const surveyModel = {
+                        id : '@Model.Id',
+                        name: $(`#survey-name`).val(),
+                        questions: $(`.question-card`).map(function () {
+                            return {
+                                title: $(this).find(`.question-title`).val(),
+                                options: $(this).find(`.answer-option`).map(function (){
+                                    return $(this).val();
+                                }).get(),
+                                type:questionType[$(this).find(`.type`).val()]
+                            }
+                        }).get()
+                    };
+                    
+                    $.ajax({
+                        type: "POST",
+                        accept : "application/json",
+                        contentType: "application/json",
+                        url: `@Url.ActionLink("EditSurvey", "Surveys", new { id = string.Empty })`,
+                        data: JSON.stringify(surveyModel),
+                        success: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                       }
+                    });
+                }
+            );
+    </script>   
+}
