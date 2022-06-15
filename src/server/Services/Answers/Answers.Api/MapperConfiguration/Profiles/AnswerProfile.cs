@@ -1,7 +1,9 @@
 ﻿using Answers.Api.Models.Request.Answers;
 using Answers.Api.Models.Request.Surveys;
-using Answers.Api.Models.Response.Answers;
+using Answers.Api.Models.Response.Results;
 using Answers.Models.Answers;
+using Answers.Services.Models.Questions;
+using Answers.Services.Models.Surveys;
 using AutoMapper;
 
 namespace Answers.Api.MapperConfiguration.Profiles;
@@ -10,25 +12,20 @@ public class AnswerProfile : Profile
 {
     public AnswerProfile()
     {
-        CreateMap<SurveyAnswer, SurveyAnswerResponseModel>();
+        CreateMap<SurveyAnswerResult, SurveyAnswerResultResponseModel>();
 
-        CreateMap<BaseQuestionAnswer, BaseAnswerResponseModel>()
-            .Include<TextQuestionAnswer, TextAnswerResponseModel>()
-            .Include<RateQuestionAnswer, RateAnswerResponseModel>()
-            .Include<ScaleQuestionAnswer, ScaleAnswerResponseModel>()
-            .Include<RadioQuestionAnswer, RadioAnswerResponseModel>()
-            .Include<CheckboxQuestionAnswer, CheckboxAnswerResponseModel>();
+        CreateMap<BaseAnswerResult, BaseAnswerResultResponseModel>()
+            .Include<TextAnswerResult, TextAnswerResultResponseModel>()
+            .Include<RateAnswerResult, RateAnswerResultResponseModel>()
+            .Include<ScaleAnswerResult, ScaleAnswerResultResponseModel>()
+            .Include<RadioAnswerResult, RadioAnswerResultResponseModel>()
+            .Include<CheckboxAnswerResult, CheckboxAnswerResultResponseModel>();
 
-        CreateMap<TextQuestionAnswer, TextAnswerResponseModel>()
-            .ForMember(dest => dest.TextAnswer, opt => opt.MapFrom(src => src.Text));
-        CreateMap<RateQuestionAnswer, RateAnswerResponseModel>()
-            .ForMember(dest => dest.RateAnswer, opt => opt.MapFrom(src => src.Rate));
-        CreateMap<ScaleQuestionAnswer, ScaleAnswerResponseModel>()
-            .ForMember(dest => dest.ScaleAnswer, opt => opt.MapFrom(src => src.Scale));
-        CreateMap<RadioQuestionAnswer, RadioAnswerResponseModel>();
-        CreateMap<CheckboxQuestionAnswer, CheckboxAnswerResponseModel>()
-            .ForMember(dest => dest.OptionIds, 
-                opt => opt.MapFrom(src => src.Options.Select(option => option.OptionId)));
+        CreateMap<TextAnswerResult, TextAnswerResultResponseModel>();
+        CreateMap<RateAnswerResult, RateAnswerResultResponseModel>();
+        CreateMap<ScaleAnswerResult, ScaleAnswerResultResponseModel>();
+        CreateMap<RadioAnswerResult, RadioAnswerResultResponseModel>();
+        CreateMap<CheckboxAnswerResult, CheckboxAnswerResultResponseModel>();
         
         CreateMap<SurveyAnswerRequestModel, SurveyAnswer>();
         

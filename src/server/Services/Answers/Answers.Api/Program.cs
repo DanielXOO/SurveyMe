@@ -33,6 +33,7 @@ builder.Services.AddControllers()
     {
         o.JsonSerializerOptions.Converters.Add(new AnswerJsonConverter());
         o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        o.JsonSerializerOptions.Converters.Add(new AnswerResultJsonConverter());
     });
 
 builder.Services.AddAutoMapper(configuration =>

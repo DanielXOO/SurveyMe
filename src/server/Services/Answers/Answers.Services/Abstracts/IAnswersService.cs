@@ -1,4 +1,5 @@
 using Answers.Models.Answers;
+using Answers.Services.Models.Surveys;
 using SurveyMe.Common.Pagination;
 
 namespace Answers.Services.Abstracts;
@@ -9,5 +10,5 @@ public interface IAnswersService
 
     Task AddAnswerAsync(SurveyAnswer answer, Guid authorId);
 
-    Task<PagedResult<SurveyAnswer>> GetSurveyAnswersAsync(int currentPage, int pageSize, Guid surveyId);
+    Task<PagedResult<SurveyAnswerResult>> GetSurveyAnswersAsync(int currentPage, int pageSize, Guid surveyId);
 }

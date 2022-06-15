@@ -1,8 +1,8 @@
 using Answers.Api.Models.Request;
 using Answers.Api.Models.Request.Surveys;
-using Answers.Api.Models.Response.Answers;
 using Answers.Api.Models.Response.Errors;
 using Answers.Api.Models.Response.Pages;
+using Answers.Api.Models.Response.Results;
 using Answers.Models.Answers;
 using Answers.Services.Abstracts;
 using AutoMapper;
@@ -66,7 +66,7 @@ public sealed class AnswersController : Controller
     public async Task<IActionResult> GetAnswers([FromQuery] GetPageRequest request, Guid surveyId)
     {
         var answers = await _answersService.GetSurveyAnswersAsync(request.Page, request.PageSize, surveyId);
-        var response = _mapper.Map<PagedResultResponseModel<SurveyAnswerResponseModel>>(answers);
+        var response = _mapper.Map<PagedResultResponseModel<SurveyAnswerResultResponseModel>>(answers);
 
         return Ok(response);
     }

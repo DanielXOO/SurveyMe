@@ -1,6 +1,6 @@
-﻿using Answers.Api.Models.Response.Answers;
-using Answers.Api.Models.Response.Pages;
-using Answers.Models.Answers;
+﻿using Answers.Api.Models.Response.Pages;
+using Answers.Api.Models.Response.Results;
+using Answers.Services.Models.Surveys;
 using AutoMapper;
 using SurveyMe.Common.Pagination;
 
@@ -10,6 +10,6 @@ public sealed class PagedResultProfile : Profile
 {
     public PagedResultProfile()
     {
-        CreateMap<PagedResult<SurveyAnswer>, PagedResultResponseModel<SurveyAnswerResponseModel>>();
+        CreateMap<PagedResult<SurveyAnswerResult>, PagedResultResponseModel<SurveyAnswerResultResponseModel>>();
     }
 }
