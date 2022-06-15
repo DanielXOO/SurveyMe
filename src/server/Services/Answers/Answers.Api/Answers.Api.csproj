@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Answers.Common\Answers.Common.csproj" />
       <ProjectReference Include="..\Answers.Data.EFCore\Answers.Data.EFCore.csproj" />
       <ProjectReference Include="..\Answers.Models\Answers.Models.csproj" />
       <ProjectReference Include="..\Answers.Services\Answers.Services.csproj" />

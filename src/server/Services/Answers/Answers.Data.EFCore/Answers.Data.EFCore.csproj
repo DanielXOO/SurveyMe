@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Answers.Common\Answers.Common.csproj" />
+
       <ProjectReference Include="..\Answers.Models\Answers.Models.csproj" />
     </ItemGroup>
 

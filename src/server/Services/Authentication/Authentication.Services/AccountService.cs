@@ -19,6 +19,11 @@ public sealed class AccountService : IAccountService
     public async Task<ServiceResult> RegisterAsync(User user, string password)
     {
         var result = await _userManager.CreateAsync(user, password);
+
+        if (!result.Succeeded)
+        {
+            return ConvertToServiceResult(result);
+        }
         await _userManager.AddToRoleAsync(user, RoleNames.User);
         
         return ConvertToServiceResult(result);
