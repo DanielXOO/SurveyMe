@@ -1,4 +1,5 @@
 using IdentityServer4.AccessTokenValidation;
+using Person.Api.Extensions;
 using Persons.Data;
 using Persons.Data.Repositories;
 using Persons.Data.Repositories.Abstracts;
@@ -52,6 +53,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 

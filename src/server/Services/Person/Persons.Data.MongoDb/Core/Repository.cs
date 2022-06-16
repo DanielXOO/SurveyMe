@@ -36,8 +36,8 @@ public class Repository<T> : IRepository<T> where T : BaseObject
         return data;
     }
 
-    public async Task DeleteAsync(T data)
+    public async Task DeleteAsync(ObjectId id)
     {
-        await Collection.DeleteOneAsync(odj => odj.Id == data.Id);
+        await Collection.DeleteOneAsync(odj => odj.Id == id);
     }
 }

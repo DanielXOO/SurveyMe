@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Persons.Models\Persons.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SurveyMe.Common" Version="1.0.1" />
+    </ItemGroup>
+
 </Project>

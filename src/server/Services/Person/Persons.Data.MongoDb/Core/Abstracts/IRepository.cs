@@ -11,5 +11,5 @@ public interface IRepository<T> where T : BaseObject
     
     Task<T> GetByIdAsync(ObjectId id);
 
-    Task DeleteAsync(T data);
+    Task DeleteAsync(ObjectId Id);
 }
