@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using Persons.Models.Persons;
+﻿using Persons.Models.Persons;
 
 namespace Persons.Services.Abstracts;
 

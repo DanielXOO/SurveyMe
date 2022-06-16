@@ -36,6 +36,15 @@ public class Repository<T> : IRepository<T> where T : BaseObject
         return data;
     }
 
+    public async Task<bool> IsRecordExistAsync(ObjectId id)
+    {
+        var isExist = await Collection
+            .Find(personality => personality.Id == id)
+            .AnyAsync();
+
+        return isExist;
+    }
+
     public async Task DeleteAsync(ObjectId id)
     {
         await Collection.DeleteOneAsync(odj => odj.Id == id);

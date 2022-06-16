@@ -32,7 +32,7 @@ public sealed class PersonalityService : IPersonalityService
 
     public async Task AddPersonalityAsync(Personality personality)
     {
-        var isExist = await _repository.IsPersonalityExistAsync(personality.Id);
+        var isExist = await _repository.IsUserPersonalityExists(personality.UserId);
         
         if (isExist)
         {
@@ -44,7 +44,7 @@ public sealed class PersonalityService : IPersonalityService
 
     public async Task EditPersonalityAsync(Personality personality)
     {
-        var isExist = await _repository.IsPersonalityExistAsync(personality.Id);
+        var isExist = await _repository.IsRecordExistAsync(personality.Id);
         
         if (!isExist)
         {
@@ -58,7 +58,7 @@ public sealed class PersonalityService : IPersonalityService
     {
         var objectId = ObjectId.Parse(id);
         
-        var isExist = await _repository.IsPersonalityExistAsync(objectId);
+        var isExist = await _repository.IsRecordExistAsync(objectId);
         
         if (!isExist)
         {
