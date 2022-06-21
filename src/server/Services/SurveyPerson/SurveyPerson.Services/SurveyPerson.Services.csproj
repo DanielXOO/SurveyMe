@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Persons.Data.MongoDb\Persons.Data.MongoDb.csproj" />
-      <ProjectReference Include="..\Persons.Models\Persons.Models.csproj" />
+      <ProjectReference Include="..\SurveyPerson.Data.Dapper\SurveyPerson.Data.Dapper.csproj" />
+      <ProjectReference Include="..\SurveyPerson.Models\SurveyPerson.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -55,6 +55,13 @@ public sealed class ErrorsHandleMiddleware
             var error = HandleError(ex, StatusCodes.Status403Forbidden);
             await SendErrorResponse(context, error);
         }
+        catch (ConflictException ex)
+        {
+            _logger.LogCritical(ex, "Personality already exists");
+
+            var error = HandleError(ex, StatusCodes.Status409Conflict);
+            await SendErrorResponse(context, error);
+        }
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "Server error");

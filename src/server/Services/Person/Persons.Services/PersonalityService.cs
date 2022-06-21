@@ -36,7 +36,7 @@ public sealed class PersonalityService : IPersonalityService
         
         if (isExist)
         {
-            throw new NotFoundException("User personality already exists");
+            throw new ConflictException("User personality already exists");
         }
         
         await _repository.CreateAsync(personality);

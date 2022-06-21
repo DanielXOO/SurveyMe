@@ -12,7 +12,10 @@ public sealed class SurveyProfile : Profile
         CreateMap<SurveyResponseModel, Survey>()
             .ReverseMap();
         
-        CreateMap<SurveyRequestModel, Survey>()
+        CreateMap<SurveyAddRequestModel, Survey>()
+            .ReverseMap();
+        
+        CreateMap<SurveyEditRequestModel, Survey>()
             .ReverseMap();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Surveys.Api.Models.Request.Options;
 using Surveys.Api.Models.Request.Questions;
 using Surveys.Api.Models.Response.Questions;
 using Surveys.Models.Options;
@@ -10,10 +11,16 @@ public sealed class QuestionProfile : Profile
 {
     public QuestionProfile()
     {
-        CreateMap<QuestionOptionRequestModel, QuestionOption>()
+        CreateMap<QuestionOptionAddRequestModel, QuestionOption>()
+            .ReverseMap();
+        
+        CreateMap<QuestionOptionEditRequestModel, QuestionOption>()
             .ReverseMap();
 
-        CreateMap<QuestionRequestModel, Question>()
+        CreateMap<QuestionAddRequestModel, Question>()
+            .ReverseMap();
+        
+        CreateMap<QuestionEditRequestModel, Question>()
             .ReverseMap();
 
         CreateMap<QuestionOptionResponseModel, QuestionOption>()

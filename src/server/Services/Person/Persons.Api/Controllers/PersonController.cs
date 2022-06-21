@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Person.Api.Models.Request.Personality;
 using Person.Api.Models.Response.Errors;
@@ -10,6 +11,7 @@ using SurveyMe.Common.Exceptions;
 namespace Person.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public sealed class PersonController : Controller
 {
@@ -48,10 +50,10 @@ public sealed class PersonController : Controller
 
         await _personalityService.AddPersonalityAsync(personality);
         
-        return Ok();
+        return NoContent();
     }
 
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PersonalityResponseModel))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(PersonalityResponseModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPersonality(string id)
@@ -73,7 +75,7 @@ public sealed class PersonController : Controller
         {
             throw new BadRequestException("Empty model");
         }
-
+        
         if (!ModelState.IsValid)
         {
             var errors = ModelState.ToDictionary(
@@ -82,6 +84,11 @@ public sealed class PersonController : Controller
             );
             
             throw new BadRequestException("Invalid data", errors);
+        }
+
+        if (!string.Equals(personalityEditRequestModels.Id, id))
+        {
+            throw new BadRequestException("Model id and request id do not match");
         }
         
         var personality = _mapper.Map<Personality>(personalityEditRequestModels);

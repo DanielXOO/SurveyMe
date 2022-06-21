@@ -3,6 +3,7 @@ using Answers.Models.Answers;
 using Answers.Services.Abstracts;
 using Answers.Services.Models.Questions;
 using Answers.Services.Models.Surveys;
+using SurveyMe.Common.Exceptions;
 using SurveyMe.Common.Pagination;
 
 namespace Answers.Services;
@@ -11,12 +12,9 @@ public class AnswersService : IAnswersService
 {
     private readonly IAnswersUnitOfWork _unitOfWork;
 
-    private readonly ISurveysService _surveysService;
-
-    public AnswersService(IAnswersUnitOfWork unitOfWork, ISurveysService surveysService)
+    public AnswersService(IAnswersUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _surveysService = surveysService;
     }
 
 
@@ -30,6 +28,10 @@ public class AnswersService : IAnswersService
     public async Task AddAnswerAsync(SurveyAnswer answer, Guid authorId)
     {
         answer.UserId = authorId;
+
+        var survey = await _unitOfWork.Surveys.GetByIdAsync(answer.SurveyId);
+
+        
         
         await _unitOfWork.Answers.CreateAsync(answer);
     }
@@ -40,7 +42,7 @@ public class AnswersService : IAnswersService
         var answers = await _unitOfWork.Answers
             .GetSurveyAnswersAsync(currentPage, pageSize, surveyId);
 
-        var survey = await _surveysService.GetSurveyByIdAsync(surveyId);
+        var survey = await _unitOfWork.Surveys.GetByIdAsync(surveyId);
 
         var result = new List<SurveyAnswerResult>();
         

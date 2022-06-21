@@ -63,7 +63,7 @@ public sealed class SurveysController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [HttpPost]
-    public async Task<IActionResult> AddSurvey([FromBody] SurveyRequestModel surveyModel)
+    public async Task<IActionResult> AddSurvey([FromBody] SurveyAddRequestModel surveyModel)
     {
         var authorId = Guid.Parse(HttpContext.User.GetSubjectId());
 
@@ -114,9 +114,8 @@ public sealed class SurveysController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseErrorResponse))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseErrorResponse))]
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> EditSurvey([FromBody] SurveyRequestModel surveyModel, Guid id)
+    public async Task<IActionResult> EditSurvey([FromBody] SurveyEditRequestModel surveyModel, Guid id)
     {
-        //TODO: new model will be better
         if (surveyModel.Id != id)
         {
             throw new BadRequestException("Route id and request id do not match");

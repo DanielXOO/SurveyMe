@@ -65,6 +65,11 @@ public sealed class AnswersController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAnswers([FromQuery] GetPageRequest request, Guid surveyId)
     {
+        if (request == null)
+        {
+            throw new BadRequestException("Request is empty");
+        }
+        
         var answers = await _answersService.GetSurveyAnswersAsync(request.Page, request.PageSize, surveyId);
         var response = _mapper.Map<PagedResultResponseModel<SurveyAnswerResultResponseModel>>(answers);
 
